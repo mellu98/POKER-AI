@@ -1,0 +1,26 @@
+# Core
+numpy
+joblib
+pyyaml
+requests
+pillow
+python-dotenv
+
+# Engine / CFR
+scikit-learn
+scipy
+scikit-image
+phevaluator
+treys
+
+# Vision
+mss
+opencv-python-headless
+pygetwindow; platform_system == "Windows"
+pyobjc; platform_system == "Darwin"
+pyobjc-framework-Quartz; platform_system == "Darwin"
+supervision>=0.25.0
+ultralytics>=8.3.0
+
+# UI
+# Tkinter is bundled with Python on Windows/macOS; Linux needs python3-tk
