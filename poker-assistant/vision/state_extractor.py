@@ -11,6 +11,7 @@ Example output:
         "stage": "flop",
     }
 """
+
 import sys
 import time
 from pathlib import Path
@@ -56,9 +57,13 @@ class SupervisionStateExtractor:
         self._local = ScreenshotStateExtractor(config_path)
         self._yolo = PokerYOLODetector(self.cfg)
         if self._yolo.available:
-            print("[supervision] YOLO detector available and will be used for validation.")
+            print(
+                "[supervision] YOLO detector available and will be used for validation."
+            )
         else:
-            print("[supervision] YOLO detector unavailable; running local extractor only.")
+            print(
+                "[supervision] YOLO detector unavailable; running local extractor only."
+            )
 
     def _load_config(self) -> dict:
         if not self.config_path.exists():
@@ -84,13 +89,21 @@ class SupervisionStateExtractor:
         # Re-read cards with real per-slot confidence
         hole_rois = self._local._effective_card_rois("hole")
         board_rois = self._local._effective_card_rois("board")
-        hole_cards, hole_scores = self._local._read_cards_with_confidence(frame, hole_rois)
-        board_cards, board_scores = self._local._read_cards_with_confidence(frame, board_rois)
+        hole_cards, hole_scores = self._local._read_cards_with_confidence(
+            frame, hole_rois
+        )
+        board_cards, board_scores = self._local._read_cards_with_confidence(
+            frame, board_rois
+        )
 
         # Optional YOLO validation
-        yolo_threshold = self._yolo.confidence_threshold if self._yolo.available else 0.5
+        yolo_threshold = (
+            self._yolo.confidence_threshold if self._yolo.available else 0.5
+        )
         yolo_cards = self._yolo.detect_cards(frame) if self._yolo.available else []
-        hole_yolo, board_yolo = self._split_yolo_cards(yolo_cards, hole_rois, board_rois, frame)
+        hole_yolo, board_yolo = self._split_yolo_cards(
+            yolo_cards, hole_rois, board_rois, frame
+        )
 
         # Fuse local + YOLO confidence
         merged_hole, hole_conf, hole_reasons = merge_card_confidence(
@@ -123,7 +136,9 @@ class SupervisionStateExtractor:
         hole_rois: list,
         board_rois: list,
         frame: np.ndarray,
-    ) -> tuple[list[tuple[str, np.ndarray, float]], list[tuple[str, np.ndarray, float]]]:
+    ) -> tuple[
+        list[tuple[str, np.ndarray, float]], list[tuple[str, np.ndarray, float]]
+    ]:
         """Partition YOLO card detections into hole and board groups."""
         hole_yolo: list[tuple[str, np.ndarray, float]] = []
         board_yolo: list[tuple[str, np.ndarray, float]] = []
@@ -161,8 +176,16 @@ class ScreenshotStateExtractor:
         self._card_classifier: CardClassifier | None = None
         nn_cfg = self.cfg.get("vision", {}).get("nn", {})
         if nn_cfg.get("enabled"):
-            rank_path = Path(nn_cfg.get("rank_model_path", "vision/models/card_rank_classifier.joblib"))
-            suit_path = Path(nn_cfg.get("suit_model_path", "vision/models/card_suit_classifier.joblib"))
+            rank_path = Path(
+                nn_cfg.get(
+                    "rank_model_path", "vision/models/card_rank_classifier.joblib"
+                )
+            )
+            suit_path = Path(
+                nn_cfg.get(
+                    "suit_model_path", "vision/models/card_suit_classifier.joblib"
+                )
+            )
             try:
                 self._card_classifier = CardClassifier(
                     str(rank_path),
@@ -170,7 +193,9 @@ class ScreenshotStateExtractor:
                     confidence_threshold=nn_cfg.get("confidence_threshold", 0.5),
                 )
                 if self._card_classifier.is_ready:
-                    print(f"[extract] Full-card classifier enabled: rank={rank_path}, suit={suit_path}")
+                    print(
+                        f"[extract] Full-card classifier enabled: rank={rank_path}, suit={suit_path}"
+                    )
                 else:
                     print("[extract] Full-card classifier could not load; disabled.")
                     self._card_classifier = None
@@ -179,12 +204,16 @@ class ScreenshotStateExtractor:
 
         # Site-specific calibration (optional). Se manca, fallback su rois legacy.
         self.site = self.cfg.get("vision", {}).get("site")
-        self.site_cfg = self.cfg.get("sites", {}).get(self.site, {}) if self.site else {}
+        self.site_cfg = (
+            self.cfg.get("sites", {}).get(self.site, {}) if self.site else {}
+        )
         self._table_extractor = LocalTableStateExtractor(config_path)
 
     def _effective_roi(self, key: str):
         """Restituisce la ROI calibrata per il sito, o quella legacy."""
-        return self.site_cfg.get(key) or self.cfg.get("vision", {}).get("rois", {}).get(key)
+        return self.site_cfg.get(key) or self.cfg.get("vision", {}).get("rois", {}).get(
+            key
+        )
 
     def _effective_card_rois(self, key: str) -> list:
         """Restituisce la lista di ROI per carte (hole/board) calibrata o legacy."""
@@ -215,6 +244,7 @@ class ScreenshotStateExtractor:
             load_suit_templates,
             load_templates_from_dir,
         )
+
         if tmpl_dir and Path(tmpl_dir).exists():
             self.templates = load_templates_from_dir(tmpl_dir)
             self.rank_templates = load_rank_templates(tmpl_dir)
@@ -227,9 +257,7 @@ class ScreenshotStateExtractor:
             missing_ranks = sorted(
                 set("A23456789TJQK") - set(self.rank_templates.keys())
             )
-            missing_suits = sorted(
-                set("shdc") - set(self.suit_templates.keys())
-            )
+            missing_suits = sorted(set("shdc") - set(self.suit_templates.keys()))
             print(
                 f"[extract] Auto-extracted {len(auto_rank)} ranks, "
                 f"{len(auto_suit)} suits from full templates"
@@ -268,8 +296,14 @@ class ScreenshotStateExtractor:
         self._ensure_templates_loaded()
 
         # Usa ROI calibrati per il sito se disponibili
-        hole = [self._normalize_card(c) for c in self._read_cards(frame, self._effective_card_rois("hole"))]
-        board = [self._normalize_card(c) for c in self._read_cards(frame, self._effective_card_rois("board"))]
+        hole = [
+            self._normalize_card(c)
+            for c in self._read_cards(frame, self._effective_card_rois("hole"))
+        ]
+        board = [
+            self._normalize_card(c)
+            for c in self._read_cards(frame, self._effective_card_rois("board"))
+        ]
         pot = self._read_number(frame, self._effective_roi("pot"))
         to_call = self._read_number(frame, self._effective_roi("to_call"))
         stack = self._read_number(frame, self._effective_roi("stack"))
@@ -309,23 +343,31 @@ class ScreenshotStateExtractor:
             if "call" in raw_text:
                 if stage == "preflop" and position == "SB":
                     to_call = bb - bb // 2
-                    print(f"[extract] FALLBACK: OCR vede 'Call' e sei SB preflop -> to_call={to_call}")
+                    print(
+                        f"[extract] FALLBACK: OCR vede 'Call' e sei SB preflop -> to_call={to_call}"
+                    )
                 else:
                     to_call = bb
-                    print(f"[extract] FALLBACK: OCR vede 'Call' -> to_call stimato={to_call}")
+                    print(
+                        f"[extract] FALLBACK: OCR vede 'Call' -> to_call stimato={to_call}"
+                    )
                 estimated_fields.add("to_call")
                 uncertainty_reasons.append("to_call estimated")
                 confidence["to_call"] = 0.0
             elif stage == "preflop" and position == "SB" and pot >= bb * 2:
                 # Euristica: preflop SB con pot abbastanza grande = dobbiamo completare
                 to_call = bb - bb // 2
-                print(f"[extract] FALLBACK: Preflop SB con pot={pot} -> to_call={to_call}")
+                print(
+                    f"[extract] FALLBACK: Preflop SB con pot={pot} -> to_call={to_call}"
+                )
                 estimated_fields.add("to_call")
                 uncertainty_reasons.append("to_call estimated")
                 confidence["to_call"] = 0.0
 
         # Debug: logga le carte rilevate
-        print(f"[extract] Hole: {hole} | Board: {board} | Pot: {pot} | ToCall: {to_call}")
+        print(
+            f"[extract] Hole: {hole} | Board: {board} | Pot: {pot} | ToCall: {to_call}"
+        )
         if len(set(hole)) != len(hole):
             print(f"[extract] WARNING: duplicate hole cards detected: {hole}")
         if len(set(board)) != len(board):
@@ -336,7 +378,9 @@ class ScreenshotStateExtractor:
             "board": board,
             "pot": pot or 0,
             "to_call": to_call or 0,
-            "to_call_source": "estimated" if "to_call" in estimated_fields else "observed",
+            "to_call_source": "estimated"
+            if "to_call" in estimated_fields
+            else "observed",
             "estimated_fields": sorted(estimated_fields),
             "uncertainty_reasons": uncertainty_reasons,
             "is_uncertain": bool(uncertainty_reasons),
@@ -353,9 +397,7 @@ class ScreenshotStateExtractor:
                 for s in table_state.seats
                 if s.is_active and not s.is_hero and s.stack is not None
             },
-            "seat_positions": {
-                s.index: s.position for s in table_state.seats
-            },
+            "seat_positions": {s.index: s.position for s in table_state.seats},
         }
 
     @staticmethod
@@ -392,7 +434,9 @@ class ScreenshotStateExtractor:
         return [roi for roi in resolved if roi is not None]
 
     @staticmethod
-    def _point_in_any_roi(x: float, y: float, rois: list[dict], frame: np.ndarray) -> bool:
+    def _point_in_any_roi(
+        x: float, y: float, rois: list[dict], frame: np.ndarray
+    ) -> bool:
         """Return True if (x, y) lies inside any resolved ROI."""
         for roi in ScreenshotStateExtractor._resolve_rois(rois, frame):
             if (
@@ -447,6 +491,7 @@ class ScreenshotStateExtractor:
         if roi is None:
             return ""
         from capture import crop_roi
+
         crop = crop_roi(frame, roi["x"], roi["y"], roi["w"], roi["h"])
         if crop is None or crop.size == 0:
             return ""
@@ -458,17 +503,12 @@ class ScreenshotStateExtractor:
 
         # Resolve Tesseract binary (Windows bundle, macOS Homebrew, or PATH)
         from tesseract_utils import find_tesseract_binary
+
         pytesseract.pytesseract.tesseract_cmd = find_tesseract_binary()
 
-        gray = (
-            cv2.cvtColor(crop, cv2.COLOR_BGR2GRAY)
-            if crop.ndim == 3
-            else crop
-        )
+        gray = cv2.cvtColor(crop, cv2.COLOR_BGR2GRAY) if crop.ndim == 3 else crop
         _, binary = cv2.threshold(gray, 180, 255, cv2.THRESH_BINARY_INV)
-        binary = cv2.resize(
-            binary, None, fx=2, fy=2, interpolation=cv2.INTER_CUBIC
-        )
+        binary = cv2.resize(binary, None, fx=2, fy=2, interpolation=cv2.INTER_CUBIC)
 
         text = pytesseract.image_to_string(
             binary,
@@ -483,6 +523,7 @@ class ScreenshotStateExtractor:
         if roi is None:
             return None
         from capture import crop_roi
+
         crop = crop_roi(frame, roi["x"], roi["y"], roi["w"], roi["h"])
         if crop is None or crop.size == 0:
             return None
@@ -494,17 +535,12 @@ class ScreenshotStateExtractor:
 
         # Resolve Tesseract binary (Windows bundle, macOS Homebrew, or PATH)
         from tesseract_utils import find_tesseract_binary
+
         pytesseract.pytesseract.tesseract_cmd = find_tesseract_binary()
 
-        gray = (
-            cv2.cvtColor(crop, cv2.COLOR_BGR2GRAY)
-            if crop.ndim == 3
-            else crop
-        )
+        gray = cv2.cvtColor(crop, cv2.COLOR_BGR2GRAY) if crop.ndim == 3 else crop
         _, binary = cv2.threshold(gray, 180, 255, cv2.THRESH_BINARY_INV)
-        binary = cv2.resize(
-            binary, None, fx=2, fy=2, interpolation=cv2.INTER_CUBIC
-        )
+        binary = cv2.resize(binary, None, fx=2, fy=2, interpolation=cv2.INTER_CUBIC)
 
         text = pytesseract.image_to_string(
             binary,
@@ -541,7 +577,11 @@ class HybridStateExtractor:
 
     DEFAULT_POSITION_TTL = 60.0  # seconds
 
-    def __init__(self, config_path: str = "config.yaml", position_ttl: float = DEFAULT_POSITION_TTL):
+    def __init__(
+        self,
+        config_path: str = "config.yaml",
+        position_ttl: float = DEFAULT_POSITION_TTL,
+    ):
         self.config_path = Path(config_path)
         self.cfg = self._load_config()
         self._screenshot = ScreenshotStateExtractor(config_path)
@@ -588,9 +628,17 @@ class HybridStateExtractor:
 
         # 2. Se il bottone locale non è stato trovato, fallback LLM per la posizione
         now = time.time()
-        use_llm = (
-            local_button is None
-            or local_position not in ("SB", "BB", "BTN", "CO", "MP", "UTG", "UTG+1", "UTG+2", "LJ", "HJ")
+        use_llm = local_button is None or local_position not in (
+            "SB",
+            "BB",
+            "BTN",
+            "CO",
+            "MP",
+            "UTG",
+            "UTG+1",
+            "UTG+2",
+            "LJ",
+            "HJ",
         )
 
         if use_llm and now - self._last_position_time > self._position_ttl:
@@ -599,6 +647,7 @@ class HybridStateExtractor:
                 try:
                     if frame is None:
                         from capture import screenshot
+
                         frame = screenshot(window_title="Free Poker")
                     if frame is not None:
                         pos = llm.get_position(frame)
@@ -606,11 +655,28 @@ class HybridStateExtractor:
                             self._position_cache = pos
                             self._last_position_time = now
                             print(f"[hybrid] Position refreshed via LLM: {pos}")
-                except (requests.RequestException, KeyError, IndexError, ValueError, RuntimeError) as e:
+                except (
+                    requests.RequestException,
+                    KeyError,
+                    IndexError,
+                    ValueError,
+                    RuntimeError,
+                ) as e:
                     print(f"[hybrid] Position refresh failed: {e}")
 
         # Usa posizione locale se valida, altrimenti cache LLM
-        if local_position in ("SB", "BB", "BTN", "CO", "MP", "UTG", "UTG+1", "UTG+2", "LJ", "HJ"):
+        if local_position in (
+            "SB",
+            "BB",
+            "BTN",
+            "CO",
+            "MP",
+            "UTG",
+            "UTG+1",
+            "UTG+2",
+            "LJ",
+            "HJ",
+        ):
             state["position"] = local_position
         else:
             state["position"] = self._position_cache
@@ -622,15 +688,21 @@ class HybridStateExtractor:
 
         # 4. Fallback LLM completo solo se i controlli falliscono e non abbiamo
         #    già fatto una chiamata recente. Questo preserva la velocità.
-        if report.needs_llm_fallback and now - self._last_position_time > self._position_ttl:
+        if (
+            report.needs_llm_fallback
+            and now - self._last_position_time > self._position_ttl
+        ):
             llm = self._ensure_llm()
             if llm is not None:
                 try:
                     if frame is None:
                         from capture import screenshot
+
                         frame = screenshot(window_title="Free Poker")
                     if frame is not None:
-                        print("[hybrid] Running full LLM fallback due to consistency failures")
+                        print(
+                            "[hybrid] Running full LLM fallback due to consistency failures"
+                        )
                         llm_state = llm.extract(frame)
                         # Fonde: carta/numberi locali sono solitamente più affidabili,
                         # ma usiamo LLM per posizione e board se locali sono vuoti.
@@ -638,12 +710,21 @@ class HybridStateExtractor:
                             state["hole"] = llm_state["hole"]
                         if not state.get("board") and llm_state.get("board"):
                             state["board"] = llm_state["board"]
-                        if state.get("button_seat") is None and llm_state.get("position"):
+                        if state.get("button_seat") is None and llm_state.get(
+                            "position"
+                        ):
                             state["position"] = llm_state["position"]
                             self._position_cache = llm_state["position"]
                             self._last_position_time = now
                         self._last_position_time = now
-                except (requests.RequestException, KeyError, IndexError, ValueError, RuntimeError, OSError) as e:
+                except (
+                    requests.RequestException,
+                    KeyError,
+                    IndexError,
+                    ValueError,
+                    RuntimeError,
+                    OSError,
+                ) as e:
                     print(f"[hybrid] Full LLM fallback failed: {e}")
 
         return state

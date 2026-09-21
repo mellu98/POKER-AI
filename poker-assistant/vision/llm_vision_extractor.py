@@ -1819,7 +1819,9 @@ class LLMVisionExtractor:
         Override solo con >= 2 voti (maggioranza), mai introdurre duplicati.
         """
         hole = [c for c in state.get("hole", []) if isinstance(c, str) and len(c) == 2]
-        board = [c for c in state.get("board", []) if isinstance(c, str) and len(c) == 2]
+        board = [
+            c for c in state.get("board", []) if isinstance(c, str) and len(c) == 2
+        ]
         hole_ok = len(hole) == 2 and "?" not in hole[0] + hole[1]
         if not hole_ok:
             return state
