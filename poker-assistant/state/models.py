@@ -13,6 +13,7 @@ engine con una dataclass congelata che si auto-valida alla costruzione:
 Ispirato a poker-vision-lab (MIT, shoujikes-eng) — adattato al nostro
 output LLM (centesimi, non BB) e ai nostri campi.
 """
+
 from __future__ import annotations
 
 import time
@@ -40,7 +41,12 @@ class ActionType(str, Enum):
     WAIT = "wait"
 
 
-_BOARD_COUNT_TO_STREET = {0: Street.PREFLOP, 3: Street.FLOP, 4: Street.TURN, 5: Street.RIVER}
+_BOARD_COUNT_TO_STREET = {
+    0: Street.PREFLOP,
+    3: Street.FLOP,
+    4: Street.TURN,
+    5: Street.RIVER,
+}
 
 
 def _parse_card(code: str) -> str | None:
@@ -160,7 +166,9 @@ class PokerState:
         street = _street_from_board(list(board))
         reported = raw.get("stage")
         if reported and reported != street.value and len(board) in (0, 3, 4, 5):
-            errors.append(f"stage segnalato {reported!r} ma board={len(board)} → {street.value}")
+            errors.append(
+                f"stage segnalato {reported!r} ma board={len(board)} → {street.value}"
+            )
 
         btn = raw.get("button_seat")
         if btn is not None and not isinstance(btn, int):
@@ -208,7 +216,9 @@ class PokerState:
 
     @property
     def _blocking_errors(self) -> tuple[str, ...]:
-        return tuple(e for e in self.validation_errors if "invalid" in e or "duplicate" in e)
+        return tuple(
+            e for e in self.validation_errors if "invalid" in e or "duplicate" in e
+        )
 
     @property
     def legal_actions(self) -> tuple[ActionType, ...]:
@@ -232,7 +242,9 @@ class PokerState:
 
     @property
     def effective_stack_bb(self) -> float:
-        return round(self.effective_stack / self.big_blind, 2) if self.big_blind else 0.0
+        return (
+            round(self.effective_stack / self.big_blind, 2) if self.big_blind else 0.0
+        )
 
     @property
     def spr(self) -> float:

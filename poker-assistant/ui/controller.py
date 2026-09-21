@@ -35,7 +35,6 @@ from temporal_smoother import TemporalSmoother  # type: ignore[import-not-found]
 
 sys.path.insert(0, str(Path(__file__).parent.parent / "state"))
 from machine import HandStateMachine  # type: ignore[import-not-found]
-from models import PokerState  # type: ignore[import-not-found]
 
 
 class AssistantController:
@@ -143,7 +142,9 @@ class AssistantController:
             reason = update.reason
             self.overlay.update(
                 status=f"WAIT | {reason}",
-                hand=" ".join(state.get("hole", [])) if state.get("hole") else "NO CARDS",
+                hand=" ".join(state.get("hole", []))
+                if state.get("hole")
+                else "NO CARDS",
                 board=" ".join(state.get("board", [])),
                 equity=0.0,
                 action="WAIT",

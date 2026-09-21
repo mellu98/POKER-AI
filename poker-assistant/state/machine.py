@@ -10,6 +10,7 @@ Sostituisce l'euristica "cambiano le hole → nuova mano" con una FSM vera:
 Ispirata a poker-vision-lab HandStateMachine (MIT) — adattata al nostro
 flusso: ingest(dict raw) → StateUpdate con PokerState validato.
 """
+
 from __future__ import annotations
 
 import itertools
@@ -65,15 +66,20 @@ class HandStateMachine:
         if not state.has_hand:
             self._reset_candidate()
             return StateUpdate(
-                state=None, changed=False, stable=False,
-                reason="no hero cards", hand_id=self._hand_id,
+                state=None,
+                changed=False,
+                stable=False,
+                reason="no hero cards",
+                hand_id=self._hand_id,
             )
 
         # gate confidenza
         if state.confidence < self.min_confidence:
             self._reset_candidate()
             return StateUpdate(
-                state=self._confirmed_state, changed=False, stable=False,
+                state=self._confirmed_state,
+                changed=False,
+                stable=False,
                 reason=f"confidence {state.confidence:.2f} < {self.min_confidence}",
                 hand_id=self._hand_id,
             )
@@ -96,7 +102,9 @@ class HandStateMachine:
         board_len = len(state.board)
         if board_len < self._board_len and not allow_board_shrink_guard(self):
             return StateUpdate(
-                state=self._confirmed_state, changed=False, stable=False,
+                state=self._confirmed_state,
+                changed=False,
+                stable=False,
                 reason=f"board shrink {self._board_len}→{board_len} senza nuova mano",
                 hand_id=self._hand_id,
             )
@@ -114,7 +122,9 @@ class HandStateMachine:
 
         if self._candidate_count < self.stable_frames:
             return StateUpdate(
-                state=self._confirmed_state, changed=False, stable=False,
+                state=self._confirmed_state,
+                changed=False,
+                stable=False,
                 reason=f"stabilità {self._candidate_count}/{self.stable_frames}",
                 hand_id=self._hand_id,
             )
@@ -125,8 +135,11 @@ class HandStateMachine:
         changed = previous is None or previous.fingerprint() != fp
         reason = "stabile" if changed else "confermato"
         return StateUpdate(
-            state=self._confirmed_state, changed=changed, stable=True,
-            reason=reason, hand_id=self._hand_id,
+            state=self._confirmed_state,
+            changed=changed,
+            stable=True,
+            reason=reason,
+            hand_id=self._hand_id,
         )
 
     @property
