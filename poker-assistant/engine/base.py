@@ -26,11 +26,12 @@ Strategy is stored at the infoset level.
 # TODO: use NumPy lookup instead of dictionary lookup for drastic speed improvement https://stackoverflow.com/questions/36652533/looking-up-large-sets-of-keys-dictionary-vs-numpy-array
 
 
-from typing import NewType, Dict, List
-from tqdm import tqdm
 import time
+from typing import NewType
+
 import joblib
 import numpy as np
+from tqdm import tqdm
 
 CHANCE = "CHANCE_EVENT"
 
@@ -47,13 +48,13 @@ class History:
     might be first to act.
     """
 
-    def __init__(self, history: List[Action] = []):
-        self.history = history
+    def __init__(self, history: list[Action] | None = None):
+        self.history = history if history is not None else []
 
     def is_terminal(self):
         raise NotImplementedError()
 
-    def actions(self) -> List[Action]:
+    def actions(self) -> list[Action]:
         raise NotImplementedError()
 
     def player(self) -> Player:
@@ -84,7 +85,7 @@ class History:
         """
         raise NotImplementedError()
 
-    def get_infoSet_key(self) -> List[Action]:
+    def get_infoSet_key(self) -> list[Action]:
         assert not self.is_chance()  # chance history should not be infosets
         assert not self.is_terminal()
 
@@ -100,21 +101,21 @@ class InfoSet:
 
     """
 
-    def __init__(self, infoSet_key: List[Action], actions: List[Action], player: Player):
+    def __init__(self, infoSet_key: list[Action], actions: list[Action], player: Player):
         self.infoSet = infoSet_key
         self.__actions = actions
         self.__player = player
 
         self.regret = {a: 0 for a in self.actions()}
         self.strategy = {a: 0 for a in self.actions()}
-        self.cumulative_strategy = {a: 0 for a in self.actions()}
+        self.cumulative_strategy = {a: 0.0 for a in self.actions()}
         self.get_strategy()
         assert 1.0 - sum(self.strategy.values()) < 1e-6
 
     def __repr__(self) -> str:
         return str(self.infoSet)
 
-    def actions(self) -> List[Action]:
+    def actions(self) -> list[Action]:
         return self.__actions
 
     def player(self) -> Player:
@@ -141,7 +142,7 @@ class InfoSet:
             self.strategy = {a: 1 / len(self.actions()) for a in self.actions()}
 
     def get_average_strategy(self):
-        """ """
+        """Strategia media pesata per i regret accumulati (avvicina lo Nash)."""
         assert len(self.actions()) == len(
             self.cumulative_strategy
         )  # The cumulative strategy should map a probability for every action
@@ -164,8 +165,11 @@ class CFR:
     ):
         self.n_players = n_players
         self.iterations = iterations
-        self.tracker_interval = int(iterations / 10)
-        self.infoSets: Dict[str, InfoSet] = {}
+        try:
+            self.tracker_interval = int(iterations / 10)
+        except (TypeError, ValueError, ZeroDivisionError):
+            self.tracker_interval = 1
+        self.infoSets: dict[str, InfoSet] = {}
         self.create_infoSet = create_infoSet
         self.create_history = create_history
 
@@ -309,7 +313,7 @@ class CFR:
         t: int,
         pi_0: float,
         pi_1: float,
-        histories: List[History],
+        histories: list[History],
     ):
         # Return payoff for terminal states
         if history.is_terminal():
@@ -360,8 +364,7 @@ class CFR:
     def solve(self, method="vanilla", debug=False):
         util_0 = 0
         util_1 = 0
-        if method == "manim":
-            histories = []
+        histories: list = []
 
         for t in tqdm(range(self.iterations), desc="CFR Training Loop"):
             if method == "vanilla":  # vanilla
@@ -370,11 +373,11 @@ class CFR:
                 ):  # This is the slower way, we can speed by updating both players
                     if player == 0:
                         util_0 += self.vanilla_cfr(
-                            self.create_history(t), player, t, 1, 1, debug=debug
+                            self.create_history(t), Player(player), t, 1, 1, debug=debug
                         )
                     else:
                         util_1 += self.vanilla_cfr(
-                            self.create_history(t), player, t, 1, 1, debug=debug
+                            self.create_history(t), Player(player), t, 1, 1, debug=debug
                         )
 
             elif method == "vanilla_speedup":
@@ -384,11 +387,11 @@ class CFR:
                 for player in range(self.n_players):
                     if player == 0:
                         util_0 += self.vanilla_cfr_manim(
-                            self.create_history(t), player, t, 1, 1, histories
+                            self.create_history(t), Player(player), t, 1, 1, histories
                         )
                     else:
                         util_1 += self.vanilla_cfr_manim(
-                            self.create_history(t), player, t, 1, 1, histories
+                            self.create_history(t), Player(player), t, 1, 1, histories
                         )
 
                 print(histories)
@@ -409,7 +412,7 @@ class CFR:
     def get_expected_value(
         self, history: History, player: Player, player_strategy=None, opp_strategy=None
     ):
-        """
+        r"""
         We can compute the expected values of two strategies. If none, then we will
         play both according to the nash equilibrium strategies we computed.
 
@@ -436,9 +439,9 @@ class CFR:
                     average_strategy = infoSet.get_average_strategy()
 
             ev = 0
-            for idx, a in enumerate(infoSet.actions()):
+            for a in infoSet.actions():
                 value = self.get_expected_value(history + a, player, player_strategy, opp_strategy)
-                ev += average_strategy[idx] * value
+                ev += average_strategy[a] * value
 
             return ev
 
@@ -452,7 +455,7 @@ class CFR:
             average_strategy = infoSet.get_average_strategy()
             ev = 0
             for a in infoSet.actions():
-                value = self.get_expected_value(history + a, (player + 1) % 2)
+                value = self.get_expected_value(history + a, Player((player + 1) % 2))
                 ev += average_strategy[a] * value
 
             return ev
@@ -511,7 +514,7 @@ class CFR:
                 value = self.get_expected_value(
                     history + a, player, average_strategy, opp_strategy=opp_strategy
                 )
-                ev_opp_action += average_strategy[idx] * value
+                ev_opp_action += average_strategy[a] * value
                 print(ev_opp_action)
 
             ev.append(ev_opp_action)
@@ -527,12 +530,12 @@ class InfoSetTracker:
 
     def __init__(self):
         self.tracker_hist = []
-        self.exploitability: Dict[int:float] = {}  # A dictionary of exploitability for index
+        self.exploitability: dict[int, float] = {}  # A dictionary of exploitability for index
         # tracker.set_histogram(f'strategy.*')
         # tracker.set_histogram(f'average_strategy.*')
         # tracker.set_histogram(f'regret.*')
 
-    def __call__(self, infoSets: Dict[str, InfoSet]):
+    def __call__(self, infoSets: dict[str, InfoSet]):
         self.tracker_hist.append(infoSets)
 
     def pprint(self):

@@ -21,8 +21,8 @@ from outs_calculator import OutsCalculator
 # Fix joblib unpickling: models were saved when preflop/postflop scripts
 # were run as __main__, so pickle looks for classes in __main__.
 _main = sys.modules["__main__"]
-_main.PreflopHoldemInfoSet = PreflopHoldemInfoSet
-_main.PostflopHoldemInfoSet = PostflopHoldemInfoSet
+setattr(_main, "PreflopHoldemInfoSet", PreflopHoldemInfoSet)
+setattr(_main, "PostflopHoldemInfoSet", PostflopHoldemInfoSet)
 
 PREFLOP_DISCRETE = {"k", "bMIN", "bMID", "bMAX", "c", "f"}
 POSTFLOP_DISCRETE = {"k", "bMIN", "bMID", "bMAX", "c", "f"}
@@ -53,7 +53,7 @@ class AssistantEngine:
         )
     """
 
-    def __init__(self, models_dir: str = None):
+    def __init__(self, models_dir: str | None = None):
         if models_dir is None:
             models_dir = Path(__file__).parent / "models"
         self.models_dir = Path(models_dir)
