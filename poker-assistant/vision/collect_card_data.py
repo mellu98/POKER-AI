@@ -30,22 +30,21 @@ Modalità MANUALE:
 I file vengono salvati in:
     vision/dataset/cards/<GUESS>_<timestamp>_<slot>.png
 """
-import sys
-import time
-import threading
 import subprocess
-from pathlib import Path
+import sys
+import threading
+import time
 from datetime import datetime
+from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 
 import cv2
-import yaml
 import numpy as np
-from PIL import Image
-from capture import screenshot, crop_roi
+import yaml
+from capture import crop_roi, screenshot
 from ocr_cards import load_templates_from_dir, match_card
-
+from PIL import Image
 
 RANKS = set("A23456789TJQK")
 SUITS = set("shdc")
@@ -67,12 +66,16 @@ def ensure_dirs():
 def resolve_roi(roi: dict, frame: np.ndarray) -> dict:
     if roi.get("rel"):
         h, w = frame.shape[:2]
-        return {
-            "x": int(roi["x"] * w),
-            "y": int(roi["y"] * h),
-            "w": int(roi["w"] * w),
-            "h": int(roi["h"] * h),
-        }
+        try:
+            return {
+                "x": int(roi["x"] * w),
+                "y": int(roi["y"] * h),
+                "w": int(roi["w"] * w),
+                "h": int(roi["h"] * h),
+            }
+        except (KeyError, TypeError, ValueError):
+            print(f"[collect] ROI malformato ({roi}): uso i valori grezzi")
+            return roi
     return roi
 
 
@@ -112,7 +115,7 @@ class Guesser:
                     print("[collect] Loaded full-card classifier for guessing.")
                 else:
                     self.classifier = None
-            except Exception as e:
+            except (ImportError, OSError, ValueError, AttributeError) as e:
                 print(f"[collect] Could not load classifier for guessing: {e}")
 
     def guess(self, crop: np.ndarray) -> tuple[str | None, str]:
@@ -143,7 +146,7 @@ def save_card(slot: str, full_crop: np.ndarray, label: str) -> Path:
     return full_path
 
 
-def is_similar(a: np.ndarray, b: np.ndarray, threshold: float = 8.0) -> bool:
+def is_similar(a: np.ndarray | None, b: np.ndarray | None, threshold: float = 8.0) -> bool:
     """Return True if two card crops are visually similar (skip duplicates)."""
     if a is None or b is None or a.size == 0 or b.size == 0:
         return False
@@ -152,7 +155,10 @@ def is_similar(a: np.ndarray, b: np.ndarray, threshold: float = 8.0) -> bool:
     b_gray = cv2.cvtColor(b, cv2.COLOR_BGR2GRAY) if b.ndim == 3 else b
     a_small = cv2.resize(a_gray, thumb, interpolation=cv2.INTER_AREA)
     b_small = cv2.resize(b_gray, thumb, interpolation=cv2.INTER_AREA)
-    diff = float(np.mean(np.abs(a_small.astype(float) - b_small.astype(float))))
+    try:
+        diff = float(np.mean(np.abs(a_small.astype(float) - b_small.astype(float))))
+    except (ValueError, TypeError):
+        return False
     return diff < threshold
 
 
@@ -202,7 +208,7 @@ def fast_capture(frame: np.ndarray, slots: list[tuple[str, int, dict]],
         guess, source = guesser.guess(full_crop)
         label = guess if guess is not None else "XX"
 
-        path = save_card(slot, full_crop, label)
+        save_card(slot, full_crop, label)
         saved_total_ref[0] += 1
         summary.append((slot, label, source))
         print(f"  {slot}: {label} ({source})")
@@ -232,7 +238,7 @@ def auto_capture_once(
         if is_similar(full_crop, last_crops.get(slot)):
             continue
 
-        guess, source = guesser.guess(full_crop)
+        guess, _ = guesser.guess(full_crop)
         label = guess if guess is not None else "XX"
         save_card(slot, full_crop, label)
         saved_total_ref[0] += 1
@@ -262,11 +268,15 @@ def auto_capture_loop(
             frame = screenshot(window_title=window_title)
             if frame is not None:
                 last_crops = auto_capture_once(frame, slots, guesser, last_crops, saved_total)
-        except Exception as e:
+        except (OSError, ValueError, cv2.error) as e:
             print(f"[collect] Auto capture error: {e}")
 
         # Sleep in small chunks so stop is responsive
-        for _ in range(int(interval * 10)):
+        try:
+            chunks = int(interval * 10)
+        except (TypeError, ValueError):
+            chunks = 20
+        for _ in range(chunks):
             if stop_event.is_set():
                 break
             time.sleep(0.1)
@@ -393,8 +403,11 @@ def main():
         print("[collect] ERRORE: config.yaml non trovato.")
         sys.exit(1)
 
-    with open(config_path, "r") as f:
-        cfg = yaml.safe_load(f) or {}
+    try:
+        with open(config_path, encoding="utf-8") as f:
+            cfg = yaml.safe_load(f) or {}
+    except OSError as exc:
+        sys.exit(f"[collect] config.yaml non leggibile: {exc}")
 
     ensure_dirs()
 

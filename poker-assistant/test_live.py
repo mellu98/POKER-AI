@@ -7,6 +7,7 @@ Uso:
 Requisiti: il tavolo deve essere aperto e VISIBLE (non minimizzato):
 il capture su macOS usa Quartz con filtro OnScreenOnly.
 """
+
 import argparse
 import importlib
 import statistics
@@ -110,7 +111,9 @@ def main() -> None:
     extractor = LLMVisionExtractor(
         config_path=str(ROOT / "config.yaml"), window_title=title
     )
-    print(f">>> modello: {extractor.model} — {args.cycles} cicli, ogni {args.interval}s\n")
+    print(
+        f">>> modello: {extractor.model} — {args.cycles} cicli, ogni {args.interval}s\n"
+    )
 
     api_lats: list[float] = []
     cached = 0

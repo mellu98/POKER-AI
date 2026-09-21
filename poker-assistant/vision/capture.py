@@ -16,7 +16,7 @@ def _set_dpi_aware() -> None:
         return
     try:
         import ctypes
-        ctypes.windll.user32.SetProcessDPIAware()
+        ctypes.windll.user32.SetProcessDPIAware()  # type: ignore
     except Exception:
         pass
 
@@ -30,9 +30,9 @@ def _get_dpi_scale() -> float:
         return 1.0
     try:
         import ctypes
-        dc = ctypes.windll.user32.GetDC(0)
-        dpi = ctypes.windll.gdi32.GetDeviceCaps(dc, 88)  # LOGPIXELSX
-        ctypes.windll.user32.ReleaseDC(0, dc)
+        dc = ctypes.windll.user32.GetDC(0)  # type: ignore
+        dpi = ctypes.windll.gdi32.GetDeviceCaps(dc, 88)  # LOGPIXELSX  # type: ignore
+        ctypes.windll.user32.ReleaseDC(0, dc)  # type: ignore
         return dpi / 96.0
     except Exception:
         return 1.0
@@ -44,7 +44,7 @@ def _get_window_rect_win(hwnd: int):
     from ctypes import wintypes
 
     rect = wintypes.RECT()
-    ctypes.windll.user32.GetWindowRect(hwnd, ctypes.byref(rect))
+    ctypes.windll.user32.GetWindowRect(hwnd, ctypes.byref(rect))  # type: ignore
     return rect.left, rect.top, rect.right, rect.bottom
 
 
@@ -66,38 +66,43 @@ def _find_window_rect_mac(title: str) -> Optional[dict]:
         )
         return None
 
-    window_list = Quartz.CGWindowListCopyWindowInfo(
-        Quartz.kCGWindowListExcludeDesktopElements | Quartz.kCGWindowListOptionOnScreenOnly,
-        Quartz.kCGNullWindowID,
+    window_list = Quartz.CGWindowListCopyWindowInfo(  # type: ignore
+        Quartz.kCGWindowListExcludeDesktopElements | Quartz.kCGWindowListOptionOnScreenOnly,  # type: ignore
+        Quartz.kCGNullWindowID,  # type: ignore
     )
 
-    # Screen height to convert Quartz bottom-left Y to mss top-left Y
-    with mss() as sct:
-        screen_h = sct.monitors[0]["height"]
+    # CGWindowBounds usa gia' coordinate globali top-left (origine in alto a
+    # sinistra del display principale), IDENTICHE alla convenzione di mss:
+    # nessuna conversione Y necessaria. La vecchia conversione
+    # `top = screen_h - (y + h)` rompeva i layout multi-monitor con schermi
+    # sopra/sotto il primario (es. esterno a top=-1440 -> cattura fuori
+    # schermo, frame tutto bianco).
 
     # Exact title match first: with several Chrome tabs open ("Poker" the table,
     # "Poker Online: ..." the lobby) a plain substring match can grab the wrong
     # window depending on focus order.
     ordered = sorted(
         window_list,
-        key=lambda w: (w.get(Quartz.kCGWindowName, "") or "") != title,
+        key=lambda w: (w.get(Quartz.kCGWindowName, "") or "") != title,  # type: ignore
     )
     for win in ordered:
-        win_title = win.get(Quartz.kCGWindowName, "") or ""
+        win_title = win.get(Quartz.kCGWindowName, "") or ""  # type: ignore
         if title not in win_title:
             continue
-        bounds = win.get(Quartz.kCGWindowBounds, {})
+        bounds = win.get(Quartz.kCGWindowBounds, {})  # type: ignore
         if not bounds:
             continue
-        x = int(bounds.get("X", 0))
-        y = int(bounds.get("Y", 0))
-        w = int(bounds.get("Width", 0))
-        h = int(bounds.get("Height", 0))
+        try:
+            x = int(bounds.get("X", 0))
+            y = int(bounds.get("Y", 0))
+            w = int(bounds.get("Width", 0))
+            h = int(bounds.get("Height", 0))
+        except (TypeError, ValueError):
+            continue
         if w <= 0 or h <= 0:
             continue
-        # Quartz coords: origin at bottom-left; mss uses top-left
-        top = screen_h - (y + h)
-        return {"left": x, "top": top, "width": w, "height": h}
+        # top diretto: CGWindowBounds e mss condividono l'origine top-left
+        return {"left": x, "top": y, "width": w, "height": h}
 
     return None
 
@@ -109,7 +114,7 @@ def _capture_with_mss(monitor: dict) -> np.ndarray:
         return cv2.cvtColor(np.array(img), cv2.COLOR_BGRA2BGR)
 
 
-def screenshot(monitor: Optional[dict] = None, window_title: Optional[str] = None) -> np.ndarray:
+def screenshot(monitor: dict | None = None, window_title: str | None = None) -> np.ndarray:
     """
     Capture the screen and return it as a BGR numpy array.
 
@@ -132,7 +137,7 @@ def screenshot(monitor: Optional[dict] = None, window_title: Optional[str] = Non
         # Windows path
         if system == "Windows":
             try:
-                import pygetwindow as gw
+                import pygetwindow as gw  # type: ignore
 
                 windows = [w for w in gw.getWindowsWithTitle(window_title) if w.visible]
                 if windows:
@@ -157,7 +162,7 @@ def screenshot(monitor: Optional[dict] = None, window_title: Optional[str] = Non
                             frame, (log_w, log_h), interpolation=cv2.INTER_LANCZOS4
                         )
                     return frame
-            except Exception as e:
+            except (ImportError, OSError, ValueError, AttributeError, IndexError, cv2.error) as e:
                 print(f"[capture] Window capture failed: {e}")
 
         print(f"[capture] Window '{window_title}' not found; falling back to full screen")
@@ -165,10 +170,12 @@ def screenshot(monitor: Optional[dict] = None, window_title: Optional[str] = Non
     if monitor is None:
         with mss() as sct:
             monitor = sct.monitors[1]
+    if monitor is None:
+        raise RuntimeError("Nessun monitor disponibile per il capture")
     return _capture_with_mss(monitor)
 
 
-def webcam_capture(device: int = 0) -> Optional[np.ndarray]:
+def webcam_capture(device: int = 0) -> np.ndarray | None:
     """Capture a single frame from the webcam."""
     cap = cv2.VideoCapture(device)
     if not cap.isOpened():

@@ -34,7 +34,6 @@ import sys
 import time
 from datetime import datetime
 from pathlib import Path
-from typing import Optional
 
 import cv2
 import numpy as np
@@ -42,7 +41,7 @@ import numpy as np
 # Allow running as a standalone script (same pattern as other vision modules).
 sys.path.insert(0, str(Path(__file__).parent))
 
-from capture import screenshot, crop_roi
+from capture import crop_roi, screenshot
 from ocr_cards import (
     SUITS_BY_COLOR,
     classify_suit_by_shape,
@@ -55,7 +54,6 @@ from ocr_cards import (
     load_templates_from_dir,
     match_card_with_confidence,
     ocr_rank,
-    recognize_card_hybrid_with_confidence,
 )
 
 PROJECT_ROOT = Path(__file__).parent.parent
@@ -98,7 +96,7 @@ def card_to_class_id(card: str) -> int:
     return CLASS_NAMES.index(to_yolo_card(card))
 
 
-def parse_card_code(text: str) -> Optional[str]:
+def parse_card_code(text: str) -> str | None:
     """Validate user-entered card code ('7d', 'Ts', '10H' ...) -> '7d'/'Ts'."""
     text = text.strip()
     if len(text) not in (2, 3):
@@ -140,16 +138,19 @@ def _card_rois(cfg: dict, key: str) -> list:
 
 def resolve_roi(roi: dict, frame: np.ndarray) -> dict:
     """Convert a percent ('rel: true') ROI to integer pixel coordinates."""
-    if roi.get("rel"):
-        h, w = frame.shape[:2]
-        return {
-            "x": int(roi["x"] * w),
-            "y": int(roi["y"] * h),
-            "w": int(roi["w"] * w),
-            "h": int(roi["h"] * h),
-        }
-    return {"x": int(roi["x"]), "y": int(roi["y"]),
-            "w": int(roi["w"]), "h": int(roi["h"])}
+    try:
+        if roi.get("rel"):
+            h, w = frame.shape[:2]
+            return {
+                "x": int(roi["x"] * w),
+                "y": int(roi["y"] * h),
+                "w": int(roi["w"] * w),
+                "h": int(roi["h"] * h),
+            }
+        return {"x": int(roi["x"]), "y": int(roi["y"]),
+                "w": int(roi["w"]), "h": int(roi["h"])}
+    except (KeyError, TypeError, ValueError):
+        return {"x": 0, "y": 0, "w": 0, "h": 0}
 
 
 def _normalize_bbox(x: int, y: int, w: int, h: int,
@@ -168,10 +169,13 @@ def _looks_like_card(crop: np.ndarray) -> bool:
     if crop is None or crop.size == 0:
         return False
     gray = cv2.cvtColor(crop, cv2.COLOR_BGR2GRAY) if crop.ndim == 3 else crop
-    return float(np.mean(gray > 180)) > CARD_WHITE_FRACTION
+    try:
+        return float(np.mean(gray > 180)) > CARD_WHITE_FRACTION
+    except (ValueError, TypeError):
+        return False
 
 
-def snap_to_card(crop: np.ndarray) -> Optional[tuple[int, int, int, int]]:
+def snap_to_card(crop: np.ndarray) -> tuple[int, int, int, int] | None:
     """Find the card's white body inside a loose ROI crop.
 
     Slot ROIs are calibrated once but card positions drift between frames
@@ -189,8 +193,11 @@ def snap_to_card(crop: np.ndarray) -> Optional[tuple[int, int, int, int]]:
         return None
     # Largest white component (skip background label 0).
     areas = stats[1:, cv2.CC_STAT_AREA]
-    i = 1 + int(np.argmax(areas))
-    x, y, w, h, area = (int(v) for v in stats[i])
+    try:
+        i = 1 + int(np.argmax(areas))
+        x, y, w, h, area = (int(v) for v in stats[i])
+    except (ValueError, TypeError, IndexError):
+        return None
     if area < 0.3 * crop.shape[0] * crop.shape[1]:
         return None
     # Re-expand a few px: the white-body snap can clip the colored card edge
@@ -217,7 +224,7 @@ def _setup_tesseract() -> bool:
 
         pytesseract.pytesseract.tesseract_cmd = find_tesseract_binary()
         return True
-    except Exception as exc:
+    except (ImportError, OSError, RuntimeError, AttributeError) as exc:
         print(f"[data] Tesseract unavailable, OCR-rank disabled ({exc}). "
               f"Falling back to template matching only.")
         return False
@@ -284,7 +291,7 @@ class CardGuesser:
               "(proposals will be unreliable until real ones are captured).")
         return generate_card_templates(), {}, {}
 
-    def guess(self, crop: np.ndarray) -> tuple[Optional[str], float, str]:
+    def guess(self, crop: np.ndarray) -> tuple[str | None, float, str]:
         """Return (card, confidence, source). source: 'hybrid', 'template' or ''.
 
         Hard guard: a real card ALWAYS has ink (red or black rank/suit glyphs).
@@ -315,7 +322,7 @@ class CardGuesser:
         # Template: full-card match gated by ink color (rank + pip layout).
         template = None
         card, conf = match_card_with_confidence(crop, self.templates)
-        if card and card[1] in SUITS_BY_COLOR[color]:
+        if color and card and card[1] in SUITS_BY_COLOR[color]:
             template = (card, conf)
 
         if primary and template:
@@ -330,14 +337,14 @@ class CardGuesser:
 # Capture / labeling
 # ---------------------------------------------------------------------------
 
-def capture_frame(window_title: Optional[str] = None) -> tuple[Optional[np.ndarray], str]:
+def capture_frame(window_title: str | None = None) -> tuple[np.ndarray | None, str]:
     """Grab the poker table window and return (BGR frame, timestamp string).
 
     Returns (None, ts) when the window is not found: screenshot() silently
     falls back to a full-screen grab, which would label whatever happens to
     be on screen (web pages included) as cards. Never collect that.
     """
-    ts = datetime.now().strftime("%Y%m%d_%H%M%S_%f")[:-3]
+    ts = datetime.now().astimezone().strftime("%Y%m%d_%H%M%S_%f")[:-3]
     if window_title and platform.system() == "Darwin":
         from capture import _find_window_rect_mac
 
@@ -399,7 +406,7 @@ def label_frame(
 
         cx, cy, nw, nh = _normalize_bbox(px["x"], px["y"], px["w"], px["h"],
                                          frame_w, frame_h)
-        card, conf, source = guesser.guess(crop)
+        card, conf, _ = guesser.guess(crop)
 
         if card and conf >= threshold:
             class_id = card_to_class_id(card)
@@ -437,7 +444,7 @@ def collect(
     interval: float,
     config_path: str = str(DEFAULT_CONFIG),
     threshold: float = DEFAULT_CONFIDENCE_THRESHOLD,
-    window_title: Optional[str] = None,
+    window_title: str | None = None,
 ) -> dict:
     """Capture N frames at `interval` seconds and write assisted YOLO labels."""
     out_dir = Path(output_dir)
