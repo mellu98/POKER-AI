@@ -1,0 +1,6 @@
+streamlit>=1.32
+treys>=0.1.8
+pydantic>=2.6
+# YOLO + camera (для M3-M4)
+opencv-python>=4.9
+ultralytics>=8.1

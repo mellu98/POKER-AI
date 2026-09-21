@@ -1,0 +1,118 @@
+{
+  "_metadata": {
+    "description": "Recommended bet sizing by situation and board texture",
+    "source": "GTO equilibrium approximation",
+    "version": "1.0.0"
+  },
+  "flop": {
+    "dry_rainbow": {
+      "value_sizing": 0.33,
+      "bluff_sizing": 0.33,
+      "notes": "Small sizing on dry boards to bet wider range"
+    },
+    "dry_twotone": {
+      "value_sizing": 0.50,
+      "bluff_sizing": 0.50,
+      "notes": "Medium sizing with flush draw possible"
+    },
+    "connected_rainbow": {
+      "value_sizing": 0.66,
+      "bluff_sizing": 0.50,
+      "notes": "Larger sizing for protection"
+    },
+    "connected_twotone": {
+      "value_sizing": 0.75,
+      "bluff_sizing": 0.66,
+      "notes": "Large sizing on wet boards"
+    },
+    "monotone": {
+      "value_sizing": 0.50,
+      "bluff_sizing": 0.33,
+      "notes": "Polarized sizing on scary boards"
+    },
+    "paired": {
+      "value_sizing": 0.50,
+      "bluff_sizing": 0.33,
+      "notes": "Medium sizing, caution with trips possible"
+    }
+  },
+  "turn": {
+    "blank": {
+      "value_sizing": 0.66,
+      "bluff_sizing": 0.50,
+      "notes": "Continue with standard sizing"
+    },
+    "completing_flush": {
+      "value_sizing": 0.75,
+      "bluff_sizing": 0.66,
+      "notes": "Polarize when flush completes"
+    },
+    "completing_straight": {
+      "value_sizing": 0.66,
+      "bluff_sizing": 0.50,
+      "notes": "Careful sizing when straight possible"
+    },
+    "board_pairs": {
+      "value_sizing": 0.50,
+      "bluff_sizing": 0.33,
+      "notes": "Smaller sizing with trips possible"
+    },
+    "overcard": {
+      "value_sizing": 0.50,
+      "bluff_sizing": 0.50,
+      "notes": "Medium sizing, evaluate new dynamics"
+    }
+  },
+  "river": {
+    "brick": {
+      "value_sizing": 0.75,
+      "bluff_sizing": 0.75,
+      "notes": "Polarized sizing on rivers"
+    },
+    "scare_card": {
+      "value_sizing": 0.50,
+      "bluff_sizing": 1.0,
+      "notes": "Overbet bluffs on scare cards"
+    },
+    "missed_draws": {
+      "value_sizing": 0.66,
+      "bluff_sizing": 0.75,
+      "notes": "Target missed draws with bluffs"
+    },
+    "nuts_possible": {
+      "value_sizing": 1.25,
+      "bluff_sizing": 0.33,
+      "notes": "Overbet for value, small bluffs"
+    }
+  },
+  "multiway": {
+    "three_way": {
+      "value_sizing": 0.50,
+      "bluff_sizing": 0.25,
+      "notes": "Smaller sizing in multiway pots"
+    },
+    "four_plus": {
+      "value_sizing": 0.33,
+      "bluff_sizing": 0.0,
+      "notes": "Only bet for thin value, no bluffs"
+    }
+  },
+  "spr_adjustments": {
+    "deep_spr_10_plus": {
+      "adjustment": 0.9,
+      "notes": "Slightly smaller sizing with deep stacks"
+    },
+    "medium_spr_4_10": {
+      "adjustment": 1.0,
+      "notes": "Standard sizing"
+    },
+    "short_spr_2_4": {
+      "adjustment": 1.1,
+      "notes": "Slightly larger sizing with shorter stacks"
+    },
+    "committed_spr_under_2": {
+      "adjustment": "all_in",
+      "notes": "Consider all-in when committed"
+    }
+  }
+}

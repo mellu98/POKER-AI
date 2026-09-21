@@ -1,0 +1,93 @@
+﻿python : INFO - 
+Running test: test_an
+chor_manager_init
+At line:1 char:1
++ python 
+test_full_system.py 
+> 
+test_full_output.txt 
+2>&1
++ ~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~
+    + CategoryInfo   
+           : NotSpe  
+  cified: (INFO -    
+ Running ...or_ma    
+nager_init:Strin    
+g) [], RemoteExc    
+eption
+    + FullyQualified 
+   ErrorId : Native  
+  CommandError
+ 
+INFO:poker_ai:Running
+ test: test_anchor_ma
+nager_init
+.INFO - Running 
+test: 
+test_config_loading
+INFO:poker_ai:Running
+ test: 
+test_config_loading
+.INFO - Running 
+test: test_imports
+INFO:poker_ai:Running
+ test: test_imports
+.INFO - Running 
+test: test_strategy_e
+ngine_init
+INFO:poker_ai:Running
+ test: test_strategy_
+engine_init
+.INFO - Running 
+test: test_window_fin
+der_mock
+INFO:poker_ai:Running
+ test: test_window_fi
+nder_mock
+E
+=====================
+=====================
+=====================
+=======
+ERROR: test_window_fi
+nder_mock (__main__.T
+estFullSystem.test_wi
+ndow_finder_mock)
+Test WindowFinder 
+with mocked win32gui.
+---------------------
+---------------------
+---------------------
+-------
+Traceback (most 
+recent call last):
+  File "C:\miniconda3
+\Lib\unittest\mock.py
+", line 1426, in 
+patched
+    return 
+func(*newargs, 
+**newkeywargs)
+  File "D:\AI-Worksta
+tion\Antigravity\apps
+\poker_assistant\proj
+ect\test_full_system.
+py", line 72, in test
+_window_finder_mock
+    rect = wf.find_wi
+ndow("Test")
+TypeError: WindowFind
+er.find_window() 
+takes 1 positional 
+argument but 2 were 
+given
+
+---------------------
+---------------------
+---------------------
+-------
+Ran 5 tests in 0.126s
+
+FAILED (errors=1)

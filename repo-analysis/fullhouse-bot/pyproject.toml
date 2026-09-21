@@ -1,0 +1,20 @@
+[tool.ruff]
+target-version = "py310"
+extend-exclude = [
+  "engine_vendored",
+  "bots/adversarial",
+  "bots/competitors",
+  "bots/extra",
+  "bots/strong",
+  "checkpoints",
+  "sims",
+  "data",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"bot/bot.py" = ["E402"]
+"scripts/*.py" = ["E402"]
+"tests/*.py" = ["E402"]
+"tooling/harness/benchmarks.py" = ["E402"]
+"tooling/harness/diagnostics.py" = ["E402"]
+"tooling/harness/engine.py" = ["E402"]

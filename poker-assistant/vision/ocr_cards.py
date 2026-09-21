@@ -241,6 +241,133 @@ def recognize_card_hybrid(
     return card
 
 
+def detect_suit_color(roi: np.ndarray) -> Optional[str]:
+    """Classify a card crop as 'red' or 'black' from pixel colors.
+
+    Goldbet renders hearts/diamonds in saturated red and spades/clubs in dark
+    gray-black on a white card, so color is a far more reliable signal than
+    template matching the tiny suit glyph (which confuses black suits with
+    hearts when templates come from a different card style).
+
+    Returns 'red', 'black', or None if the evidence is too weak.
+    """
+    if roi is None or roi.size == 0:
+        return None
+    bgr = roi if roi.ndim == 3 else cv2.cvtColor(roi, cv2.COLOR_GRAY2BGR)
+    b, g, r = bgr[:, :, 0].astype(int), bgr[:, :, 1].astype(int), bgr[:, :, 2].astype(int)
+    # Saturated red: R clearly dominant over G and B.
+    red_px = int(np.sum((r > 130) & (r - g > 60) & (r - b > 60)))
+    # Near-black ink: all channels dark.
+    black_px = int(np.sum((r < 80) & (g < 80) & (b < 80)))
+    if red_px < 20 and black_px < 20:
+        return None
+    return "red" if red_px > black_px * 0.5 else "black"
+
+
+# Suit letters grouped by ink color, used to constrain template matching.
+SUITS_BY_COLOR = {"red": ("h", "d"), "black": ("s", "c")}
+
+# Internal rank alphabet ('T' = 10).
+OUR_RANKS = "23456789TJQKA"
+
+
+def ocr_rank(gray: np.ndarray) -> Optional[str]:
+    """OCR the rank glyph in the card's top-left corner.
+
+    Handles '10' (two characters) by trying a single-line pass before the
+    single-char one. Returns the internal rank char ('T' for 10) or None.
+    """
+    h, w = gray.shape
+    rank_roi = gray[0 : int(h * 0.30), 0 : int(w * 0.32)]
+    if rank_roi.size == 0:
+        return None
+
+    _, binary = cv2.threshold(rank_roi, 180, 255, cv2.THRESH_BINARY_INV)
+    binary = cv2.resize(binary, None, fx=3, fy=3, interpolation=cv2.INTER_CUBIC)
+    # Tesseract degrades badly on glyphs touching the image edge — pad with
+    # background (binary is inverted: background = 0).
+    binary = cv2.copyMakeBorder(binary, 12, 12, 12, 12,
+                                cv2.BORDER_CONSTANT, value=0)
+
+    try:
+        import pytesseract
+        text = ""
+        for psm in (7, 10):
+            text = pytesseract.image_to_string(
+                binary,
+                config=f"--psm {psm} -c tessedit_char_whitelist=AKQJT9876543210",
+            ).strip()
+            if text:
+                break
+    except Exception:
+        text = ""
+
+    if not text:
+        return None
+    if text.startswith("10"):
+        return "T"
+    rank = text[0].upper()
+    if rank == "1":
+        return "T"  # Tesseract a volte legge solo '1' da '10'
+    if rank == "0":
+        return None
+    return rank if rank in OUR_RANKS else None
+
+
+def corner_glyph_contour(crop: np.ndarray) -> Optional[np.ndarray]:
+    """Contour of the suit glyph under the rank (top-left corner of the card).
+
+    The glyph is the largest ink blob in the region below the rank. Returns
+    an OpenCV contour suitable for cv2.matchShapes, or None.
+    """
+    if crop is None or crop.size == 0:
+        return None
+    gray = cv2.cvtColor(crop, cv2.COLOR_BGR2GRAY) if crop.ndim == 3 else crop
+    h, w = gray.shape
+    region = gray[int(h * 0.26) : int(h * 0.55), int(w * 0.02) : int(w * 0.34)]
+    if region.size == 0:
+        return None
+    mask = (region < 150).astype(np.uint8)  # ink: dark OR red (red gray ~80)
+    n, lab, stats, _ = cv2.connectedComponentsWithStats(mask)
+    if n < 2:
+        return None
+    i = 1 + int(np.argmax(stats[1:, cv2.CC_STAT_AREA]))
+    if stats[i, cv2.CC_STAT_AREA] < 15:
+        return None
+    comp = (lab == i).astype(np.uint8)
+    cnts, _ = cv2.findContours(comp, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    return max(cnts, key=cv2.contourArea) if cnts else None
+
+
+def classify_suit_by_shape(
+    crop: np.ndarray,
+    ref_contours: Dict[str, List[np.ndarray]],
+) -> tuple[Optional[str], float]:
+    """Classify the suit via color constraint + matchShapes on the corner glyph.
+
+    Color splits the suits into {h, d} and {s, c}; within the group the glyph
+    shape is compared with cv2.matchShapes against reference contours extracted
+    from real card templates. Returns (suit, confidence) where confidence is
+    1 - min(best_matchShapes_score, 1) — observed correct matches score < 0.12,
+    wrong-group contamination is impossible by construction.
+    """
+    color = detect_suit_color(crop)
+    if color is None:
+        return None, 0.0
+    sig = corner_glyph_contour(crop)
+    if sig is None:
+        return None, 0.0
+    best_suit, best_score = None, float("inf")
+    for suit in SUITS_BY_COLOR[color]:
+        for ref in ref_contours.get(suit, []):
+            score = cv2.matchShapes(sig, ref, cv2.CONTOURS_MATCH_I1, 0)
+            if score < best_score:
+                best_score, best_suit = score, suit
+    if best_suit is None:
+        return None, 0.0
+    return best_suit, 1.0 - min(best_score, 1.0)
+
+
 def recognize_card_hybrid_with_confidence(
     roi: np.ndarray,
     suit_templates: Dict[str, List[np.ndarray]],
@@ -259,35 +386,23 @@ def recognize_card_hybrid_with_confidence(
     h, w = gray.shape
 
     # ---- 1. Rank con OCR ----
-    rank_roi = gray[0 : int(h * 0.25), 0 : int(w * 0.25)]
-    if rank_roi.size == 0:
-        return None, 0.0
-
-    # Preprocess per OCR: binarizza e ingrandisci
-    _, binary = cv2.threshold(rank_roi, 180, 255, cv2.THRESH_BINARY_INV)
-    binary = cv2.resize(binary, None, fx=3, fy=3, interpolation=cv2.INTER_CUBIC)
-
-    try:
-        import pytesseract
-        text = pytesseract.image_to_string(
-            binary,
-            config="--psm 10 -c tessedit_char_whitelist=AKQJT98765432",
-        ).strip()
-    except Exception:
-        text = ""
-
-    rank = text[0].upper() if text else None
-    if rank and rank == "1":
-        rank = "T"  # Tesseract a volte legge '1' come 'T' (10)
+    rank = ocr_rank(gray)
 
     # ---- 2. Suit con template matching ----
     suit_roi = gray[int(h * 0.18) : int(h * 0.48), 0 : int(w * 0.25)]
     if suit_roi.size == 0:
         return None, 0.0
 
+    # Constrain candidate suits by ink color (red vs black): the glyph
+    # templates alone confuse black suits with red ones across card styles.
+    color = detect_suit_color(roi)
+    allowed_suits = SUITS_BY_COLOR.get(color) if color else None
+
     best_suit = None
     best_suit_score = -1.0
     for suit, tmpl_list in suit_templates.items():
+        if allowed_suits and suit not in allowed_suits:
+            continue
         if not isinstance(tmpl_list, list):
             tmpl_list = [tmpl_list]
         for tmpl in tmpl_list:

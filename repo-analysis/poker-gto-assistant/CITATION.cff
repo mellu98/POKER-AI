@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "poker-gto-assistant"
+abstract: >-
+  Game Theory Optimal advisor for home Texas Hold'em games. Streamlit
+  Python engine plus two standalone browser-based front-ends. Monte
+  Carlo equity, preflop RFI charts, and a TexasSolver wrapper for
+  postflop GTO calculations.
+authors:
+  - family-names: "Gorbuk"
+    given-names: "Max"
+    alias: "mkzung"
+license: MIT
+repository-code: "https://github.com/mkzung/poker-gto-assistant"
+keywords:
+  - "poker"
+  - "texas-hold-em"
+  - "gto"
+  - "game-theory-optimal"
+  - "monte-carlo"
+  - "streamlit"

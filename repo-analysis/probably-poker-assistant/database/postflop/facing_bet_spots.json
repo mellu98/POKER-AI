@@ -1,0 +1,164 @@
+{
+  "_metadata": {
+    "description": "Frequencies for facing bets by bet size and hand strength",
+    "source": "GTO equilibrium approximation",
+    "version": "1.0.0",
+    "notes": "Frequencies assume we are in position"
+  },
+  "small_bet": {
+    "_description": "Facing 25-40% pot bet",
+    "monster": {
+      "fold": 0,
+      "call": 30,
+      "raise": 70,
+      "reasoning": "Raise for value against weak range"
+    },
+    "strong": {
+      "fold": 0,
+      "call": 60,
+      "raise": 40,
+      "reasoning": "Mix calls and raises for balance"
+    },
+    "medium": {
+      "fold": 10,
+      "call": 80,
+      "raise": 10,
+      "reasoning": "Mostly call with position advantage"
+    },
+    "weak": {
+      "fold": 40,
+      "call": 55,
+      "raise": 5,
+      "reasoning": "Defend wider vs small bets"
+    },
+    "draw": {
+      "fold": 5,
+      "call": 70,
+      "raise": 25,
+      "reasoning": "Good pot odds for draws"
+    },
+    "air": {
+      "fold": 70,
+      "call": 20,
+      "raise": 10,
+      "reasoning": "Occasional float with position"
+    }
+  },
+  "medium_bet": {
+    "_description": "Facing 50-66% pot bet",
+    "monster": {
+      "fold": 0,
+      "call": 25,
+      "raise": 75,
+      "reasoning": "Build pot with strong hands"
+    },
+    "strong": {
+      "fold": 0,
+      "call": 70,
+      "raise": 30,
+      "reasoning": "Balanced calling and raising"
+    },
+    "medium": {
+      "fold": 25,
+      "call": 65,
+      "raise": 10,
+      "reasoning": "Call with good odds and position"
+    },
+    "weak": {
+      "fold": 55,
+      "call": 40,
+      "raise": 5,
+      "reasoning": "Defend selectively"
+    },
+    "draw": {
+      "fold": 15,
+      "call": 55,
+      "raise": 30,
+      "reasoning": "Call draws, raise strong draws"
+    },
+    "air": {
+      "fold": 80,
+      "call": 12,
+      "raise": 8,
+      "reasoning": "Limited floating opportunities"
+    }
+  },
+  "large_bet": {
+    "_description": "Facing 75-100% pot bet",
+    "monster": {
+      "fold": 0,
+      "call": 15,
+      "raise": 85,
+      "reasoning": "Maximize value with re-raises"
+    },
+    "strong": {
+      "fold": 5,
+      "call": 75,
+      "raise": 20,
+      "reasoning": "Mostly flat, occasional raise"
+    },
+    "medium": {
+      "fold": 45,
+      "call": 50,
+      "raise": 5,
+      "reasoning": "Need good equity to continue"
+    },
+    "weak": {
+      "fold": 75,
+      "call": 22,
+      "raise": 3,
+      "reasoning": "Tight defense vs large bets"
+    },
+    "draw": {
+      "fold": 30,
+      "call": 45,
+      "raise": 25,
+      "reasoning": "Need strong draws to continue"
+    },
+    "air": {
+      "fold": 90,
+      "call": 5,
+      "raise": 5,
+      "reasoning": "Rarely bluff-raise without equity"
+    }
+  },
+  "overbet": {
+    "_description": "Facing 125%+ pot bet",
+    "monster": {
+      "fold": 0,
+      "call": 10,
+      "raise": 90,
+      "reasoning": "Get it in with the nuts"
+    },
+    "strong": {
+      "fold": 15,
+      "call": 70,
+      "raise": 15,
+      "reasoning": "Carefully evaluate vs overbet range"
+    },
+    "medium": {
+      "fold": 70,
+      "call": 25,
+      "raise": 5,
+      "reasoning": "Fold most of range vs overbets"
+    },
+    "weak": {
+      "fold": 90,
+      "call": 8,
+      "raise": 2,
+      "reasoning": "Only continue with specific blockers"
+    },
+    "draw": {
+      "fold": 60,
+      "call": 30,
+      "raise": 10,
+      "reasoning": "Need strong draws with implied odds"
+    },
+    "air": {
+      "fold": 95,
+      "call": 2,
+      "raise": 3,
+      "reasoning": "Rarely continue without showdown value"
+    }
+  }
+}

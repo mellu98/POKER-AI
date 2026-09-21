@@ -1,0 +1,7 @@
+__pycache__/
+*.jpg
+*.png
+api.txt
+ruff_out.json
+.ruff_cache/
+blackjack_assistant.py

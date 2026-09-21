@@ -1,0 +1,58 @@
+# Virtual environment
+venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Models and data
+models/card_detector/*.pt
+models/card_detector/*.pth
+models/card_templates/*.png
+screenshots/*
+!screenshots/.gitkeep
+!screenshots/test_hands/.gitkeep
+!screenshots/calibration/.gitkeep
+logs/*
+!logs/.gitkeep
+
+# Config with personal data
+config/regions.json
+config/anchor_config.json
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary and Debug files
+*.tmp
+*.log
+*.csv
+debug_*
+debug_output.txt
+models/test_anchors/
+
+# Session logs (may contain sensitive game data)
+database/learning/
+!database/learning/.gitkeep
+
+# Test artifacts
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Panel state (user-specific)
+config/panel_state.json
+
+# Windows artifacts
+nul

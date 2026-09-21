@@ -1,0 +1,6 @@
+CRASH: 'width'
+Traceback (most recent call last):
+  File "D:\AI-Workstation\Antigravity\apps\poker_assistant\project\src\ui\calibration_tool.py", line 468, in <module>
+    "width": regions["window"]["width"],
+             ~~~~~~~~~~~~~~~~~^^^^^^^^^
+KeyError: 'width'

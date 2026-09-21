@@ -1,0 +1,148 @@
+[
+  {
+    "name": "free_check_masks_illegal_fold",
+    "strategy": [1.0, 0.0, 0.0, 0.0, 0.0],
+    "sample": 0.0,
+    "expected_action": {"action": "check"},
+    "expected_legal_mask": [0, 1, 0, 0, 0],
+    "state": {
+      "your_cards": ["Ah", "Kd"],
+      "community_cards": ["Ts", "7h", "2d"],
+      "pot": 150,
+      "your_stack": 100,
+      "your_bet_this_street": 0,
+      "amount_owed": 0,
+      "min_raise_to": 0,
+      "can_check": true,
+      "seat_to_act": 3,
+      "dealer": 0,
+      "street": "flop",
+      "hand_num": 1,
+      "players": [
+        {"seat": 0, "stack": 10000, "is_folded": false, "bet_this_street": 0},
+        {"seat": 1, "stack": 10000, "is_folded": false, "bet_this_street": 0},
+        {"seat": 2, "stack": 10000, "is_folded": false, "bet_this_street": 0},
+        {"seat": 3, "stack": 100, "is_folded": false, "bet_this_street": 0},
+        {"seat": 4, "stack": 0, "is_folded": true, "bet_this_street": 0},
+        {"seat": 5, "stack": 0, "is_folded": true, "bet_this_street": 0}
+      ]
+    }
+  },
+  {
+    "name": "premium_short_stack_open_shoves",
+    "strategy": [0.0, 1.0, 0.0, 0.0, 0.0],
+    "sample": 0.0,
+    "expected_action": {"action": "all_in"},
+    "state": {
+      "your_cards": ["As", "Ac"],
+      "community_cards": [],
+      "pot": 150,
+      "your_stack": 800,
+      "your_bet_this_street": 0,
+      "amount_owed": 100,
+      "min_raise_to": 200,
+      "can_check": false,
+      "seat_to_act": 3,
+      "dealer": 0,
+      "street": "preflop",
+      "hand_num": 2,
+      "players": [
+        {"seat": 0, "stack": 800, "is_folded": false, "bet_this_street": 0},
+        {"seat": 1, "stack": 10000, "is_folded": false, "bet_this_street": 50},
+        {"seat": 2, "stack": 10000, "is_folded": false, "bet_this_street": 100},
+        {"seat": 3, "stack": 800, "is_folded": false, "bet_this_street": 0},
+        {"seat": 4, "stack": 0, "is_folded": true, "bet_this_street": 0},
+        {"seat": 5, "stack": 0, "is_folded": true, "bet_this_street": 0}
+      ]
+    }
+  },
+  {
+    "name": "weak_short_stack_facing_raise_folds",
+    "strategy": [0.0, 1.0, 0.0, 0.0, 0.0],
+    "sample": 0.0,
+    "expected_action": {"action": "fold"},
+    "state": {
+      "your_cards": ["7h", "2d"],
+      "community_cards": [],
+      "pot": 150,
+      "your_stack": 600,
+      "your_bet_this_street": 0,
+      "amount_owed": 200,
+      "min_raise_to": 300,
+      "can_check": false,
+      "seat_to_act": 3,
+      "dealer": 0,
+      "street": "preflop",
+      "hand_num": 3,
+      "players": [
+        {"seat": 0, "stack": 600, "is_folded": false, "bet_this_street": 0},
+        {"seat": 1, "stack": 10000, "is_folded": false, "bet_this_street": 50},
+        {"seat": 2, "stack": 10000, "is_folded": false, "bet_this_street": 200},
+        {"seat": 3, "stack": 600, "is_folded": false, "bet_this_street": 0},
+        {"seat": 4, "stack": 0, "is_folded": true, "bet_this_street": 0},
+        {"seat": 5, "stack": 0, "is_folded": true, "bet_this_street": 0}
+      ]
+    }
+  },
+  {
+    "name": "pot_raise_respects_min_raise_floor",
+    "strategy": [0.0, 0.0, 0.0, 1.0, 0.0],
+    "sample": 0.0,
+    "expected_action": {"action": "raise", "amount": 200},
+    "expected_legal_mask": [0, 1, 0, 1, 0],
+    "state": {
+      "your_cards": ["Ah", "Kd"],
+      "community_cards": ["Ts", "7h", "2d"],
+      "pot": 150,
+      "your_stack": 9900,
+      "your_bet_this_street": 0,
+      "amount_owed": 0,
+      "min_raise_to": 200,
+      "can_check": true,
+      "seat_to_act": 3,
+      "dealer": 0,
+      "street": "flop",
+      "hand_num": 4,
+      "players": [
+        {"seat": 0, "stack": 10000, "is_folded": false, "bet_this_street": 0},
+        {"seat": 1, "stack": 10000, "is_folded": false, "bet_this_street": 0},
+        {"seat": 2, "stack": 10000, "is_folded": false, "bet_this_street": 0},
+        {"seat": 3, "stack": 9900, "is_folded": false, "bet_this_street": 0},
+        {"seat": 4, "stack": 0, "is_folded": true, "bet_this_street": 0},
+        {"seat": 5, "stack": 0, "is_folded": true, "bet_this_street": 0}
+      ]
+    }
+  },
+  {
+    "name": "illegal_small_raise_mass_falls_back_to_pot_raise",
+    "strategy": [0.0, 0.0, 0.4, 0.6, 0.0],
+    "sample": 0.0,
+    "expected_action": {"action": "raise", "amount": 1400},
+    "expected_legal_mask": [1, 1, 0, 1, 0],
+    "state": {
+      "your_cards": ["Ac", "Kd"],
+      "community_cards": [],
+      "pot": 200,
+      "your_stack": 2000,
+      "your_bet_this_street": 0,
+      "amount_owed": 600,
+      "min_raise_to": 1100,
+      "can_check": false,
+      "seat_to_act": 1,
+      "dealer": 0,
+      "street": "preflop",
+      "hand_num": 5,
+      "current_bet": 600,
+      "action_log": [
+        {"action": "small_blind", "seat": 1, "amount": 50},
+        {"action": "big_blind", "seat": 2, "amount": 100},
+        {"action": "raise", "seat": 0, "amount": 600}
+      ],
+      "players": [
+        {"seat": 0, "stack": 3000, "is_folded": false, "is_all_in": false, "bet_this_street": 600},
+        {"seat": 1, "stack": 2000, "is_folded": false, "is_all_in": false, "bet_this_street": 0},
+        {"seat": 2, "stack": 2500, "is_folded": false, "is_all_in": false, "bet_this_street": 0}
+      ]
+    }
+  }
+]

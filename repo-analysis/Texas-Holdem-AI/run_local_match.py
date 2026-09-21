@@ -1,0 +1,254 @@
+# run_local_match.py — Run a single tournament to completion with CLI control
+
+import argparse
+import random
+import os
+import matplotlib
+matplotlib.use("Agg")  # non-interactive backend for file output
+import matplotlib.pyplot as plt
+
+from core.engine import Table, Seat
+from core.engine_factory import make_table
+from core.table_order import advance_dealer_seat_index, normalize_dealer_seat_index
+from bots import parse_players, escalate_blinds
+
+
+def _advance_dealer(dealer_index: int, active_count: int) -> int:
+    """Advance the dealer button by one in the ACTIVE seat circle.
+
+    Bug fingerprint (now fixed): using % len(seats_total) instead of
+    % active_count produces sequences with duplicate consecutive indices
+    after eliminations (e.g. with 6 seats total but 5 active:
+    [0,1,2,3,4,0,0,1,2,3] — note the double-0 at positions 5 and 6).
+    Correct rotation: [0,1,2,3,4,0,1,2,3,4].
+    """
+    return (dealer_index + 1) % active_count
+
+
+def run_tournament_until_winner(seats, bots, base_sb, base_bb,
+                                blind_increase_every, max_hands,
+                                decision_logger=None):
+    """Run tournament until one player remains. Returns chip history, hand count,
+    elimination order [(player_id, position, hand_eliminated)].
+
+    decision_logger: optional session-scoped DecisionLogger shared by every
+    hand of this tournament (ML training data). The caller owns it and must
+    close it after the tournament ends.
+    """
+    table = make_table()
+    chip_history = [{s.player_id: s.chips for s in seats}]
+    dealer_index = 0
+    hand_count = 0
+    eliminations: list[tuple[str, int, int]] = []  # (pid, position, hand#)
+    total_players = len(seats)
+
+    print("=" * 60)
+    print("TOURNAMENT MODE: Playing until one winner!")
+    print(f"Blinds: {base_sb}/{base_bb}  |  "
+          f"Escalation: every {blind_increase_every} hands (1.5x)"
+          if blind_increase_every > 0 else
+          f"Blinds: {base_sb}/{base_bb}  |  No escalation")
+    print("=" * 60)
+
+    while True:
+        active_players = [s for s in seats if s.chips > 0]
+        if len(active_players) <= 1:
+            if active_players:
+                winner = active_players[0].player_id
+                print(f"\nTOURNAMENT OVER! Winner: {winner}")
+            break
+
+        hand_count += 1
+        sb, bb = escalate_blinds(hand_count, base_sb, base_bb, blind_increase_every)
+
+        active_seats = [s for s in seats if s.chips > 0]
+        active_bots = {s.player_id: bots[s.player_id] for s in active_seats}
+        dealer_index = normalize_dealer_seat_index(seats, dealer_index)
+        if dealer_index is None:
+            break
+
+        table.play_hand(
+            seats=seats,
+            small_blind=sb,
+            big_blind=bb,
+            dealer_index=dealer_index,
+            bot_for=active_bots,
+            on_event=None,
+            logger=decision_logger,
+        )
+
+        next_dealer = advance_dealer_seat_index(seats, dealer_index)
+        if next_dealer is not None:
+            dealer_index = next_dealer
+        chip_history.append({s.player_id: s.chips for s in seats})
+
+        # Check for new eliminations
+        for s in seats:
+            if s.chips <= 0 and not any(e[0] == s.player_id for e in eliminations):
+                pos = total_players - len(eliminations)
+                eliminations.append((s.player_id, pos, hand_count))
+                print(f"  [OUT] {s.player_id} eliminated at hand #{hand_count} (position {pos})")
+
+        # Print stacks every 50 hands or if someone was eliminated this hand
+        if hand_count % 50 == 0:
+            print(f"\n--- Hand #{hand_count} (blinds {sb}/{bb}) ---")
+            for s in seats:
+                if s.chips > 0:
+                    print(f"  {s.player_id}: {s.chips} chips")
+
+        if hand_count >= max_hands:
+            print(f"Safety limit reached ({max_hands} hands). Stopping.")
+            break
+
+    # ── Assign finishing positions to survivors ──────────────────────────────
+    survivors = [s for s in seats
+                 if s.chips > 0 and not any(e[0] == s.player_id for e in eliminations)]
+
+    if len(survivors) == 1:
+        # Sole survivor = outright winner
+        eliminations.append((survivors[0].player_id, 1, hand_count))
+    elif len(survivors) > 1:
+        if not eliminations:
+            # Nobody was eliminated — tournament never really started.
+            # Flag as unfinished rather than fabricating ranks.
+            print(f"\n[WARN] Tournament unfinished: {len(survivors)} players remain "
+                  f"with zero eliminations after {hand_count} hands.")
+            for s in survivors:
+                eliminations.append((s.player_id, 0, hand_count))  # 0 = unranked
+        else:
+            # Multiple survivors with some eliminations: rank by chip count.
+            # Best surviving position = one better than worst elimination.
+            sorted_survivors = sorted(survivors, key=lambda s: s.chips, reverse=True)
+            # Next available position is 1 less than the last assigned position.
+            # (Eliminated players took the worst positions first.)
+            next_pos = len(seats) - len(eliminations)
+            # Sanity: that should equal len(survivors)
+            for rank_idx, s in enumerate(sorted_survivors):
+                pos = rank_idx + 1  # 1 = chip leader among survivors
+                # But true tournament position accounts for eliminated players:
+                pos = next_pos - len(sorted_survivors) + 1 + rank_idx
+                eliminations.append((s.player_id, pos, hand_count))
+            print(f"\n[WARN] Tournament cut short at {hand_count} hands. "
+                  f"{len(sorted_survivors)} survivors ranked by chip count.")
+
+    return chip_history, hand_count, eliminations
+
+
+def plot_tournament_progress(chip_history, player_ids, bot_types, output_path):
+    """Create and save a chip-stack visualization."""
+    if not chip_history:
+        print("No data to plot.")
+        return
+
+    hands = list(range(len(chip_history)))
+    plt.figure(figsize=(12, 6))
+
+    for pid in player_ids:
+        btype = bot_types.get(pid, "")
+        chips_over_time = [state.get(pid, 0) for state in chip_history]
+        plt.plot(hands, chips_over_time, label=f"{pid} ({btype})",
+                 linewidth=2, markersize=4)
+
+    plt.xlabel("Hand Number", fontsize=12)
+    plt.ylabel("Chip Stack", fontsize=12)
+    plt.title("Tournament Progress: Chip Stacks Over Time",
+              fontsize=14, fontweight="bold")
+    plt.legend(loc="best")
+    plt.grid(True, alpha=0.3)
+    plt.tight_layout()
+
+    os.makedirs(os.path.dirname(output_path) or ".", exist_ok=True)
+    plt.savefig(output_path, dpi=150, bbox_inches="tight")
+    print(f"\nChart saved as '{output_path}'")
+    plt.close()
+
+
+def print_summary_table(seats, bot_types, eliminations, total_hands):
+    """Print a formatted summary table."""
+    elim_map = {pid: (pos, hand) for pid, pos, hand in eliminations}
+
+    print("\n" + "=" * 70)
+    print("FINAL RESULTS")
+    print("=" * 70)
+    print(f"Total hands played: {total_hands}\n")
+    print(f"{'Player':<10} {'Bot Type':<15} {'Final Chips':>12} {'Position':>10} {'Hands Survived':>16}")
+    print("-" * 70)
+
+    # Sort by finish position
+    rows = []
+    for s in seats:
+        pos, hand_elim = elim_map.get(s.player_id, (0, total_hands))
+        rows.append((s.player_id, bot_types.get(s.player_id, "?"),
+                      s.chips, pos, hand_elim))
+    rows.sort(key=lambda r: r[3])
+
+    for pid, btype, chips, pos, survived in rows:
+        pos_str = f"#{pos}" if pos else "?"
+        print(f"{pid:<10} {btype:<15} {chips:>12} {pos_str:>10} {survived:>16}")
+    print("=" * 70)
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Run a single Texas Hold'em tournament to completion")
+    parser.add_argument("--players", type=str,
+                        default="mc200,smart,mc100,smart,gto,icm",
+                        help="Comma-separated bot types (default: mc200,smart,mc100,smart,gto,icm)")
+    parser.add_argument("--chips", type=int, default=500,
+                        help="Starting chips per player")
+    parser.add_argument("--sb", type=int, default=1,
+                        help="Initial small blind (default: 1)")
+    parser.add_argument("--bb", type=int, default=2,
+                        help="Initial big blind (default: 2)")
+    parser.add_argument("--blind-increase", type=int, default=50,
+                        help="Escalate blinds every N hands, 0 to disable (default: 50)")
+    parser.add_argument("--max-hands", type=int, default=5000,
+                        help="Safety hand limit (default: 5000)")
+    parser.add_argument("--output", type=str, default="output/tournament_progress.png",
+                        help="Path for the output chart (default: output/tournament_progress.png)")
+    parser.add_argument("--log-session", action="store_true",
+                        help="Write one session-scoped decision log for the "
+                             "whole tournament (one .jsonl file per tournament)")
+    parser.add_argument("--log-dir", type=str, default="logs",
+                        help="Directory for --log-session output (default: logs)")
+    args = parser.parse_args()
+
+    from bots import parse_players, create_bot, escalate_blinds
+
+    player_specs = parse_players(args.players)
+    player_ids = [pid for pid, _, _ in player_specs]
+    bot_types = {pid: btype for pid, btype, _ in player_specs}
+
+    seats = [Seat(player_id=pid, chips=args.chips) for pid, _, _ in player_specs]
+    bots = {pid: create_bot(btype) for pid, btype, _ in player_specs}
+
+    # One session-scoped decision log per tournament. The header row marks
+    # the file as a full session for downstream replay tools.
+    decision_logger = None
+    if args.log_session:
+        from core.logger import DecisionLogger
+        decision_logger = DecisionLogger(
+            enabled=True, directory=args.log_dir, session_scoped=True
+        )
+        print(f"Logging ML decisions to: {decision_logger.path}")
+
+    try:
+        chip_history, total_hands, eliminations = run_tournament_until_winner(
+            seats=seats,
+            bots=bots,
+            base_sb=args.sb,
+            base_bb=args.bb,
+            blind_increase_every=args.blind_increase,
+            max_hands=args.max_hands,
+            decision_logger=decision_logger,
+        )
+    finally:
+        if decision_logger is not None:
+            decision_logger.close()
+
+    print_summary_table(seats, bot_types, eliminations, total_hands)
+    plot_tournament_progress(chip_history, player_ids, bot_types, args.output)
+
+
+if __name__ == "__main__":
+    main()

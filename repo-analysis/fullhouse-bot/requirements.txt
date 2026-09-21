@@ -1,0 +1,13 @@
+# Local dev/training dependencies.
+# The competition sandbox (engine_vendored/sandbox/Dockerfile) runs
+# python:3.10-slim with eval7==0.1.7. We use 0.1.10 because 0.1.7
+# fails to build on cpython 3.11+ (removed longintrepr.h). Same API.
+eval7==0.1.10
+numba
+numpy
+scipy
+treys
+scikit-learn
+pytest
+ruff
+matplotlib

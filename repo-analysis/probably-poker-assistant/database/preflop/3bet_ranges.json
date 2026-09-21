@@ -1,0 +1,5153 @@
+{
+  "_metadata": {
+    "description": "3-bet and call ranges vs opens",
+    "format": "POSITION_vs_RAISER: {3bet: {...}, call: {...}}",
+    "sizing": "3x open + 1BB per caller",
+    "version": "2.0.0"
+  },
+  "MP_vs_UTG": {
+    "3bet": {
+      "AA": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AKs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.9
+      },
+      "AKo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.9
+      },
+      "AQs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.9
+      },
+      "AQo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.9
+      },
+      "AJs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.9
+      },
+      "AJo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.9
+      },
+      "ATs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.9
+      },
+      "ATo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.81
+      },
+      "A9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.74
+      },
+      "A8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.66
+      },
+      "KK": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.9
+      },
+      "KQs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.9
+      },
+      "KQo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.9
+      },
+      "KJs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.9
+      },
+      "KJo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.89
+      },
+      "KTs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.9
+      },
+      "KTo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.76
+      },
+      "K9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.7
+      },
+      "QQ": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.8
+      },
+      "QJs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.9
+      },
+      "QJo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.84
+      },
+      "QTs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.88
+      },
+      "QTo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.72
+      },
+      "Q9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.66
+      },
+      "JJ": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.7
+      },
+      "JTs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.84
+      },
+      "JTo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.68
+      },
+      "J9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.61
+      },
+      "TT": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.6
+      }
+    },
+    "call": {
+      "A9o": {
+        "frequency": 0.78
+      },
+      "A8o": {
+        "frequency": 0.7
+      },
+      "A7s": {
+        "frequency": 0.78
+      },
+      "A7o": {
+        "frequency": 0.62
+      },
+      "A6s": {
+        "frequency": 0.69
+      },
+      "A6o": {
+        "frequency": 0.53
+      },
+      "A5s": {
+        "frequency": 0.61
+      },
+      "A4s": {
+        "frequency": 0.53
+      },
+      "K9o": {
+        "frequency": 0.74
+      },
+      "K8s": {
+        "frequency": 0.78
+      },
+      "K8o": {
+        "frequency": 0.62
+      },
+      "K7s": {
+        "frequency": 0.69
+      },
+      "K7o": {
+        "frequency": 0.53
+      },
+      "K6s": {
+        "frequency": 0.61
+      },
+      "K5s": {
+        "frequency": 0.53
+      },
+      "Q9o": {
+        "frequency": 0.7
+      },
+      "Q8s": {
+        "frequency": 0.73
+      },
+      "Q8o": {
+        "frequency": 0.57
+      },
+      "Q7s": {
+        "frequency": 0.61
+      },
+      "Q6s": {
+        "frequency": 0.53
+      },
+      "J9o": {
+        "frequency": 0.65
+      },
+      "J8s": {
+        "frequency": 0.69
+      },
+      "J8o": {
+        "frequency": 0.53
+      },
+      "J7s": {
+        "frequency": 0.57
+      },
+      "T9s": {
+        "frequency": 0.77
+      },
+      "T9o": {
+        "frequency": 0.61
+      },
+      "T8s": {
+        "frequency": 0.65
+      },
+      "T7s": {
+        "frequency": 0.52
+      },
+      "99": {
+        "frequency": 0.7
+      },
+      "98s": {
+        "frequency": 0.6
+      },
+      "88": {
+        "frequency": 0.6
+      }
+    }
+  },
+  "CO_vs_UTG": {
+    "3bet": {
+      "AA": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AKs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AKo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AQs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AQo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AJs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AJo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "ATs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "ATo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.91
+      },
+      "A9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.84
+      },
+      "A9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.68
+      },
+      "A8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.76
+      },
+      "A8o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.6
+      },
+      "A7s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.68
+      },
+      "KK": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KQs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KQo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KJs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KJo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.99
+      },
+      "KTs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KTo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.86
+      },
+      "K9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.8
+      },
+      "K9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.64
+      },
+      "K8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.68
+      },
+      "QQ": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.9
+      },
+      "QJs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "QJo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.94
+      },
+      "QTs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.98
+      },
+      "QTo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.82
+      },
+      "Q9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.76
+      },
+      "Q8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.63
+      },
+      "JJ": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.8
+      },
+      "JTs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.94
+      },
+      "JTo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.78
+      },
+      "J9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.71
+      },
+      "TT": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.7
+      },
+      "T9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.67
+      },
+      "99": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.6
+      }
+    },
+    "call": {
+      "A7o": {
+        "frequency": 0.72
+      },
+      "A6s": {
+        "frequency": 0.79
+      },
+      "A6o": {
+        "frequency": 0.63
+      },
+      "A5s": {
+        "frequency": 0.71
+      },
+      "A5o": {
+        "frequency": 0.55
+      },
+      "A4s": {
+        "frequency": 0.63
+      },
+      "A3s": {
+        "frequency": 0.54
+      },
+      "K8o": {
+        "frequency": 0.72
+      },
+      "K7s": {
+        "frequency": 0.79
+      },
+      "K7o": {
+        "frequency": 0.63
+      },
+      "K6s": {
+        "frequency": 0.71
+      },
+      "K6o": {
+        "frequency": 0.55
+      },
+      "K5s": {
+        "frequency": 0.63
+      },
+      "K4s": {
+        "frequency": 0.54
+      },
+      "Q9o": {
+        "frequency": 0.8
+      },
+      "Q8o": {
+        "frequency": 0.67
+      },
+      "Q7s": {
+        "frequency": 0.71
+      },
+      "Q7o": {
+        "frequency": 0.55
+      },
+      "Q6s": {
+        "frequency": 0.63
+      },
+      "Q5s": {
+        "frequency": 0.54
+      },
+      "J9o": {
+        "frequency": 0.75
+      },
+      "J8s": {
+        "frequency": 0.79
+      },
+      "J8o": {
+        "frequency": 0.63
+      },
+      "J7s": {
+        "frequency": 0.67
+      },
+      "J7o": {
+        "frequency": 0.51
+      },
+      "J6s": {
+        "frequency": 0.54
+      },
+      "T9o": {
+        "frequency": 0.71
+      },
+      "T8s": {
+        "frequency": 0.75
+      },
+      "T8o": {
+        "frequency": 0.59
+      },
+      "T7s": {
+        "frequency": 0.62
+      },
+      "T6s": {
+        "frequency": 0.5
+      },
+      "98s": {
+        "frequency": 0.7
+      },
+      "98o": {
+        "frequency": 0.54
+      },
+      "97s": {
+        "frequency": 0.58
+      },
+      "88": {
+        "frequency": 0.7
+      },
+      "87s": {
+        "frequency": 0.54
+      },
+      "77": {
+        "frequency": 0.6
+      },
+      "66": {
+        "frequency": 0.5
+      }
+    }
+  },
+  "CO_vs_MP": {
+    "3bet": {
+      "AA": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AKs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AKo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AQs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AQo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AJs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AJo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "ATs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "ATo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "A9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.94
+      },
+      "A9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.78
+      },
+      "A8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.86
+      },
+      "A8o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.7
+      },
+      "A7s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.78
+      },
+      "A7o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.62
+      },
+      "A6s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.69
+      },
+      "A5s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.61
+      },
+      "KK": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KQs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KQo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KJs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KJo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KTs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KTo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.96
+      },
+      "K9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.9
+      },
+      "K9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.74
+      },
+      "K8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.78
+      },
+      "K8o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.62
+      },
+      "K7s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.69
+      },
+      "K6s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.61
+      },
+      "QQ": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "QJs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "QJo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "QTs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "QTo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.92
+      },
+      "Q9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.86
+      },
+      "Q9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.7
+      },
+      "Q8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.73
+      },
+      "Q7s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.61
+      },
+      "JJ": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.9
+      },
+      "JTs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "JTo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.88
+      },
+      "J9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.81
+      },
+      "J9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.65
+      },
+      "J8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.69
+      },
+      "TT": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.8
+      },
+      "T9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.77
+      },
+      "T9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.61
+      },
+      "T8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.65
+      },
+      "99": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.7
+      },
+      "98s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.6
+      },
+      "88": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.6
+      }
+    },
+    "call": {
+      "A6o": {
+        "frequency": 0.73
+      },
+      "A5o": {
+        "frequency": 0.65
+      },
+      "A4s": {
+        "frequency": 0.73
+      },
+      "A4o": {
+        "frequency": 0.57
+      },
+      "A3s": {
+        "frequency": 0.64
+      },
+      "A2s": {
+        "frequency": 0.56
+      },
+      "K7o": {
+        "frequency": 0.73
+      },
+      "K6o": {
+        "frequency": 0.65
+      },
+      "K5s": {
+        "frequency": 0.73
+      },
+      "K5o": {
+        "frequency": 0.57
+      },
+      "K4s": {
+        "frequency": 0.64
+      },
+      "K3s": {
+        "frequency": 0.56
+      },
+      "Q8o": {
+        "frequency": 0.77
+      },
+      "Q7o": {
+        "frequency": 0.65
+      },
+      "Q6s": {
+        "frequency": 0.73
+      },
+      "Q6o": {
+        "frequency": 0.57
+      },
+      "Q5s": {
+        "frequency": 0.64
+      },
+      "Q4s": {
+        "frequency": 0.56
+      },
+      "J8o": {
+        "frequency": 0.73
+      },
+      "J7s": {
+        "frequency": 0.77
+      },
+      "J7o": {
+        "frequency": 0.61
+      },
+      "J6s": {
+        "frequency": 0.64
+      },
+      "J5s": {
+        "frequency": 0.56
+      },
+      "T8o": {
+        "frequency": 0.69
+      },
+      "T7s": {
+        "frequency": 0.72
+      },
+      "T7o": {
+        "frequency": 0.56
+      },
+      "T6s": {
+        "frequency": 0.6
+      },
+      "98o": {
+        "frequency": 0.64
+      },
+      "97s": {
+        "frequency": 0.68
+      },
+      "97o": {
+        "frequency": 0.52
+      },
+      "96s": {
+        "frequency": 0.56
+      },
+      "87s": {
+        "frequency": 0.64
+      },
+      "86s": {
+        "frequency": 0.51
+      },
+      "77": {
+        "frequency": 0.7
+      },
+      "66": {
+        "frequency": 0.6
+      },
+      "55": {
+        "frequency": 0.5
+      }
+    }
+  },
+  "BTN_vs_UTG": {
+    "3bet": {
+      "AA": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AKs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AKo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AQs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AQo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AJs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AJo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "ATs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "ATo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "A9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.94
+      },
+      "A9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.78
+      },
+      "A8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.86
+      },
+      "A8o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.7
+      },
+      "A7s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.78
+      },
+      "A7o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.62
+      },
+      "A6s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.69
+      },
+      "A5s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.61
+      },
+      "KK": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KQs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KQo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KJs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KJo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KTs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KTo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.96
+      },
+      "K9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.9
+      },
+      "K9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.74
+      },
+      "K8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.78
+      },
+      "K8o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.62
+      },
+      "K7s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.69
+      },
+      "K6s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.61
+      },
+      "QQ": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "QJs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "QJo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "QTs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "QTo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.92
+      },
+      "Q9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.86
+      },
+      "Q9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.7
+      },
+      "Q8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.73
+      },
+      "Q7s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.61
+      },
+      "JJ": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.9
+      },
+      "JTs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "JTo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.88
+      },
+      "J9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.81
+      },
+      "J9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.65
+      },
+      "J8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.69
+      },
+      "TT": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.8
+      },
+      "T9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.77
+      },
+      "T9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.61
+      },
+      "T8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.65
+      },
+      "99": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.7
+      },
+      "98s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.6
+      },
+      "88": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.6
+      }
+    },
+    "call": {
+      "A6o": {
+        "frequency": 0.73
+      },
+      "A5o": {
+        "frequency": 0.65
+      },
+      "A4s": {
+        "frequency": 0.73
+      },
+      "A4o": {
+        "frequency": 0.57
+      },
+      "A3s": {
+        "frequency": 0.64
+      },
+      "A2s": {
+        "frequency": 0.56
+      },
+      "K7o": {
+        "frequency": 0.73
+      },
+      "K6o": {
+        "frequency": 0.65
+      },
+      "K5s": {
+        "frequency": 0.73
+      },
+      "K5o": {
+        "frequency": 0.57
+      },
+      "K4s": {
+        "frequency": 0.64
+      },
+      "K3s": {
+        "frequency": 0.56
+      },
+      "Q8o": {
+        "frequency": 0.77
+      },
+      "Q7o": {
+        "frequency": 0.65
+      },
+      "Q6s": {
+        "frequency": 0.73
+      },
+      "Q6o": {
+        "frequency": 0.57
+      },
+      "Q5s": {
+        "frequency": 0.64
+      },
+      "Q4s": {
+        "frequency": 0.56
+      },
+      "J8o": {
+        "frequency": 0.73
+      },
+      "J7s": {
+        "frequency": 0.77
+      },
+      "J7o": {
+        "frequency": 0.61
+      },
+      "J6s": {
+        "frequency": 0.64
+      },
+      "J5s": {
+        "frequency": 0.56
+      },
+      "T8o": {
+        "frequency": 0.69
+      },
+      "T7s": {
+        "frequency": 0.72
+      },
+      "T7o": {
+        "frequency": 0.56
+      },
+      "T6s": {
+        "frequency": 0.6
+      },
+      "98o": {
+        "frequency": 0.64
+      },
+      "97s": {
+        "frequency": 0.68
+      },
+      "97o": {
+        "frequency": 0.52
+      },
+      "96s": {
+        "frequency": 0.56
+      },
+      "87s": {
+        "frequency": 0.64
+      },
+      "86s": {
+        "frequency": 0.51
+      },
+      "77": {
+        "frequency": 0.7
+      },
+      "66": {
+        "frequency": 0.6
+      },
+      "55": {
+        "frequency": 0.5
+      }
+    }
+  },
+  "BTN_vs_MP": {
+    "3bet": {
+      "AA": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AKs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AKo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AQs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AQo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AJs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AJo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "ATs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "ATo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "A9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "A9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.88
+      },
+      "A8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.96
+      },
+      "A8o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.8
+      },
+      "A7s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.88
+      },
+      "A7o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.72
+      },
+      "A6s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.79
+      },
+      "A6o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.63
+      },
+      "A5s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.71
+      },
+      "A4s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.63
+      },
+      "KK": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KQs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KQo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KJs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KJo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KTs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KTo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "K9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "K9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.84
+      },
+      "K8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.88
+      },
+      "K8o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.72
+      },
+      "K7s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.79
+      },
+      "K7o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.63
+      },
+      "K6s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.71
+      },
+      "K5s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.63
+      },
+      "QQ": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "QJs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "QJo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "QTs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "QTo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "Q9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.96
+      },
+      "Q9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.8
+      },
+      "Q8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.83
+      },
+      "Q8o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.67
+      },
+      "Q7s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.71
+      },
+      "Q6s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.63
+      },
+      "JJ": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "JTs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "JTo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.98
+      },
+      "J9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.91
+      },
+      "J9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.75
+      },
+      "J8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.79
+      },
+      "J8o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.63
+      },
+      "J7s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.67
+      },
+      "TT": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.9
+      },
+      "T9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.87
+      },
+      "T9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.71
+      },
+      "T8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.75
+      },
+      "T7s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.62
+      },
+      "99": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.8
+      },
+      "98s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.7
+      },
+      "88": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.7
+      }
+    },
+    "call": {
+      "A5o": {
+        "frequency": 0.75
+      },
+      "A4o": {
+        "frequency": 0.67
+      },
+      "A3s": {
+        "frequency": 0.74
+      },
+      "A3o": {
+        "frequency": 0.58
+      },
+      "A2s": {
+        "frequency": 0.66
+      },
+      "A2o": {
+        "frequency": 0.5
+      },
+      "K6o": {
+        "frequency": 0.75
+      },
+      "K5o": {
+        "frequency": 0.67
+      },
+      "K4s": {
+        "frequency": 0.74
+      },
+      "K4o": {
+        "frequency": 0.58
+      },
+      "K3s": {
+        "frequency": 0.66
+      },
+      "K3o": {
+        "frequency": 0.5
+      },
+      "K2s": {
+        "frequency": 0.58
+      },
+      "Q7o": {
+        "frequency": 0.75
+      },
+      "Q6o": {
+        "frequency": 0.67
+      },
+      "Q5s": {
+        "frequency": 0.74
+      },
+      "Q5o": {
+        "frequency": 0.58
+      },
+      "Q4s": {
+        "frequency": 0.66
+      },
+      "Q4o": {
+        "frequency": 0.5
+      },
+      "Q3s": {
+        "frequency": 0.58
+      },
+      "J7o": {
+        "frequency": 0.71
+      },
+      "J6s": {
+        "frequency": 0.74
+      },
+      "J6o": {
+        "frequency": 0.58
+      },
+      "J5s": {
+        "frequency": 0.66
+      },
+      "J5o": {
+        "frequency": 0.5
+      },
+      "J4s": {
+        "frequency": 0.58
+      },
+      "T8o": {
+        "frequency": 0.79
+      },
+      "T7o": {
+        "frequency": 0.66
+      },
+      "T6s": {
+        "frequency": 0.7
+      },
+      "T6o": {
+        "frequency": 0.54
+      },
+      "T5s": {
+        "frequency": 0.58
+      },
+      "98o": {
+        "frequency": 0.74
+      },
+      "97s": {
+        "frequency": 0.78
+      },
+      "97o": {
+        "frequency": 0.62
+      },
+      "96s": {
+        "frequency": 0.66
+      },
+      "95s": {
+        "frequency": 0.53
+      },
+      "87s": {
+        "frequency": 0.74
+      },
+      "87o": {
+        "frequency": 0.58
+      },
+      "86s": {
+        "frequency": 0.61
+      },
+      "77": {
+        "frequency": 0.8
+      },
+      "76s": {
+        "frequency": 0.57
+      },
+      "66": {
+        "frequency": 0.7
+      },
+      "55": {
+        "frequency": 0.6
+      },
+      "44": {
+        "frequency": 0.5
+      }
+    }
+  },
+  "BTN_vs_CO": {
+    "3bet": {
+      "AA": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AKs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AKo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AQs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AQo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AJs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AJo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "ATs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "ATo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "A9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "A9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.98
+      },
+      "A8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "A8o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.9
+      },
+      "A7s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.98
+      },
+      "A7o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.82
+      },
+      "A6s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.89
+      },
+      "A6o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.73
+      },
+      "A5s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.81
+      },
+      "A5o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.65
+      },
+      "A4s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.73
+      },
+      "A3s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.64
+      },
+      "KK": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KQs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KQo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KJs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KJo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KTs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KTo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "K9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "K9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.94
+      },
+      "K8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.98
+      },
+      "K8o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.82
+      },
+      "K7s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.89
+      },
+      "K7o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.73
+      },
+      "K6s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.81
+      },
+      "K6o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.65
+      },
+      "K5s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.73
+      },
+      "K4s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.64
+      },
+      "QQ": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "QJs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "QJo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "QTs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "QTo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "Q9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "Q9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.9
+      },
+      "Q8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.93
+      },
+      "Q8o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.77
+      },
+      "Q7s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.81
+      },
+      "Q7o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.65
+      },
+      "Q6s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.73
+      },
+      "Q5s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.64
+      },
+      "JJ": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "JTs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "JTo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "J9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "J9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.85
+      },
+      "J8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.89
+      },
+      "J8o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.73
+      },
+      "J7s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.77
+      },
+      "J7o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.61
+      },
+      "J6s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.64
+      },
+      "TT": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "T9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.97
+      },
+      "T9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.81
+      },
+      "T8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.85
+      },
+      "T8o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.69
+      },
+      "T7s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.72
+      },
+      "T6s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.6
+      },
+      "99": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.9
+      },
+      "98s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.8
+      },
+      "98o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.64
+      },
+      "97s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.68
+      },
+      "88": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.8
+      },
+      "87s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.64
+      },
+      "77": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.7
+      },
+      "66": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.6
+      }
+    },
+    "call": {
+      "A4o": {
+        "frequency": 0.77
+      },
+      "A3o": {
+        "frequency": 0.68
+      },
+      "A2s": {
+        "frequency": 0.76
+      },
+      "A2o": {
+        "frequency": 0.6
+      },
+      "K5o": {
+        "frequency": 0.77
+      },
+      "K4o": {
+        "frequency": 0.68
+      },
+      "K3s": {
+        "frequency": 0.76
+      },
+      "K3o": {
+        "frequency": 0.6
+      },
+      "K2s": {
+        "frequency": 0.68
+      },
+      "K2o": {
+        "frequency": 0.52
+      },
+      "Q6o": {
+        "frequency": 0.77
+      },
+      "Q5o": {
+        "frequency": 0.68
+      },
+      "Q4s": {
+        "frequency": 0.76
+      },
+      "Q4o": {
+        "frequency": 0.6
+      },
+      "Q3s": {
+        "frequency": 0.68
+      },
+      "Q3o": {
+        "frequency": 0.52
+      },
+      "Q2s": {
+        "frequency": 0.59
+      },
+      "J6o": {
+        "frequency": 0.68
+      },
+      "J5s": {
+        "frequency": 0.76
+      },
+      "J5o": {
+        "frequency": 0.6
+      },
+      "J4s": {
+        "frequency": 0.68
+      },
+      "J4o": {
+        "frequency": 0.52
+      },
+      "J3s": {
+        "frequency": 0.59
+      },
+      "J2s": {
+        "frequency": 0.51
+      },
+      "T7o": {
+        "frequency": 0.76
+      },
+      "T6o": {
+        "frequency": 0.64
+      },
+      "T5s": {
+        "frequency": 0.68
+      },
+      "T5o": {
+        "frequency": 0.52
+      },
+      "T4s": {
+        "frequency": 0.59
+      },
+      "T3s": {
+        "frequency": 0.51
+      },
+      "97o": {
+        "frequency": 0.72
+      },
+      "96s": {
+        "frequency": 0.76
+      },
+      "96o": {
+        "frequency": 0.6
+      },
+      "95s": {
+        "frequency": 0.63
+      },
+      "94s": {
+        "frequency": 0.51
+      },
+      "87o": {
+        "frequency": 0.68
+      },
+      "86s": {
+        "frequency": 0.71
+      },
+      "86o": {
+        "frequency": 0.55
+      },
+      "85s": {
+        "frequency": 0.59
+      },
+      "76s": {
+        "frequency": 0.67
+      },
+      "76o": {
+        "frequency": 0.51
+      },
+      "75s": {
+        "frequency": 0.55
+      },
+      "65s": {
+        "frequency": 0.5
+      },
+      "55": {
+        "frequency": 0.7
+      },
+      "44": {
+        "frequency": 0.6
+      }
+    }
+  },
+  "SB_vs_UTG": {
+    "3bet": {
+      "AA": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AKs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AKo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AQs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AQo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AJs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AJo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "ATs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "ATo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.91
+      },
+      "A9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.84
+      },
+      "A9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.68
+      },
+      "A8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.76
+      },
+      "A8o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.6
+      },
+      "A7s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.68
+      },
+      "KK": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KQs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KQo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KJs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KJo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.99
+      },
+      "KTs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KTo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.86
+      },
+      "K9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.8
+      },
+      "K9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.64
+      },
+      "K8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.68
+      },
+      "QQ": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.9
+      },
+      "QJs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "QJo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.94
+      },
+      "QTs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.98
+      },
+      "QTo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.82
+      },
+      "Q9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.76
+      },
+      "Q8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.63
+      },
+      "JJ": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.8
+      },
+      "JTs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.94
+      },
+      "JTo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.78
+      },
+      "J9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.71
+      },
+      "TT": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.7
+      },
+      "T9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.67
+      },
+      "99": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.6
+      }
+    },
+    "call": {}
+  },
+  "SB_vs_MP": {
+    "3bet": {
+      "AA": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AKs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AKo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AQs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AQo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AJs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AJo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "ATs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "ATo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "A9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.94
+      },
+      "A9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.78
+      },
+      "A8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.86
+      },
+      "A8o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.7
+      },
+      "A7s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.78
+      },
+      "A7o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.62
+      },
+      "A6s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.69
+      },
+      "A5s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.61
+      },
+      "KK": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KQs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KQo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KJs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KJo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KTs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KTo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.96
+      },
+      "K9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.9
+      },
+      "K9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.74
+      },
+      "K8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.78
+      },
+      "K8o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.62
+      },
+      "K7s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.69
+      },
+      "K6s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.61
+      },
+      "QQ": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "QJs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "QJo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "QTs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "QTo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.92
+      },
+      "Q9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.86
+      },
+      "Q9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.7
+      },
+      "Q8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.73
+      },
+      "Q7s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.61
+      },
+      "JJ": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.9
+      },
+      "JTs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "JTo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.88
+      },
+      "J9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.81
+      },
+      "J9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.65
+      },
+      "J8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.69
+      },
+      "TT": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.8
+      },
+      "T9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.77
+      },
+      "T9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.61
+      },
+      "T8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.65
+      },
+      "99": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.7
+      },
+      "98s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.6
+      },
+      "88": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.6
+      }
+    },
+    "call": {}
+  },
+  "SB_vs_CO": {
+    "3bet": {
+      "AA": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AKs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AKo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AQs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AQo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AJs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AJo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "ATs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "ATo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "A9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "A9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.88
+      },
+      "A8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.96
+      },
+      "A8o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.8
+      },
+      "A7s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.88
+      },
+      "A7o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.72
+      },
+      "A6s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.79
+      },
+      "A6o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.63
+      },
+      "A5s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.71
+      },
+      "A4s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.63
+      },
+      "KK": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KQs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KQo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KJs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KJo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KTs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KTo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "K9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "K9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.84
+      },
+      "K8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.88
+      },
+      "K8o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.72
+      },
+      "K7s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.79
+      },
+      "K7o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.63
+      },
+      "K6s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.71
+      },
+      "K5s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.63
+      },
+      "QQ": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "QJs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "QJo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "QTs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "QTo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "Q9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.96
+      },
+      "Q9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.8
+      },
+      "Q8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.83
+      },
+      "Q8o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.67
+      },
+      "Q7s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.71
+      },
+      "Q6s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.63
+      },
+      "JJ": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "JTs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "JTo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.98
+      },
+      "J9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.91
+      },
+      "J9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.75
+      },
+      "J8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.79
+      },
+      "J8o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.63
+      },
+      "J7s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.67
+      },
+      "TT": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.9
+      },
+      "T9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.87
+      },
+      "T9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.71
+      },
+      "T8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.75
+      },
+      "T7s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.62
+      },
+      "99": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.8
+      },
+      "98s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.7
+      },
+      "88": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.7
+      }
+    },
+    "call": {}
+  },
+  "SB_vs_BTN": {
+    "3bet": {
+      "AA": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AKs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AKo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AQs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AQo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AJs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AJo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "ATs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "ATo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "A9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "A9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "A8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "A8o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "A7s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "A7o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.92
+      },
+      "A6s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.99
+      },
+      "A6o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.83
+      },
+      "A5s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.91
+      },
+      "A5o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.75
+      },
+      "A4s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.83
+      },
+      "A4o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.67
+      },
+      "A3s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.74
+      },
+      "A2s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.66
+      },
+      "KK": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KQs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KQo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KJs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KJo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KTs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KTo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "K9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "K9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "K8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "K8o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.92
+      },
+      "K7s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.99
+      },
+      "K7o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.83
+      },
+      "K6s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.91
+      },
+      "K6o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.75
+      },
+      "K5s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.83
+      },
+      "K5o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.67
+      },
+      "K4s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.74
+      },
+      "K3s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.66
+      },
+      "QQ": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "QJs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "QJo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "QTs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "QTo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "Q9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "Q9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "Q8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "Q8o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.87
+      },
+      "Q7s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.91
+      },
+      "Q7o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.75
+      },
+      "Q6s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.83
+      },
+      "Q6o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.67
+      },
+      "Q5s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.74
+      },
+      "Q4s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.66
+      },
+      "JJ": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "JTs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "JTo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "J9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "J9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.95
+      },
+      "J8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.99
+      },
+      "J8o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.83
+      },
+      "J7s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.87
+      },
+      "J7o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.71
+      },
+      "J6s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.74
+      },
+      "J5s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.66
+      },
+      "TT": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "T9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "T9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.91
+      },
+      "T8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.95
+      },
+      "T8o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.79
+      },
+      "T7s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.82
+      },
+      "T7o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.66
+      },
+      "T6s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.7
+      },
+      "99": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "98s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.9
+      },
+      "98o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.74
+      },
+      "97s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.78
+      },
+      "97o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.62
+      },
+      "96s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.66
+      },
+      "88": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.9
+      },
+      "87s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.74
+      },
+      "86s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.61
+      },
+      "77": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.8
+      },
+      "66": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.7
+      },
+      "55": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.6
+      }
+    },
+    "call": {}
+  },
+  "BB_vs_UTG": {
+    "3bet": {
+      "AA": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AKs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.9
+      },
+      "AKo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.9
+      },
+      "AQs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.9
+      },
+      "AQo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.9
+      },
+      "AJs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.9
+      },
+      "AJo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.9
+      },
+      "ATs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.9
+      },
+      "ATo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.81
+      },
+      "A9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.74
+      },
+      "A8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.66
+      },
+      "KK": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.9
+      },
+      "KQs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.9
+      },
+      "KQo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.9
+      },
+      "KJs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.9
+      },
+      "KJo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.89
+      },
+      "KTs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.9
+      },
+      "KTo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.76
+      },
+      "K9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.7
+      },
+      "QQ": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.8
+      },
+      "QJs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.9
+      },
+      "QJo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.84
+      },
+      "QTs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.88
+      },
+      "QTo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.72
+      },
+      "Q9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.66
+      },
+      "JJ": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.7
+      },
+      "JTs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.84
+      },
+      "JTo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.68
+      },
+      "J9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.61
+      },
+      "TT": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.6
+      }
+    },
+    "call": {
+      "A9o": {
+        "frequency": 1.0
+      },
+      "A8o": {
+        "frequency": 1.0
+      },
+      "A7s": {
+        "frequency": 1.0
+      },
+      "A7o": {
+        "frequency": 0.92
+      },
+      "A6s": {
+        "frequency": 0.99
+      },
+      "A6o": {
+        "frequency": 0.83
+      },
+      "A5s": {
+        "frequency": 0.91
+      },
+      "A5o": {
+        "frequency": 0.75
+      },
+      "A4s": {
+        "frequency": 0.83
+      },
+      "A4o": {
+        "frequency": 0.67
+      },
+      "A3s": {
+        "frequency": 0.74
+      },
+      "A3o": {
+        "frequency": 0.58
+      },
+      "A2s": {
+        "frequency": 0.66
+      },
+      "A2o": {
+        "frequency": 0.5
+      },
+      "K9o": {
+        "frequency": 1.0
+      },
+      "K8s": {
+        "frequency": 1.0
+      },
+      "K8o": {
+        "frequency": 0.92
+      },
+      "K7s": {
+        "frequency": 0.99
+      },
+      "K7o": {
+        "frequency": 0.83
+      },
+      "K6s": {
+        "frequency": 0.91
+      },
+      "K6o": {
+        "frequency": 0.75
+      },
+      "K5s": {
+        "frequency": 0.83
+      },
+      "K5o": {
+        "frequency": 0.67
+      },
+      "K4s": {
+        "frequency": 0.74
+      },
+      "K4o": {
+        "frequency": 0.58
+      },
+      "K3s": {
+        "frequency": 0.66
+      },
+      "K3o": {
+        "frequency": 0.5
+      },
+      "K2s": {
+        "frequency": 0.58
+      },
+      "Q9o": {
+        "frequency": 1.0
+      },
+      "Q8s": {
+        "frequency": 1.0
+      },
+      "Q8o": {
+        "frequency": 0.87
+      },
+      "Q7s": {
+        "frequency": 0.91
+      },
+      "Q7o": {
+        "frequency": 0.75
+      },
+      "Q6s": {
+        "frequency": 0.83
+      },
+      "Q6o": {
+        "frequency": 0.67
+      },
+      "Q5s": {
+        "frequency": 0.74
+      },
+      "Q5o": {
+        "frequency": 0.58
+      },
+      "Q4s": {
+        "frequency": 0.66
+      },
+      "Q4o": {
+        "frequency": 0.5
+      },
+      "Q3s": {
+        "frequency": 0.58
+      },
+      "J9o": {
+        "frequency": 0.95
+      },
+      "J8s": {
+        "frequency": 0.99
+      },
+      "J8o": {
+        "frequency": 0.83
+      },
+      "J7s": {
+        "frequency": 0.87
+      },
+      "J7o": {
+        "frequency": 0.71
+      },
+      "J6s": {
+        "frequency": 0.74
+      },
+      "J6o": {
+        "frequency": 0.58
+      },
+      "J5s": {
+        "frequency": 0.66
+      },
+      "J5o": {
+        "frequency": 0.5
+      },
+      "J4s": {
+        "frequency": 0.58
+      },
+      "T9s": {
+        "frequency": 1.0
+      },
+      "T9o": {
+        "frequency": 0.91
+      },
+      "T8s": {
+        "frequency": 0.95
+      },
+      "T8o": {
+        "frequency": 0.79
+      },
+      "T7s": {
+        "frequency": 0.82
+      },
+      "T7o": {
+        "frequency": 0.66
+      },
+      "T6s": {
+        "frequency": 0.7
+      },
+      "T6o": {
+        "frequency": 0.54
+      },
+      "T5s": {
+        "frequency": 0.58
+      },
+      "99": {
+        "frequency": 1.0
+      },
+      "98s": {
+        "frequency": 0.9
+      },
+      "98o": {
+        "frequency": 0.74
+      },
+      "97s": {
+        "frequency": 0.78
+      },
+      "97o": {
+        "frequency": 0.62
+      },
+      "96s": {
+        "frequency": 0.66
+      },
+      "95s": {
+        "frequency": 0.53
+      },
+      "88": {
+        "frequency": 0.9
+      },
+      "87s": {
+        "frequency": 0.74
+      },
+      "87o": {
+        "frequency": 0.58
+      },
+      "86s": {
+        "frequency": 0.61
+      },
+      "77": {
+        "frequency": 0.8
+      },
+      "76s": {
+        "frequency": 0.57
+      },
+      "66": {
+        "frequency": 0.7
+      },
+      "55": {
+        "frequency": 0.6
+      },
+      "44": {
+        "frequency": 0.5
+      }
+    }
+  },
+  "BB_vs_MP": {
+    "3bet": {
+      "AA": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AKs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AKo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AQs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AQo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AJs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AJo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "ATs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "ATo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.91
+      },
+      "A9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.84
+      },
+      "A9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.68
+      },
+      "A8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.76
+      },
+      "A8o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.6
+      },
+      "A7s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.68
+      },
+      "KK": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KQs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KQo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KJs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KJo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.99
+      },
+      "KTs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KTo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.86
+      },
+      "K9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.8
+      },
+      "K9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.64
+      },
+      "K8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.68
+      },
+      "QQ": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.9
+      },
+      "QJs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "QJo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.94
+      },
+      "QTs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.98
+      },
+      "QTo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.82
+      },
+      "Q9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.76
+      },
+      "Q8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.63
+      },
+      "JJ": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.8
+      },
+      "JTs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.94
+      },
+      "JTo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.78
+      },
+      "J9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.71
+      },
+      "TT": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.7
+      },
+      "T9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.67
+      },
+      "99": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.6
+      }
+    },
+    "call": {
+      "A7o": {
+        "frequency": 1.0
+      },
+      "A6s": {
+        "frequency": 1.0
+      },
+      "A6o": {
+        "frequency": 0.93
+      },
+      "A5s": {
+        "frequency": 1.0
+      },
+      "A5o": {
+        "frequency": 0.85
+      },
+      "A4s": {
+        "frequency": 0.93
+      },
+      "A4o": {
+        "frequency": 0.77
+      },
+      "A3s": {
+        "frequency": 0.84
+      },
+      "A3o": {
+        "frequency": 0.68
+      },
+      "A2s": {
+        "frequency": 0.76
+      },
+      "A2o": {
+        "frequency": 0.6
+      },
+      "K8o": {
+        "frequency": 1.0
+      },
+      "K7s": {
+        "frequency": 1.0
+      },
+      "K7o": {
+        "frequency": 0.93
+      },
+      "K6s": {
+        "frequency": 1.0
+      },
+      "K6o": {
+        "frequency": 0.85
+      },
+      "K5s": {
+        "frequency": 0.93
+      },
+      "K5o": {
+        "frequency": 0.77
+      },
+      "K4s": {
+        "frequency": 0.84
+      },
+      "K4o": {
+        "frequency": 0.68
+      },
+      "K3s": {
+        "frequency": 0.76
+      },
+      "K3o": {
+        "frequency": 0.6
+      },
+      "K2s": {
+        "frequency": 0.68
+      },
+      "K2o": {
+        "frequency": 0.52
+      },
+      "Q9o": {
+        "frequency": 1.0
+      },
+      "Q8o": {
+        "frequency": 0.97
+      },
+      "Q7s": {
+        "frequency": 1.0
+      },
+      "Q7o": {
+        "frequency": 0.85
+      },
+      "Q6s": {
+        "frequency": 0.93
+      },
+      "Q6o": {
+        "frequency": 0.77
+      },
+      "Q5s": {
+        "frequency": 0.84
+      },
+      "Q5o": {
+        "frequency": 0.68
+      },
+      "Q4s": {
+        "frequency": 0.76
+      },
+      "Q4o": {
+        "frequency": 0.6
+      },
+      "Q3s": {
+        "frequency": 0.68
+      },
+      "Q3o": {
+        "frequency": 0.52
+      },
+      "Q2s": {
+        "frequency": 0.59
+      },
+      "J9o": {
+        "frequency": 1.0
+      },
+      "J8s": {
+        "frequency": 1.0
+      },
+      "J8o": {
+        "frequency": 0.93
+      },
+      "J7s": {
+        "frequency": 0.97
+      },
+      "J7o": {
+        "frequency": 0.81
+      },
+      "J6s": {
+        "frequency": 0.84
+      },
+      "J6o": {
+        "frequency": 0.68
+      },
+      "J5s": {
+        "frequency": 0.76
+      },
+      "J5o": {
+        "frequency": 0.6
+      },
+      "J4s": {
+        "frequency": 0.68
+      },
+      "J4o": {
+        "frequency": 0.52
+      },
+      "J3s": {
+        "frequency": 0.59
+      },
+      "J2s": {
+        "frequency": 0.51
+      },
+      "T9o": {
+        "frequency": 1.0
+      },
+      "T8s": {
+        "frequency": 1.0
+      },
+      "T8o": {
+        "frequency": 0.89
+      },
+      "T7s": {
+        "frequency": 0.92
+      },
+      "T7o": {
+        "frequency": 0.76
+      },
+      "T6s": {
+        "frequency": 0.8
+      },
+      "T6o": {
+        "frequency": 0.64
+      },
+      "T5s": {
+        "frequency": 0.68
+      },
+      "T5o": {
+        "frequency": 0.52
+      },
+      "T4s": {
+        "frequency": 0.59
+      },
+      "T3s": {
+        "frequency": 0.51
+      },
+      "98s": {
+        "frequency": 1.0
+      },
+      "98o": {
+        "frequency": 0.84
+      },
+      "97s": {
+        "frequency": 0.88
+      },
+      "97o": {
+        "frequency": 0.72
+      },
+      "96s": {
+        "frequency": 0.76
+      },
+      "96o": {
+        "frequency": 0.6
+      },
+      "95s": {
+        "frequency": 0.63
+      },
+      "94s": {
+        "frequency": 0.51
+      },
+      "88": {
+        "frequency": 1.0
+      },
+      "87s": {
+        "frequency": 0.84
+      },
+      "87o": {
+        "frequency": 0.68
+      },
+      "86s": {
+        "frequency": 0.71
+      },
+      "86o": {
+        "frequency": 0.55
+      },
+      "85s": {
+        "frequency": 0.59
+      },
+      "77": {
+        "frequency": 0.9
+      },
+      "76s": {
+        "frequency": 0.67
+      },
+      "76o": {
+        "frequency": 0.51
+      },
+      "75s": {
+        "frequency": 0.55
+      },
+      "66": {
+        "frequency": 0.8
+      },
+      "65s": {
+        "frequency": 0.5
+      },
+      "55": {
+        "frequency": 0.7
+      },
+      "44": {
+        "frequency": 0.6
+      }
+    }
+  },
+  "BB_vs_CO": {
+    "3bet": {
+      "AA": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AKs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AKo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AQs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AQo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AJs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AJo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "ATs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "ATo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "A9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.94
+      },
+      "A9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.78
+      },
+      "A8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.86
+      },
+      "A8o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.7
+      },
+      "A7s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.78
+      },
+      "A7o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.62
+      },
+      "A6s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.69
+      },
+      "A5s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.61
+      },
+      "KK": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KQs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KQo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KJs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KJo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KTs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KTo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.96
+      },
+      "K9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.9
+      },
+      "K9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.74
+      },
+      "K8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.78
+      },
+      "K8o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.62
+      },
+      "K7s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.69
+      },
+      "K6s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.61
+      },
+      "QQ": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "QJs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "QJo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "QTs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "QTo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.92
+      },
+      "Q9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.86
+      },
+      "Q9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.7
+      },
+      "Q8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.73
+      },
+      "Q7s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.61
+      },
+      "JJ": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.9
+      },
+      "JTs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "JTo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.88
+      },
+      "J9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.81
+      },
+      "J9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.65
+      },
+      "J8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.69
+      },
+      "TT": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.8
+      },
+      "T9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.77
+      },
+      "T9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.61
+      },
+      "T8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.65
+      },
+      "99": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.7
+      },
+      "98s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.6
+      },
+      "88": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.6
+      }
+    },
+    "call": {
+      "A6o": {
+        "frequency": 1.0
+      },
+      "A5o": {
+        "frequency": 0.95
+      },
+      "A4s": {
+        "frequency": 1.0
+      },
+      "A4o": {
+        "frequency": 0.87
+      },
+      "A3s": {
+        "frequency": 0.94
+      },
+      "A3o": {
+        "frequency": 0.78
+      },
+      "A2s": {
+        "frequency": 0.86
+      },
+      "A2o": {
+        "frequency": 0.7
+      },
+      "K7o": {
+        "frequency": 1.0
+      },
+      "K6o": {
+        "frequency": 0.95
+      },
+      "K5s": {
+        "frequency": 1.0
+      },
+      "K5o": {
+        "frequency": 0.87
+      },
+      "K4s": {
+        "frequency": 0.94
+      },
+      "K4o": {
+        "frequency": 0.78
+      },
+      "K3s": {
+        "frequency": 0.86
+      },
+      "K3o": {
+        "frequency": 0.7
+      },
+      "K2s": {
+        "frequency": 0.78
+      },
+      "K2o": {
+        "frequency": 0.62
+      },
+      "Q8o": {
+        "frequency": 1.0
+      },
+      "Q7o": {
+        "frequency": 0.95
+      },
+      "Q6s": {
+        "frequency": 1.0
+      },
+      "Q6o": {
+        "frequency": 0.87
+      },
+      "Q5s": {
+        "frequency": 0.94
+      },
+      "Q5o": {
+        "frequency": 0.78
+      },
+      "Q4s": {
+        "frequency": 0.86
+      },
+      "Q4o": {
+        "frequency": 0.7
+      },
+      "Q3s": {
+        "frequency": 0.78
+      },
+      "Q3o": {
+        "frequency": 0.62
+      },
+      "Q2s": {
+        "frequency": 0.69
+      },
+      "Q2o": {
+        "frequency": 0.53
+      },
+      "J8o": {
+        "frequency": 1.0
+      },
+      "J7s": {
+        "frequency": 1.0
+      },
+      "J7o": {
+        "frequency": 0.91
+      },
+      "J6s": {
+        "frequency": 0.94
+      },
+      "J6o": {
+        "frequency": 0.78
+      },
+      "J5s": {
+        "frequency": 0.86
+      },
+      "J5o": {
+        "frequency": 0.7
+      },
+      "J4s": {
+        "frequency": 0.78
+      },
+      "J4o": {
+        "frequency": 0.62
+      },
+      "J3s": {
+        "frequency": 0.69
+      },
+      "J3o": {
+        "frequency": 0.53
+      },
+      "J2s": {
+        "frequency": 0.61
+      },
+      "T8o": {
+        "frequency": 0.99
+      },
+      "T7s": {
+        "frequency": 1.0
+      },
+      "T7o": {
+        "frequency": 0.86
+      },
+      "T6s": {
+        "frequency": 0.9
+      },
+      "T6o": {
+        "frequency": 0.74
+      },
+      "T5s": {
+        "frequency": 0.78
+      },
+      "T5o": {
+        "frequency": 0.62
+      },
+      "T4s": {
+        "frequency": 0.69
+      },
+      "T4o": {
+        "frequency": 0.53
+      },
+      "T3s": {
+        "frequency": 0.61
+      },
+      "T2s": {
+        "frequency": 0.53
+      },
+      "98o": {
+        "frequency": 0.94
+      },
+      "97s": {
+        "frequency": 0.98
+      },
+      "97o": {
+        "frequency": 0.82
+      },
+      "96s": {
+        "frequency": 0.86
+      },
+      "96o": {
+        "frequency": 0.7
+      },
+      "95s": {
+        "frequency": 0.73
+      },
+      "95o": {
+        "frequency": 0.57
+      },
+      "94s": {
+        "frequency": 0.61
+      },
+      "93s": {
+        "frequency": 0.53
+      },
+      "87s": {
+        "frequency": 0.94
+      },
+      "87o": {
+        "frequency": 0.78
+      },
+      "86s": {
+        "frequency": 0.81
+      },
+      "86o": {
+        "frequency": 0.65
+      },
+      "85s": {
+        "frequency": 0.69
+      },
+      "85o": {
+        "frequency": 0.53
+      },
+      "84s": {
+        "frequency": 0.57
+      },
+      "77": {
+        "frequency": 1.0
+      },
+      "76s": {
+        "frequency": 0.77
+      },
+      "76o": {
+        "frequency": 0.61
+      },
+      "75s": {
+        "frequency": 0.65
+      },
+      "74s": {
+        "frequency": 0.52
+      },
+      "66": {
+        "frequency": 0.9
+      },
+      "65s": {
+        "frequency": 0.6
+      },
+      "55": {
+        "frequency": 0.8
+      },
+      "44": {
+        "frequency": 0.7
+      },
+      "33": {
+        "frequency": 0.6
+      }
+    }
+  },
+  "BB_vs_BTN": {
+    "3bet": {
+      "AA": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AKs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AKo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AQs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AQo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AJs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AJo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "ATs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "ATo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "A9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "A9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.98
+      },
+      "A8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "A8o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.9
+      },
+      "A7s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.98
+      },
+      "A7o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.82
+      },
+      "A6s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.89
+      },
+      "A6o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.73
+      },
+      "A5s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.81
+      },
+      "A5o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.65
+      },
+      "A4s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.73
+      },
+      "A3s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.64
+      },
+      "KK": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KQs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KQo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KJs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KJo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KTs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KTo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "K9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "K9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.94
+      },
+      "K8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.98
+      },
+      "K8o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.82
+      },
+      "K7s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.89
+      },
+      "K7o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.73
+      },
+      "K6s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.81
+      },
+      "K6o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.65
+      },
+      "K5s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.73
+      },
+      "K4s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.64
+      },
+      "QQ": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "QJs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "QJo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "QTs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "QTo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "Q9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "Q9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.9
+      },
+      "Q8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.93
+      },
+      "Q8o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.77
+      },
+      "Q7s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.81
+      },
+      "Q7o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.65
+      },
+      "Q6s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.73
+      },
+      "Q5s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.64
+      },
+      "JJ": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "JTs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "JTo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "J9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "J9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.85
+      },
+      "J8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.89
+      },
+      "J8o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.73
+      },
+      "J7s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.77
+      },
+      "J7o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.61
+      },
+      "J6s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.64
+      },
+      "TT": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "T9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.97
+      },
+      "T9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.81
+      },
+      "T8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.85
+      },
+      "T8o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.69
+      },
+      "T7s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.72
+      },
+      "T6s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.6
+      },
+      "99": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.9
+      },
+      "98s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.8
+      },
+      "98o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.64
+      },
+      "97s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.68
+      },
+      "88": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.8
+      },
+      "87s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.64
+      },
+      "77": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.7
+      },
+      "66": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.6
+      }
+    },
+    "call": {
+      "A4o": {
+        "frequency": 0.97
+      },
+      "A3o": {
+        "frequency": 0.88
+      },
+      "A2s": {
+        "frequency": 0.96
+      },
+      "A2o": {
+        "frequency": 0.8
+      },
+      "K5o": {
+        "frequency": 0.97
+      },
+      "K4o": {
+        "frequency": 0.88
+      },
+      "K3s": {
+        "frequency": 0.96
+      },
+      "K3o": {
+        "frequency": 0.8
+      },
+      "K2s": {
+        "frequency": 0.88
+      },
+      "K2o": {
+        "frequency": 0.72
+      },
+      "Q6o": {
+        "frequency": 0.97
+      },
+      "Q5o": {
+        "frequency": 0.88
+      },
+      "Q4s": {
+        "frequency": 0.96
+      },
+      "Q4o": {
+        "frequency": 0.8
+      },
+      "Q3s": {
+        "frequency": 0.88
+      },
+      "Q3o": {
+        "frequency": 0.72
+      },
+      "Q2s": {
+        "frequency": 0.79
+      },
+      "Q2o": {
+        "frequency": 0.63
+      },
+      "J6o": {
+        "frequency": 0.88
+      },
+      "J5s": {
+        "frequency": 0.96
+      },
+      "J5o": {
+        "frequency": 0.8
+      },
+      "J4s": {
+        "frequency": 0.88
+      },
+      "J4o": {
+        "frequency": 0.72
+      },
+      "J3s": {
+        "frequency": 0.79
+      },
+      "J3o": {
+        "frequency": 0.63
+      },
+      "J2s": {
+        "frequency": 0.71
+      },
+      "J2o": {
+        "frequency": 0.55
+      },
+      "T7o": {
+        "frequency": 0.96
+      },
+      "T6o": {
+        "frequency": 0.84
+      },
+      "T5s": {
+        "frequency": 0.88
+      },
+      "T5o": {
+        "frequency": 0.72
+      },
+      "T4s": {
+        "frequency": 0.79
+      },
+      "T4o": {
+        "frequency": 0.63
+      },
+      "T3s": {
+        "frequency": 0.71
+      },
+      "T3o": {
+        "frequency": 0.55
+      },
+      "T2s": {
+        "frequency": 0.63
+      },
+      "97o": {
+        "frequency": 0.92
+      },
+      "96s": {
+        "frequency": 0.96
+      },
+      "96o": {
+        "frequency": 0.8
+      },
+      "95s": {
+        "frequency": 0.83
+      },
+      "95o": {
+        "frequency": 0.67
+      },
+      "94s": {
+        "frequency": 0.71
+      },
+      "94o": {
+        "frequency": 0.55
+      },
+      "93s": {
+        "frequency": 0.63
+      },
+      "92s": {
+        "frequency": 0.54
+      },
+      "87o": {
+        "frequency": 0.88
+      },
+      "86s": {
+        "frequency": 0.91
+      },
+      "86o": {
+        "frequency": 0.75
+      },
+      "85s": {
+        "frequency": 0.79
+      },
+      "85o": {
+        "frequency": 0.63
+      },
+      "84s": {
+        "frequency": 0.67
+      },
+      "84o": {
+        "frequency": 0.51
+      },
+      "83s": {
+        "frequency": 0.54
+      },
+      "76s": {
+        "frequency": 0.87
+      },
+      "76o": {
+        "frequency": 0.71
+      },
+      "75s": {
+        "frequency": 0.75
+      },
+      "75o": {
+        "frequency": 0.59
+      },
+      "74s": {
+        "frequency": 0.62
+      },
+      "73s": {
+        "frequency": 0.5
+      },
+      "65s": {
+        "frequency": 0.7
+      },
+      "65o": {
+        "frequency": 0.54
+      },
+      "64s": {
+        "frequency": 0.58
+      },
+      "55": {
+        "frequency": 0.9
+      },
+      "54s": {
+        "frequency": 0.54
+      },
+      "44": {
+        "frequency": 0.8
+      },
+      "33": {
+        "frequency": 0.7
+      },
+      "22": {
+        "frequency": 0.6
+      }
+    }
+  },
+  "BB_vs_SB": {
+    "3bet": {
+      "AA": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AKs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AKo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AQs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AQo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AJs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "AJo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "ATs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "ATo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "A9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "A9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "A8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "A8o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "A7s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "A7o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.92
+      },
+      "A6s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.99
+      },
+      "A6o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.83
+      },
+      "A5s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.91
+      },
+      "A5o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.75
+      },
+      "A4s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.83
+      },
+      "A4o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.67
+      },
+      "A3s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.74
+      },
+      "A2s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.66
+      },
+      "KK": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KQs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KQo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KJs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KJo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KTs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "KTo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "K9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "K9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "K8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "K8o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.92
+      },
+      "K7s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.99
+      },
+      "K7o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.83
+      },
+      "K6s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.91
+      },
+      "K6o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.75
+      },
+      "K5s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.83
+      },
+      "K5o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.67
+      },
+      "K4s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.74
+      },
+      "K3s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.66
+      },
+      "QQ": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "QJs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "QJo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "QTs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "QTo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "Q9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "Q9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "Q8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "Q8o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.87
+      },
+      "Q7s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.91
+      },
+      "Q7o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.75
+      },
+      "Q6s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.83
+      },
+      "Q6o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.67
+      },
+      "Q5s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.74
+      },
+      "Q4s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.66
+      },
+      "JJ": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "JTs": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "JTo": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "J9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "J9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.95
+      },
+      "J8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.99
+      },
+      "J8o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.83
+      },
+      "J7s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.87
+      },
+      "J7o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.71
+      },
+      "J6s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.74
+      },
+      "J5s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.66
+      },
+      "TT": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "T9s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "T9o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.91
+      },
+      "T8s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.95
+      },
+      "T8o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.79
+      },
+      "T7s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.82
+      },
+      "T7o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.66
+      },
+      "T6s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.7
+      },
+      "99": {
+        "sizing_multiplier": 3.0,
+        "frequency": 1.0
+      },
+      "98s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.9
+      },
+      "98o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.74
+      },
+      "97s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.78
+      },
+      "97o": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.62
+      },
+      "96s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.66
+      },
+      "88": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.9
+      },
+      "87s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.74
+      },
+      "86s": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.61
+      },
+      "77": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.8
+      },
+      "66": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.7
+      },
+      "55": {
+        "sizing_multiplier": 3.0,
+        "frequency": 0.6
+      }
+    },
+    "call": {
+      "A3o": {
+        "frequency": 0.78
+      },
+      "A2o": {
+        "frequency": 0.7
+      },
+      "K4o": {
+        "frequency": 0.78
+      },
+      "K3o": {
+        "frequency": 0.7
+      },
+      "K2s": {
+        "frequency": 0.78
+      },
+      "K2o": {
+        "frequency": 0.62
+      },
+      "Q5o": {
+        "frequency": 0.78
+      },
+      "Q4o": {
+        "frequency": 0.7
+      },
+      "Q3s": {
+        "frequency": 0.78
+      },
+      "Q3o": {
+        "frequency": 0.62
+      },
+      "Q2s": {
+        "frequency": 0.69
+      },
+      "Q2o": {
+        "frequency": 0.53
+      },
+      "J6o": {
+        "frequency": 0.78
+      },
+      "J5o": {
+        "frequency": 0.7
+      },
+      "J4s": {
+        "frequency": 0.78
+      },
+      "J4o": {
+        "frequency": 0.62
+      },
+      "J3s": {
+        "frequency": 0.69
+      },
+      "J3o": {
+        "frequency": 0.53
+      },
+      "J2s": {
+        "frequency": 0.61
+      },
+      "T6o": {
+        "frequency": 0.74
+      },
+      "T5s": {
+        "frequency": 0.78
+      },
+      "T5o": {
+        "frequency": 0.62
+      },
+      "T4s": {
+        "frequency": 0.69
+      },
+      "T4o": {
+        "frequency": 0.53
+      },
+      "T3s": {
+        "frequency": 0.61
+      },
+      "T2s": {
+        "frequency": 0.53
+      },
+      "96o": {
+        "frequency": 0.7
+      },
+      "95s": {
+        "frequency": 0.73
+      },
+      "95o": {
+        "frequency": 0.57
+      },
+      "94s": {
+        "frequency": 0.61
+      },
+      "93s": {
+        "frequency": 0.53
+      },
+      "87o": {
+        "frequency": 0.78
+      },
+      "86o": {
+        "frequency": 0.65
+      },
+      "85s": {
+        "frequency": 0.69
+      },
+      "85o": {
+        "frequency": 0.53
+      },
+      "84s": {
+        "frequency": 0.57
+      },
+      "76s": {
+        "frequency": 0.77
+      },
+      "76o": {
+        "frequency": 0.61
+      },
+      "75s": {
+        "frequency": 0.65
+      },
+      "74s": {
+        "frequency": 0.52
+      },
+      "65s": {
+        "frequency": 0.6
+      },
+      "44": {
+        "frequency": 0.7
+      },
+      "33": {
+        "frequency": 0.6
+      }
+    }
+  }
+}

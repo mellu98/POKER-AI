@@ -1,0 +1,44 @@
+# Logs (training data + simulations)
+logs/
+bots/data/*.jsonl
+
+# ML model weights
+bots/models/*.pt
+bots/models/*.pkl
+
+# Python caching
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# System files
+.DS_Store
+
+# Virtual environments
+venv/
+.env/
+.env/*
+# accidental placeholder venv (python -m venv path/to/venv) — never track
+path/
+
+# Generated tournament charts
+tournament_progress.png
+.venv/
+models/*.pkl
+models/*.pt
+models/*.bak
+
+# Training/run output logs
+output/*.log
+output/.mplconfig/
+output/.algo-mccfr-findings.txt
+
+# Local agent state
+.claude/
+
+# Phase 5 ablation eval run logs (reproducible via eval_final_bot.py --p5-arms all)
+eval_runs/

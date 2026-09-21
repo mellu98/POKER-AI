@@ -1,0 +1,677 @@
+{
+  "XX_20260905_210945_369_board1.png": {
+    "label_file": "labels/frame_20260905_210945_369.txt",
+    "line": 0,
+    "slot": "board1",
+    "frame": "images/frame_20260905_210945_369.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_210945_369_board2.png": {
+    "label_file": "labels/frame_20260905_210945_369.txt",
+    "line": 1,
+    "slot": "board2",
+    "frame": "images/frame_20260905_210945_369.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_210945_369_board3.png": {
+    "label_file": "labels/frame_20260905_210945_369.txt",
+    "line": 2,
+    "slot": "board3",
+    "frame": "images/frame_20260905_210945_369.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_210949_754_board1.png": {
+    "label_file": "labels/frame_20260905_210949_754.txt",
+    "line": 0,
+    "slot": "board1",
+    "frame": "images/frame_20260905_210949_754.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_210949_754_board2.png": {
+    "label_file": "labels/frame_20260905_210949_754.txt",
+    "line": 1,
+    "slot": "board2",
+    "frame": "images/frame_20260905_210949_754.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_210949_754_board3.png": {
+    "label_file": "labels/frame_20260905_210949_754.txt",
+    "line": 2,
+    "slot": "board3",
+    "frame": "images/frame_20260905_210949_754.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211010_033_board2.png": {
+    "label_file": "labels/frame_20260905_211010_033.txt",
+    "line": 0,
+    "slot": "board2",
+    "frame": "images/frame_20260905_211010_033.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211010_033_board3.png": {
+    "label_file": "labels/frame_20260905_211010_033.txt",
+    "line": 1,
+    "slot": "board3",
+    "frame": "images/frame_20260905_211010_033.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211010_033_board4.png": {
+    "label_file": "labels/frame_20260905_211010_033.txt",
+    "line": 2,
+    "slot": "board4",
+    "frame": "images/frame_20260905_211010_033.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211010_033_board5.png": {
+    "label_file": "labels/frame_20260905_211010_033.txt",
+    "line": 3,
+    "slot": "board5",
+    "frame": "images/frame_20260905_211010_033.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211014_326_board1.png": {
+    "label_file": "labels/frame_20260905_211014_326.txt",
+    "line": 0,
+    "slot": "board1",
+    "frame": "images/frame_20260905_211014_326.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211014_326_board2.png": {
+    "label_file": "labels/frame_20260905_211014_326.txt",
+    "line": 1,
+    "slot": "board2",
+    "frame": "images/frame_20260905_211014_326.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211014_326_board3.png": {
+    "label_file": "labels/frame_20260905_211014_326.txt",
+    "line": 2,
+    "slot": "board3",
+    "frame": "images/frame_20260905_211014_326.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211014_326_board4.png": {
+    "label_file": "labels/frame_20260905_211014_326.txt",
+    "line": 3,
+    "slot": "board4",
+    "frame": "images/frame_20260905_211014_326.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211018_622_board1.png": {
+    "label_file": "labels/frame_20260905_211018_622.txt",
+    "line": 0,
+    "slot": "board1",
+    "frame": "images/frame_20260905_211018_622.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211018_622_board2.png": {
+    "label_file": "labels/frame_20260905_211018_622.txt",
+    "line": 1,
+    "slot": "board2",
+    "frame": "images/frame_20260905_211018_622.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211018_622_board3.png": {
+    "label_file": "labels/frame_20260905_211018_622.txt",
+    "line": 2,
+    "slot": "board3",
+    "frame": "images/frame_20260905_211018_622.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211018_622_board4.png": {
+    "label_file": "labels/frame_20260905_211018_622.txt",
+    "line": 3,
+    "slot": "board4",
+    "frame": "images/frame_20260905_211018_622.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211022_898_board1.png": {
+    "label_file": "labels/frame_20260905_211022_898.txt",
+    "line": 0,
+    "slot": "board1",
+    "frame": "images/frame_20260905_211022_898.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211022_898_board2.png": {
+    "label_file": "labels/frame_20260905_211022_898.txt",
+    "line": 1,
+    "slot": "board2",
+    "frame": "images/frame_20260905_211022_898.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211022_898_board3.png": {
+    "label_file": "labels/frame_20260905_211022_898.txt",
+    "line": 2,
+    "slot": "board3",
+    "frame": "images/frame_20260905_211022_898.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211022_898_board4.png": {
+    "label_file": "labels/frame_20260905_211022_898.txt",
+    "line": 3,
+    "slot": "board4",
+    "frame": "images/frame_20260905_211022_898.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211027_187_board1.png": {
+    "label_file": "labels/frame_20260905_211027_187.txt",
+    "line": 0,
+    "slot": "board1",
+    "frame": "images/frame_20260905_211027_187.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211027_187_board2.png": {
+    "label_file": "labels/frame_20260905_211027_187.txt",
+    "line": 1,
+    "slot": "board2",
+    "frame": "images/frame_20260905_211027_187.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211027_187_board3.png": {
+    "label_file": "labels/frame_20260905_211027_187.txt",
+    "line": 2,
+    "slot": "board3",
+    "frame": "images/frame_20260905_211027_187.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211027_187_board4.png": {
+    "label_file": "labels/frame_20260905_211027_187.txt",
+    "line": 3,
+    "slot": "board4",
+    "frame": "images/frame_20260905_211027_187.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211031_472_board1.png": {
+    "label_file": "labels/frame_20260905_211031_472.txt",
+    "line": 0,
+    "slot": "board1",
+    "frame": "images/frame_20260905_211031_472.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211031_472_board2.png": {
+    "label_file": "labels/frame_20260905_211031_472.txt",
+    "line": 1,
+    "slot": "board2",
+    "frame": "images/frame_20260905_211031_472.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211031_472_board3.png": {
+    "label_file": "labels/frame_20260905_211031_472.txt",
+    "line": 2,
+    "slot": "board3",
+    "frame": "images/frame_20260905_211031_472.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211031_472_board4.png": {
+    "label_file": "labels/frame_20260905_211031_472.txt",
+    "line": 3,
+    "slot": "board4",
+    "frame": "images/frame_20260905_211031_472.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211031_472_board5.png": {
+    "label_file": "labels/frame_20260905_211031_472.txt",
+    "line": 4,
+    "slot": "board5",
+    "frame": "images/frame_20260905_211031_472.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211035_789_board1.png": {
+    "label_file": "labels/frame_20260905_211035_789.txt",
+    "line": 0,
+    "slot": "board1",
+    "frame": "images/frame_20260905_211035_789.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211035_789_board2.png": {
+    "label_file": "labels/frame_20260905_211035_789.txt",
+    "line": 1,
+    "slot": "board2",
+    "frame": "images/frame_20260905_211035_789.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211035_789_board3.png": {
+    "label_file": "labels/frame_20260905_211035_789.txt",
+    "line": 2,
+    "slot": "board3",
+    "frame": "images/frame_20260905_211035_789.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211035_789_board4.png": {
+    "label_file": "labels/frame_20260905_211035_789.txt",
+    "line": 3,
+    "slot": "board4",
+    "frame": "images/frame_20260905_211035_789.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211035_789_board5.png": {
+    "label_file": "labels/frame_20260905_211035_789.txt",
+    "line": 4,
+    "slot": "board5",
+    "frame": "images/frame_20260905_211035_789.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211040_104_board1.png": {
+    "label_file": "labels/frame_20260905_211040_104.txt",
+    "line": 0,
+    "slot": "board1",
+    "frame": "images/frame_20260905_211040_104.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211040_104_board2.png": {
+    "label_file": "labels/frame_20260905_211040_104.txt",
+    "line": 1,
+    "slot": "board2",
+    "frame": "images/frame_20260905_211040_104.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211040_104_board3.png": {
+    "label_file": "labels/frame_20260905_211040_104.txt",
+    "line": 2,
+    "slot": "board3",
+    "frame": "images/frame_20260905_211040_104.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211040_104_board4.png": {
+    "label_file": "labels/frame_20260905_211040_104.txt",
+    "line": 3,
+    "slot": "board4",
+    "frame": "images/frame_20260905_211040_104.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211040_104_board5.png": {
+    "label_file": "labels/frame_20260905_211040_104.txt",
+    "line": 4,
+    "slot": "board5",
+    "frame": "images/frame_20260905_211040_104.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211044_443_board2.png": {
+    "label_file": "labels/frame_20260905_211044_443.txt",
+    "line": 0,
+    "slot": "board2",
+    "frame": "images/frame_20260905_211044_443.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211044_443_board4.png": {
+    "label_file": "labels/frame_20260905_211044_443.txt",
+    "line": 1,
+    "slot": "board4",
+    "frame": "images/frame_20260905_211044_443.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211044_443_board5.png": {
+    "label_file": "labels/frame_20260905_211044_443.txt",
+    "line": 2,
+    "slot": "board5",
+    "frame": "images/frame_20260905_211044_443.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211048_683_hole1.png": {
+    "label_file": "labels/frame_20260905_211048_683.txt",
+    "line": 0,
+    "slot": "hole1",
+    "frame": "images/frame_20260905_211048_683.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211048_683_hole2.png": {
+    "label_file": "labels/frame_20260905_211048_683.txt",
+    "line": 1,
+    "slot": "hole2",
+    "frame": "images/frame_20260905_211048_683.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211052_880_hole1.png": {
+    "label_file": "labels/frame_20260905_211052_880.txt",
+    "line": 0,
+    "slot": "hole1",
+    "frame": "images/frame_20260905_211052_880.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211052_880_hole2.png": {
+    "label_file": "labels/frame_20260905_211052_880.txt",
+    "line": 1,
+    "slot": "hole2",
+    "frame": "images/frame_20260905_211052_880.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211057_098_hole1.png": {
+    "label_file": "labels/frame_20260905_211057_098.txt",
+    "line": 0,
+    "slot": "hole1",
+    "frame": "images/frame_20260905_211057_098.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211057_098_hole2.png": {
+    "label_file": "labels/frame_20260905_211057_098.txt",
+    "line": 1,
+    "slot": "hole2",
+    "frame": "images/frame_20260905_211057_098.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211101_293_hole1.png": {
+    "label_file": "labels/frame_20260905_211101_293.txt",
+    "line": 0,
+    "slot": "hole1",
+    "frame": "images/frame_20260905_211101_293.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211101_293_hole2.png": {
+    "label_file": "labels/frame_20260905_211101_293.txt",
+    "line": 1,
+    "slot": "hole2",
+    "frame": "images/frame_20260905_211101_293.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211105_484_hole1.png": {
+    "label_file": "labels/frame_20260905_211105_484.txt",
+    "line": 0,
+    "slot": "hole1",
+    "frame": "images/frame_20260905_211105_484.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211105_484_hole2.png": {
+    "label_file": "labels/frame_20260905_211105_484.txt",
+    "line": 1,
+    "slot": "hole2",
+    "frame": "images/frame_20260905_211105_484.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211109_673_hole1.png": {
+    "label_file": "labels/frame_20260905_211109_673.txt",
+    "line": 0,
+    "slot": "hole1",
+    "frame": "images/frame_20260905_211109_673.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211109_673_hole2.png": {
+    "label_file": "labels/frame_20260905_211109_673.txt",
+    "line": 1,
+    "slot": "hole2",
+    "frame": "images/frame_20260905_211109_673.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211113_871_hole1.png": {
+    "label_file": "labels/frame_20260905_211113_871.txt",
+    "line": 0,
+    "slot": "hole1",
+    "frame": "images/frame_20260905_211113_871.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211113_871_hole2.png": {
+    "label_file": "labels/frame_20260905_211113_871.txt",
+    "line": 1,
+    "slot": "hole2",
+    "frame": "images/frame_20260905_211113_871.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211118_079_hole1.png": {
+    "label_file": "labels/frame_20260905_211118_079.txt",
+    "line": 0,
+    "slot": "hole1",
+    "frame": "images/frame_20260905_211118_079.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211118_079_hole2.png": {
+    "label_file": "labels/frame_20260905_211118_079.txt",
+    "line": 1,
+    "slot": "hole2",
+    "frame": "images/frame_20260905_211118_079.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211122_268_hole1.png": {
+    "label_file": "labels/frame_20260905_211122_268.txt",
+    "line": 0,
+    "slot": "hole1",
+    "frame": "images/frame_20260905_211122_268.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211122_268_hole2.png": {
+    "label_file": "labels/frame_20260905_211122_268.txt",
+    "line": 1,
+    "slot": "hole2",
+    "frame": "images/frame_20260905_211122_268.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211155_091_board2.png": {
+    "label_file": "labels/frame_20260905_211155_091.txt",
+    "line": 1,
+    "slot": "board2",
+    "frame": "images/frame_20260905_211155_091.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211155_091_board4.png": {
+    "label_file": "labels/frame_20260905_211155_091.txt",
+    "line": 3,
+    "slot": "board4",
+    "frame": "images/frame_20260905_211155_091.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211159_410_board2.png": {
+    "label_file": "labels/frame_20260905_211159_410.txt",
+    "line": 1,
+    "slot": "board2",
+    "frame": "images/frame_20260905_211159_410.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211159_410_board4.png": {
+    "label_file": "labels/frame_20260905_211159_410.txt",
+    "line": 3,
+    "slot": "board4",
+    "frame": "images/frame_20260905_211159_410.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211203_680_board2.png": {
+    "label_file": "labels/frame_20260905_211203_680.txt",
+    "line": 1,
+    "slot": "board2",
+    "frame": "images/frame_20260905_211203_680.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211203_680_board4.png": {
+    "label_file": "labels/frame_20260905_211203_680.txt",
+    "line": 3,
+    "slot": "board4",
+    "frame": "images/frame_20260905_211203_680.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211220_245_hole1.png": {
+    "label_file": "labels/frame_20260905_211220_245.txt",
+    "line": 0,
+    "slot": "hole1",
+    "frame": "images/frame_20260905_211220_245.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211220_245_hole2.png": {
+    "label_file": "labels/frame_20260905_211220_245.txt",
+    "line": 1,
+    "slot": "hole2",
+    "frame": "images/frame_20260905_211220_245.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211220_245_board1.png": {
+    "label_file": "labels/frame_20260905_211220_245.txt",
+    "line": 2,
+    "slot": "board1",
+    "frame": "images/frame_20260905_211220_245.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211220_245_board2.png": {
+    "label_file": "labels/frame_20260905_211220_245.txt",
+    "line": 3,
+    "slot": "board2",
+    "frame": "images/frame_20260905_211220_245.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211220_245_board3.png": {
+    "label_file": "labels/frame_20260905_211220_245.txt",
+    "line": 4,
+    "slot": "board3",
+    "frame": "images/frame_20260905_211220_245.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211220_245_board4.png": {
+    "label_file": "labels/frame_20260905_211220_245.txt",
+    "line": 5,
+    "slot": "board4",
+    "frame": "images/frame_20260905_211220_245.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  },
+  "XX_20260905_211220_245_board5.png": {
+    "label_file": "labels/frame_20260905_211220_245.txt",
+    "line": 6,
+    "slot": "board5",
+    "frame": "images/frame_20260905_211220_245.png",
+    "proposed": null,
+    "confidence": 0.0,
+    "resolved": false
+  }
+}

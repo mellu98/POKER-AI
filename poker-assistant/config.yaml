@@ -8,8 +8,8 @@ table:
 vision:
   mode: screenshot
   site: golbet
-  window_title: Poker - Opera
-  template_dir: vision\templates
+  window_title: Poker
+  template_dir: vision/templates_goldbet
   llm:
     enabled: true
     api_key: ""
@@ -41,47 +41,47 @@ vision:
     min_samples: 3
   table_collection:
     output_dir: "captures/raw"
-    window_title: "Poker - Opera"
+    window_title: "Poker"
     interval_seconds: 2.0
     max_screenshots: null
     skip_duplicates: true
   rois:
     hole: &id001
-    - x: 0.46
-      y: 0.67
-      w: 0.04
-      h: 0.07
+    - x: 0.454
+      y: 0.665
+      w: 0.045
+      h: 0.085
       rel: true
-    - x: 0.51
-      y: 0.67
-      w: 0.04
-      h: 0.07
+    - x: 0.499
+      y: 0.665
+      w: 0.045
+      h: 0.085
       rel: true
     board: &id002
-    - x: 0.36
-      y: 0.40
-      w: 0.05
-      h: 0.09
+    - x: 0.350
+      y: 0.437
+      w: 0.056
+      h: 0.120
       rel: true
-    - x: 0.41
-      y: 0.40
-      w: 0.05
-      h: 0.09
+    - x: 0.413
+      y: 0.437
+      w: 0.056
+      h: 0.120
       rel: true
-    - x: 0.47
-      y: 0.40
-      w: 0.05
-      h: 0.09
+    - x: 0.477
+      y: 0.437
+      w: 0.056
+      h: 0.120
       rel: true
-    - x: 0.53
-      y: 0.40
-      w: 0.05
-      h: 0.09
+    - x: 0.540
+      y: 0.437
+      w: 0.056
+      h: 0.120
       rel: true
-    - x: 0.59
-      y: 0.40
-      w: 0.05
-      h: 0.09
+    - x: 0.604
+      y: 0.437
+      w: 0.056
+      h: 0.120
       rel: true
     pot: &id003
       x: 0.43

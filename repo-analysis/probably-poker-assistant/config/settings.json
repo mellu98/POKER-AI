@@ -1,0 +1,43 @@
+{
+  "capture": {
+    "interval_seconds": 1.0,
+    "window_title": "Poker just got",
+    "auto_detect_window": true
+  },
+  "detection": {
+    "card_confidence_threshold": 0.85,
+    "ocr_preprocessing": true,
+    "use_yolo": false,
+    "fallback_to_template_matching": true
+  },
+  "overlay": {
+    "enabled": true,
+    "opacity": 0.9,
+    "position": "top_left",
+    "always_on_top": true,
+    "font_size": 14,
+    "color_scheme": "dark",
+    "display_pot_odds": true,
+    "display_ev": true,
+    "display_required_equity": true,
+    "hud_width": 320,
+    "hud_height": 240
+  },
+  "strategy": {
+    "style": "tight_aggressive",
+    "aggression_factor": 1.2,
+    "bluff_frequency": 0.15,
+    "use_position_adjustment": true
+  },
+  "performance": {
+    "gpu_acceleration": true,
+    "max_cpu_percent": 50,
+    "max_memory_mb": 2048
+  },
+  "logging": {
+    "enabled": true,
+    "log_level": "INFO",
+    "log_hands": true,
+    "log_detections": false
+  }
+}

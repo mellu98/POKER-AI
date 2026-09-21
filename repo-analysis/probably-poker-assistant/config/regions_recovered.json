@@ -1,0 +1,101 @@
+{
+  "window": {
+    "title": "Ignition",
+    "x": 0,
+    "y": 0,
+    "width": 1924,
+    "height": 1530
+  },
+  "regions": {
+    "hole_cards": {
+      "x": 981,
+      "y": 278,
+      "width": 432,
+      "height": 390
+    },
+    "community_cards": {
+      "x": 578,
+      "y": 650,
+      "width": 771,
+      "height": 242
+    },
+    "pot_amount": {
+      "x": 815,
+      "y": 535,
+      "width": 289,
+      "height": 75
+    },
+    "player_stack": {
+      "x": 1116,
+      "y": 404,
+      "width": 228,
+      "height": 66
+    },
+    "current_bet": {
+      "x": 1118,
+      "y": 471,
+      "width": 225,
+      "height": 90
+    },
+    "action_buttons": {
+      "x": 54,
+      "y": 1229,
+      "width": 1820,
+      "height": 251
+    },
+    "hero_cards": {
+      "x": 1117,
+      "y": 266,
+      "width": 225,
+      "height": 138
+    },
+    "opponent_1_area": {
+      "x": 1508,
+      "y": 371,
+      "width": 357,
+      "height": 375
+    },
+    "opponent_2_area": {
+      "x": 1507,
+      "y": 749,
+      "width": 359,
+      "height": 301
+    },
+    "opponent_3_area": {
+      "x": 1188,
+      "y": 902,
+      "width": 313,
+      "height": 318
+    },
+    "opponent_4_area": {
+      "x": 796,
+      "y": 897,
+      "width": 366,
+      "height": 328
+    },
+    "opponent_5_area": {
+      "x": 428,
+      "y": 899,
+      "width": 351,
+      "height": 326
+    },
+    "opponent_6_area": {
+      "x": 75,
+      "y": 769,
+      "width": 301,
+      "height": 332
+    },
+    "opponent_7_area": {
+      "x": 71,
+      "y": 366,
+      "width": 332,
+      "height": 376
+    },
+    "opponent_8_area": {
+      "x": 529,
+      "y": 275,
+      "width": 319,
+      "height": 313
+    }
+  }
+}

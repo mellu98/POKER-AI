@@ -1,0 +1,18 @@
+{
+  "hand_rankings": {
+    "royal_flush": 10,
+    "straight_flush": 9,
+    "four_of_a_kind": 8,
+    "full_house": 7,
+    "flush": 6,
+    "straight": 5,
+    "three_of_a_kind": 4,
+    "two_pair": 3,
+    "pair": 2,
+    "high_card": 1
+  },
+  "positions": ["UTG", "UTG+1", "MP", "MP+1", "CO", "BTN", "SB", "BB"],
+  "betting_rounds": ["preflop", "flop", "turn", "river"],
+  "suits": ["h", "d", "c", "s"],
+  "ranks": ["A", "K", "Q", "J", "T", "9", "8", "7", "6", "5", "4", "3", "2"]
+}

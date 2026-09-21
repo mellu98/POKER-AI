@@ -1,0 +1,23 @@
+{
+  "repo": "uzlez/fullhouse-engine",
+  "synced_commit": "a80b269",
+  "synced_date": "2026-05-28",
+  "status": "frozen",
+  "patches_applied": [
+    "sandbox/validator.py — added asyncio to FORBIDDEN_MODULES",
+    "sandbox/Dockerfile — python:3.10-slim + gcc/libc6-dev for eval7 C ext",
+    "bots/template/bot.py — corrected players[i] field list (state, hole_cards)"
+  ],
+  "competition_constraints": {
+    "memory_mb": 768,
+    "memory_swap_mb": 768,
+    "tmp_size_mb": 20,
+    "cpus": 0.5,
+    "timeout_per_action_s": 2,
+    "hands_per_match": 400,
+    "starting_stack": 10000,
+    "max_package_mb": 250,
+    "max_data_mb": 200,
+    "python": "3.10"
+  }
+}

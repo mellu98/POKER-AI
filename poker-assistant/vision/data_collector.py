@@ -29,6 +29,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import platform
 import sys
 import time
 from datetime import datetime
@@ -43,12 +44,17 @@ sys.path.insert(0, str(Path(__file__).parent))
 
 from capture import screenshot, crop_roi
 from ocr_cards import (
+    SUITS_BY_COLOR,
+    classify_suit_by_shape,
+    corner_glyph_contour,
+    detect_suit_color,
     extract_split_templates_from_full,
     generate_card_templates,
     load_rank_templates,
     load_suit_templates,
     load_templates_from_dir,
     match_card_with_confidence,
+    ocr_rank,
     recognize_card_hybrid_with_confidence,
 )
 
@@ -165,6 +171,40 @@ def _looks_like_card(crop: np.ndarray) -> bool:
     return float(np.mean(gray > 180)) > CARD_WHITE_FRACTION
 
 
+def snap_to_card(crop: np.ndarray) -> Optional[tuple[int, int, int, int]]:
+    """Find the card's white body inside a loose ROI crop.
+
+    Slot ROIs are calibrated once but card positions drift between frames
+    (deal animation, action bar appearing, avatar decorations poking in).
+    The card body is the big near-white blob; snapping the bbox to it makes
+    recognition see the card top-left (where rank/suit live) and keeps YOLO
+    boxes tight. Returns (x, y, w, h) relative to the crop, or None.
+    """
+    if crop is None or crop.size == 0:
+        return None
+    gray = cv2.cvtColor(crop, cv2.COLOR_BGR2GRAY) if crop.ndim == 3 else crop
+    mask = (gray > 180).astype(np.uint8)
+    n, _, stats, _ = cv2.connectedComponentsWithStats(mask)
+    if n < 2:
+        return None
+    # Largest white component (skip background label 0).
+    areas = stats[1:, cv2.CC_STAT_AREA]
+    i = 1 + int(np.argmax(areas))
+    x, y, w, h, area = (int(v) for v in stats[i])
+    if area < 0.3 * crop.shape[0] * crop.shape[1]:
+        return None
+    # Re-expand a few px: the white-body snap can clip the colored card edge
+    # (glow border) and leave the rank glyph touching the crop boundary,
+    # which breaks OCR.
+    pad = 3
+    ch, cw = crop.shape[:2]
+    x = max(0, x - pad)
+    y = max(0, y - pad)
+    w = min(cw - x, w + 2 * pad)
+    h = min(ch - y, h + 2 * pad)
+    return x, y, w, h
+
+
 # ---------------------------------------------------------------------------
 # Tesseract setup (graceful on macOS — never crashes the module import)
 # ---------------------------------------------------------------------------
@@ -198,6 +238,15 @@ class CardGuesser:
     def __init__(self, cfg: dict):
         self.ocr_enabled = _setup_tesseract()
         self.templates, self.rank_templates, self.suit_templates = self._load_templates(cfg)
+        # Reference suit-glyph contours from real full-card templates, for
+        # classify_suit_by_shape (color-constrained matchShapes).
+        self.suit_refs: dict[str, list] = {}
+        for card, img in self.templates.items():
+            if img is None or len(card) != 2:
+                continue
+            c = corner_glyph_contour(img)
+            if c is not None:
+                self.suit_refs.setdefault(card[1], []).append(c)
 
     @staticmethod
     def _load_templates(cfg: dict):
@@ -220,22 +269,60 @@ class CardGuesser:
                         rank_templates.setdefault(rank, []).extend(imgs)
                     for suit, imgs in auto_suit.items():
                         suit_templates.setdefault(suit, []).extend(imgs)
-                    print(f"[data] Loaded {len(templates)} full templates from {candidate}")
+                    # Drop blank templates (uniform image matches EVERYTHING at
+                    # 1.0 with TM_CCOEFF and poisons the argmax — this was the
+                    # root cause of diamonds labeled as hearts).
+                    suit_templates = {
+                        s: [t for t in tl if t is not None and t.std() >= 10]
+                        for s, tl in suit_templates.items()
+                    }
+                    suit_templates = {s: tl for s, tl in suit_templates.items() if tl}
+                    print(f"[data] Loaded {len(templates)} full templates from {candidate} "
+                          f"(suit templates: { {s: len(tl) for s, tl in sorted(suit_templates.items())} })")
                     return templates, rank_templates, suit_templates
         print("[data] No real templates found; using synthetic templates "
               "(proposals will be unreliable until real ones are captured).")
         return generate_card_templates(), {}, {}
 
     def guess(self, crop: np.ndarray) -> tuple[Optional[str], float, str]:
-        """Return (card, confidence, source). source: 'hybrid', 'template' or ''."""
-        card, conf = recognize_card_hybrid_with_confidence(
-            crop, self.suit_templates
-        ) if self.suit_templates else (None, 0.0)
-        if card:
-            return card, conf, "hybrid"
+        """Return (card, confidence, source). source: 'hybrid', 'template' or ''.
+
+        Hard guard: a real card ALWAYS has ink (red or black rank/suit glyphs).
+        No ink → not a card — reject immediately. Without this, tesseract
+        hallucinates ranks on pure-white animation flashes and blank suit
+        templates "match" at 1.0.
+        """
+        if detect_suit_color(crop) is None:
+            return None, 0.0, ""
+
+        # Two INDEPENDENT signals must agree before auto-labeling.
+        # Tesseract alone misreads glyphs touching the crop edge (5→2, K→7);
+        # template matching alone can't tell suits apart (5c ≈ 5s at ~1.0).
+        # Agreement on rank AND color group is required; the suit comes from
+        # the shape classifier, which never crosses color groups.
+        color = detect_suit_color(crop)
+
+        # Primary: rank via OCR + suit via color-constrained matchShapes on
+        # the corner glyph.
+        primary = None
+        gray = cv2.cvtColor(crop, cv2.COLOR_BGR2GRAY) if crop.ndim == 3 else crop
+        rank = ocr_rank(gray) if self.ocr_enabled else None
+        if rank:
+            suit, suit_conf = classify_suit_by_shape(crop, self.suit_refs)
+            if suit and suit_conf >= 0.5:
+                primary = (f"{rank}{suit}", suit_conf)
+
+        # Template: full-card match gated by ink color (rank + pip layout).
+        template = None
         card, conf = match_card_with_confidence(crop, self.templates)
-        if card:
-            return card, conf, "template"
+        if card and card[1] in SUITS_BY_COLOR[color]:
+            template = (card, conf)
+
+        if primary and template:
+            p_card, p_conf = primary
+            t_card, t_conf = template
+            if p_card[0] == t_card[0]:
+                return p_card, min(p_conf, t_conf), "hybrid"
         return None, 0.0, ""
 
 
@@ -244,9 +331,21 @@ class CardGuesser:
 # ---------------------------------------------------------------------------
 
 def capture_frame(window_title: Optional[str] = None) -> tuple[Optional[np.ndarray], str]:
-    """Grab the poker table window and return (BGR frame, timestamp string)."""
-    frame = screenshot(window_title=window_title)
+    """Grab the poker table window and return (BGR frame, timestamp string).
+
+    Returns (None, ts) when the window is not found: screenshot() silently
+    falls back to a full-screen grab, which would label whatever happens to
+    be on screen (web pages included) as cards. Never collect that.
+    """
     ts = datetime.now().strftime("%Y%m%d_%H%M%S_%f")[:-3]
+    if window_title and platform.system() == "Darwin":
+        from capture import _find_window_rect_mac
+
+        if _find_window_rect_mac(window_title) is None:
+            print(f"[data] Window {window_title!r} not on screen — frame skipped "
+                  f"(no full-screen fallback).")
+            return None, ts
+    frame = screenshot(window_title=window_title)
     return frame, ts
 
 
@@ -289,6 +388,14 @@ def label_frame(
         if not _looks_like_card(crop):
             stats["empty"] += 1  # e.g. preflop board slots
             continue
+
+        # Snap to the card's white body so recognition and the YOLO box track
+        # the actual card, not the nominal (possibly drifted) ROI.
+        snap = snap_to_card(crop)
+        if snap is not None:
+            sx, sy, sw, sh = snap
+            crop = crop[sy:sy + sh, sx:sx + sw]
+            px = {"x": px["x"] + sx, "y": px["y"] + sy, "w": sw, "h": sh}
 
         cx, cy, nw, nh = _normalize_bbox(px["x"], px["y"], px["w"], px["h"],
                                          frame_w, frame_h)

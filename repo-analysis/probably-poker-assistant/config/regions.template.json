@@ -1,0 +1,29 @@
+{
+  "window": {
+    "title": "PokerStars",
+    "x": 0,
+    "y": 0,
+    "width": 1200,
+    "height": 800
+  },
+  "regions": {
+    "hole_cards": {
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "card_positions": []
+    },
+    "community_cards": {
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "card_positions": []
+    },
+    "pot_amount": {"x": 0, "y": 0, "width": 0, "height": 0},
+    "player_stack": {"x": 0, "y": 0, "width": 0, "height": 0},
+    "current_bet": {"x": 0, "y": 0, "width": 0, "height": 0},
+    "action_buttons": {"x": 0, "y": 0, "width": 0, "height": 0}
+  }
+}

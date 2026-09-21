@@ -1,0 +1,2912 @@
+{
+  "_metadata": {
+    "description": "6-max 100BB cash game opening ranges",
+    "source": "GTO equilibrium approximation",
+    "version": "2.0.0"
+  },
+  "UTG": {
+    "_description": "Opening range for UTG",
+    "AA": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "AKs": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "AKo": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "AQs": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "AQo": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "AJs": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "AJo": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "ATs": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "ATo": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "A9s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "A9o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "A8s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "A8o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "A7s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "A7o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "A6s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "A6o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "A5s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "A5o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.59
+    },
+    "A4s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "A3s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.58
+    },
+    "KK": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "KQs": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "KQo": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "KJs": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "KJo": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "KTs": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "KTo": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "K9s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "K9o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "K8s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "K8o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "K7s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "K7o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "K6s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "K6o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.59
+    },
+    "K5s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "K4s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.58
+    },
+    "QQ": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "QJs": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "QJo": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "QTs": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "QTo": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "Q9s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "Q9o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "Q8s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "Q8o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "Q7s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "Q7o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.59
+    },
+    "Q6s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "Q5s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.58
+    },
+    "JJ": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "JTs": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "JTo": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "J9s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "J9o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "J8s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "J8o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "J7s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "J7o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.51
+    },
+    "J6s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.58
+    },
+    "TT": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "T9s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "T9o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "T8s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "T8o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.65
+    },
+    "T7s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "T6s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.5
+    },
+    "99": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "98s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "98o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.58
+    },
+    "97s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.64
+    },
+    "88": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "87s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.56
+    },
+    "77": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.67
+    },
+    "66": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.5
+    }
+  },
+  "MP": {
+    "_description": "Opening range for MP",
+    "AA": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "AKs": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "AKo": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "AQs": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "AQo": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "AJs": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "AJo": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "ATs": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "ATo": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "A9s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "A9o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "A8s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "A8o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "A7s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "A7o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "A6s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "A6o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "A5s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "A5o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "A4s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "A4o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.62
+    },
+    "A3s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "A2s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.6
+    },
+    "KK": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "KQs": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "KQo": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "KJs": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "KJo": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "KTs": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "KTo": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "K9s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "K9o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "K8s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "K8o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "K7s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "K7o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "K6s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "K6o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "K5s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "K5o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.62
+    },
+    "K4s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "K3s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.6
+    },
+    "QQ": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "QJs": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "QJo": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "QTs": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "QTo": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "Q9s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "Q9o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "Q8s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "Q8o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "Q7s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "Q7o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "Q6s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "Q6o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.62
+    },
+    "Q5s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "Q4s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.6
+    },
+    "JJ": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "JTs": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "JTo": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "J9s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "J9o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "J8s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "J8o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "J7s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "J7o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "J6s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "J5s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.6
+    },
+    "TT": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "T9s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "T9o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "T8s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "T8o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "T7s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "T7o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.61
+    },
+    "T6s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.67
+    },
+    "99": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "98s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "98o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "97s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "97o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.54
+    },
+    "96s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.6
+    },
+    "88": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "87s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "86s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.52
+    },
+    "77": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "66": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.67
+    },
+    "55": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.5
+    }
+  },
+  "CO": {
+    "_description": "Opening range for CO",
+    "AA": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "AKs": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "AKo": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "AQs": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "AQo": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "AJs": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "AJo": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "ATs": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "ATo": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "A9s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "A9o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "A8s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "A8o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "A7s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "A7o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "A6s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "A6o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "A5s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "A5o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "A4s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "A4o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "A3s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "A3o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "A2s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "A2o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.67
+    },
+    "KK": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "KQs": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "KQo": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "KJs": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "KJo": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "KTs": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "KTo": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "K9s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "K9o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "K8s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "K8o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "K7s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "K7o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "K6s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "K6o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "K5s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "K5o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "K4s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "K4o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "K3s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "K3o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.67
+    },
+    "K2s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "K2o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.53
+    },
+    "QQ": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "QJs": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "QJo": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "QTs": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "QTo": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "Q9s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "Q9o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "Q8s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "Q8o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "Q7s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "Q7o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "Q6s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "Q6o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "Q5s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "Q5o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "Q4s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "Q4o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.67
+    },
+    "Q3s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "Q3o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.53
+    },
+    "Q2s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.66
+    },
+    "JJ": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "JTs": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "JTo": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "J9s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "J9o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "J8s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "J8o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "J7s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "J7o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "J6s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "J6o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "J5s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "J5o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.67
+    },
+    "J4s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "J4o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.53
+    },
+    "J3s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.66
+    },
+    "J2s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.52
+    },
+    "TT": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "T9s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "T9o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "T8s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "T8o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "T7s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "T7o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "T6s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "T6o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "T5s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "T5o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.53
+    },
+    "T4s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.66
+    },
+    "T3s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.52
+    },
+    "99": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "98s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "98o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "97s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "97o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "96s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "96o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.67
+    },
+    "95s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "94s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.52
+    },
+    "88": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "87s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "87o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "86s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "86o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.59
+    },
+    "85s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.66
+    },
+    "77": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "76s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "76o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.52
+    },
+    "75s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.58
+    },
+    "66": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "65s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.51
+    },
+    "55": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "44": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.67
+    }
+  },
+  "BTN": {
+    "_description": "Opening range for BTN",
+    "AA": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "AKs": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "AKo": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "AQs": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "AQo": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "AJs": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "AJo": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "ATs": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "ATo": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "A9s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "A9o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "A8s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "A8o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "A7s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "A7o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "A6s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "A6o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "A5s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "A5o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "A4s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "A4o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "A3s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "A3o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "A2s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "A2o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "KK": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "KQs": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "KQo": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "KJs": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "KJo": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "KTs": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "KTo": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "K9s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "K9o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "K8s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "K8o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "K7s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "K7o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "K6s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "K6o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "K5s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "K5o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "K4s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "K4o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "K3s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "K3o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "K2s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "K2o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "QQ": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "QJs": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "QJo": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "QTs": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "QTo": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "Q9s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "Q9o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "Q8s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "Q8o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "Q7s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "Q7o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "Q6s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "Q6o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "Q5s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "Q5o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "Q4s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "Q4o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "Q3s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "Q3o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "Q2s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "Q2o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "JJ": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "JTs": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "JTo": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "J9s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "J9o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "J8s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "J8o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "J7s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "J7o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "J6s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "J6o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "J5s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "J5o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "J4s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "J4o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "J3s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "J3o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "J2s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "J2o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "TT": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "T9s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "T9o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "T8s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "T8o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "T7s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "T7o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "T6s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "T6o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "T5s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "T5o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "T4s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "T4o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "T3s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "T3o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "T2s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "T2o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.62
+    },
+    "99": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "98s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "98o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "97s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "97o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "96s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "96o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "95s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "95o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "94s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "94o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "93s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "93o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.62
+    },
+    "92s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "88": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "87s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "87o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "86s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "86o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "85s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "85o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "84s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "84o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "83s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "82s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.61
+    },
+    "77": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "76s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "76o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "75s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "75o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "74s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "74o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.61
+    },
+    "73s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "66": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "65s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "65o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "64s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "64o": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.54
+    },
+    "63s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.6
+    },
+    "55": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "54s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "53s": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.52
+    },
+    "44": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 1.0
+    },
+    "33": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    },
+    "22": {
+      "action": "raise",
+      "sizing": 2.5,
+      "frequency": 0.85
+    }
+  },
+  "SB": {
+    "_description": "Opening range for SB",
+    "AA": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "AKs": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "AKo": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "AQs": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "AQo": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "AJs": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "AJo": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "ATs": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "ATo": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "A9s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "A9o": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "A8s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "A8o": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "A7s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "A7o": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "A6s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "A6o": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "A5s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "A5o": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "A4s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "A4o": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "A3s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "A3o": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "A2s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "A2o": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "KK": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "KQs": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "KQo": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "KJs": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "KJo": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "KTs": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "KTo": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "K9s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "K9o": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "K8s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "K8o": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "K7s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "K7o": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "K6s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "K6o": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "K5s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "K5o": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "K4s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "K4o": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "K3s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "K3o": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "K2s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "K2o": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 0.85
+    },
+    "QQ": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "QJs": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "QJo": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "QTs": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "QTo": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "Q9s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "Q9o": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "Q8s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "Q8o": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "Q7s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "Q7o": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "Q6s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "Q6o": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "Q5s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "Q5o": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "Q4s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "Q4o": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "Q3s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "Q3o": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 0.85
+    },
+    "Q2s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 0.85
+    },
+    "Q2o": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 0.85
+    },
+    "JJ": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "JTs": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "JTo": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "J9s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "J9o": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "J8s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "J8o": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "J7s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "J7o": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "J6s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "J6o": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "J5s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "J5o": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "J4s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "J4o": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 0.85
+    },
+    "J3s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 0.85
+    },
+    "J3o": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 0.85
+    },
+    "J2s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 0.85
+    },
+    "J2o": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 0.59
+    },
+    "TT": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "T9s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "T9o": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "T8s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "T8o": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "T7s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "T7o": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "T6s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "T6o": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "T5s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "T5o": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 0.85
+    },
+    "T4s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 0.85
+    },
+    "T4o": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 0.85
+    },
+    "T3s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 0.85
+    },
+    "T3o": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 0.59
+    },
+    "T2s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 0.85
+    },
+    "99": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "98s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "98o": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "97s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "97o": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "96s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "96o": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 0.85
+    },
+    "95s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "95o": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 0.85
+    },
+    "94s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 0.85
+    },
+    "94o": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 0.59
+    },
+    "93s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 0.85
+    },
+    "92s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 0.58
+    },
+    "88": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "87s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "87o": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "86s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "86o": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 0.85
+    },
+    "85s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 0.85
+    },
+    "85o": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 0.85
+    },
+    "84s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 0.85
+    },
+    "84o": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 0.51
+    },
+    "83s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 0.58
+    },
+    "77": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "76s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "76o": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 0.85
+    },
+    "75s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 0.85
+    },
+    "75o": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 0.65
+    },
+    "74s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 0.85
+    },
+    "73s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 0.5
+    },
+    "66": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "65s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 0.85
+    },
+    "65o": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 0.58
+    },
+    "64s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 0.64
+    },
+    "55": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "54s": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 0.56
+    },
+    "44": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 1.0
+    },
+    "33": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 0.85
+    },
+    "22": {
+      "action": "raise",
+      "sizing": 3.0,
+      "frequency": 0.67
+    }
+  }
+}

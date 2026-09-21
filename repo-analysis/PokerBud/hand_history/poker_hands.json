@@ -1,0 +1,101 @@
+[
+  {
+    "timestamp": "2026-01-16T01:23:27.736826",
+    "game_state": {
+      "position": "Button",
+      "your_cards": [
+        "Ah",
+        "kD"
+      ],
+      "community_cards": [
+        "Jh",
+        "6D",
+        "2D"
+      ],
+      "pot_size": 100.0,
+      "current_bet": 0.0,
+      "your_stack": 200.0,
+      "betting_round": "Flop",
+      "players_in_hand": 2
+    },
+    "recommendation": {
+      "action": "Raise",
+      "raise_amount": 75,
+      "reasoning": "AK is a strong hand with two overcards to the Jack-high flop, giving you 6 outs to top pair. Being on the button with position advantage and no bet to call makes this an excellent spot for a continuation bet to build the pot and potentially take it down immediately.",
+      "pot_odds": "Not applicable - no bet to call",
+      "estimated_equity": "Approximately 35-40% against typical calling ranges, but significant fold equity makes this profitable"
+    }
+  },
+  {
+    "timestamp": "2026-07-25T20:54:54.033035",
+    "source": "ocr_fallback",
+    "game_state": {
+      "pot_size": null,
+      "your_stack": null,
+      "your_cards": [
+        "Th",
+        "Ad"
+      ],
+      "community_cards": [],
+      "current_bet": null,
+      "position": null,
+      "players_in_hand": null,
+      "betting_round": "Preflop",
+      "vision_error": "Error code: 404 - {'type': 'error', 'error': {'type': 'not_found_error', 'message': 'model: claude-sonnet-4-20250514'}, 'request_id': 'req_011CdPksYt4cV5gdoKkYaWUR'}",
+      "raw_ocr": "[OCR unavailable: tesseract is not installed or it's not in your PATH. See README file for more information.]"
+    },
+    "local_summary": {
+      "hole_display": "T\u2665  A\u2666",
+      "board_display": "\u2014",
+      "pot_odds": null,
+      "spr": null,
+      "made_hand": null,
+      "preflop": {
+        "tier": "strong",
+        "label": "Ace-x Broadway",
+        "suited": false,
+        "pair": false,
+        "display": "T\u2665  A\u2666"
+      }
+    },
+    "recommendation": {
+      "error": "API call failed: Error code: 404 - {'type': 'error', 'error': {'type': 'not_found_error', 'message': 'model: claude-sonnet-4-20250514'}, 'request_id': 'req_011CdPksaT4vM414jmRqdmoX'}"
+    }
+  },
+  {
+    "timestamp": "2026-07-25T20:55:05.685872",
+    "source": "ocr_fallback",
+    "game_state": {
+      "pot_size": null,
+      "your_stack": null,
+      "your_cards": [
+        "Th",
+        "Ad"
+      ],
+      "community_cards": [],
+      "current_bet": null,
+      "position": null,
+      "players_in_hand": null,
+      "betting_round": "Preflop",
+      "vision_error": "Error code: 404 - {'type': 'error', 'error': {'type': 'not_found_error', 'message': 'model: claude-sonnet-4-20250514'}, 'request_id': 'req_011CdPktPCBNVR3qdyqAk6c7'}",
+      "raw_ocr": "[OCR unavailable: tesseract is not installed or it's not in your PATH. See README file for more information.]"
+    },
+    "local_summary": {
+      "hole_display": "T\u2665  A\u2666",
+      "board_display": "\u2014",
+      "pot_odds": null,
+      "spr": null,
+      "made_hand": null,
+      "preflop": {
+        "tier": "strong",
+        "label": "Ace-x Broadway",
+        "suited": false,
+        "pair": false,
+        "display": "T\u2665  A\u2666"
+      }
+    },
+    "recommendation": {
+      "error": "API call failed: Error code: 404 - {'type': 'error', 'error': {'type': 'not_found_error', 'message': 'model: claude-sonnet-4-20250514'}, 'request_id': 'req_011CdPktRnCwYqqgB7ajMrkQ'}"
+    }
+  }
+]

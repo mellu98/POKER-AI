@@ -1,0 +1,243 @@
+name: CI - Poker Assistant Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+
+jobs:
+  test-installation:
+    name: Test Installation & Dependencies
+    runs-on: windows-latest
+
+    strategy:
+      matrix:
+        python-version: ['3.11', '3.12', '3.13']
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+        cache: 'pip'
+
+    - name: Display Python version
+      run: python --version
+
+    - name: Upgrade pip
+      run: |
+        python -m pip install --upgrade pip
+        pip install setuptools wheel
+
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+      timeout-minutes: 15
+
+    - name: Setup configuration files
+      run: |
+        cp config/regions.template.json config/regions.json
+      shell: bash
+
+    - name: Run installation verification tests
+      run: |
+        python test_installation.py
+
+    - name: Run full system integration test
+      run: |
+        python test_full_system.py
+    - name: Run strategy engine verify
+      run: |
+        python test_strategy.py
+
+    - name: Check for syntax errors
+      run: |
+        python -m py_compile src/main.py
+        python -m py_compile src/utils/logger.py
+        python -m py_compile src/utils/config_loader.py
+
+    - name: Upload logs on failure
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-logs-${{ matrix.python-version }}
+        path: logs/
+        retention-days: 7
+
+  code-quality:
+    name: Code Quality Checks
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        cache: 'pip'
+
+    - name: Install linting tools
+      run: |
+        pip install flake8 black
+
+    - name: Check code formatting with Black
+      run: |
+        black --check src/ || true
+      continue-on-error: true
+
+    - name: Lint with flake8
+      run: |
+        flake8 src/ --count --select=E9,F63,F7,F82 --show-source --statistics
+        flake8 src/ --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+      continue-on-error: true
+
+  structure-validation:
+    name: Validate Project Structure
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Verify required directories exist
+      run: |
+        $dirs = @(
+          "src", "src/capture", "src/detection", "src/strategy", "src/ui", "src/utils",
+          "config", "database", "models", "models/card_detector", "models/card_templates",
+          "screenshots", "screenshots/test_hands", "screenshots/calibration",
+          "logs", "tools"
+        )
+
+        $missing = @()
+        foreach ($dir in $dirs) {
+          if (-not (Test-Path $dir)) {
+            $missing += $dir
+          }
+        }
+
+        if ($missing.Count -gt 0) {
+          Write-Error "Missing directories: $($missing -join ', ')"
+          exit 1
+        }
+
+        Write-Host "All required directories exist!"
+      shell: pwsh
+
+    - name: Verify required files exist
+      run: |
+        $files = @(
+          "requirements.txt",
+          "test_installation.py",
+          "src/main.py",
+          "src/utils/logger.py",
+          "src/utils/config_loader.py",
+          "config/settings.json",
+          "config/regions.template.json",
+          "config/poker_rules.json",
+          ".gitignore",
+          "README.md"
+        )
+
+        $missing = @()
+        foreach ($file in $files) {
+          if (-not (Test-Path $file)) {
+            $missing += $file
+          }
+        }
+
+        if ($missing.Count -gt 0) {
+          Write-Error "Missing files: $($missing -join ', ')"
+          exit 1
+        }
+
+        Write-Host "All required files exist!"
+      shell: pwsh
+
+    - name: Verify Python __init__ files
+      run: |
+        $packages = @(
+          "src",
+          "src/capture",
+          "src/detection",
+          "src/strategy",
+          "src/ui",
+          "src/utils"
+        )
+
+        $missing = @()
+        foreach ($pkg in $packages) {
+          $init_file = Join-Path $pkg "__init__.py"
+          if (-not (Test-Path $init_file)) {
+            $missing += $init_file
+          }
+        }
+
+        if ($missing.Count -gt 0) {
+          Write-Error "Missing __init__.py files: $($missing -join ', ')"
+          exit 1
+        }
+
+        Write-Host "All __init__.py files exist!"
+      shell: pwsh
+
+  config-validation:
+    name: Validate Configuration Files
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        cache: 'pip'
+
+    - name: Setup configuration files
+      run: |
+        cp config/regions.template.json config/regions.json
+      shell: bash
+
+    - name: Validate JSON configuration files
+      run: |
+        python -c "import json; json.load(open('config/settings.json'))"
+        python -c "import json; json.load(open('config/regions.json'))"
+        python -c "import json; json.load(open('config/poker_rules.json'))"
+        echo "All JSON configuration files are valid!"
+
+    - name: Test config loader utility
+      run: |
+        python -c "import sys; sys.path.insert(0, '.'); from src.utils.config_loader import ConfigLoader; config = ConfigLoader(); settings = config.load('settings.json'); print('Config loader working correctly!'); print('Capture interval:', settings['capture']['interval_seconds'])"
+      shell: bash
+
+  phase-status:
+    name: Report Phase Status
+    runs-on: windows-latest
+    needs: [test-installation, structure-validation, config-validation]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Generate phase status report
+      run: |
+        echo "## Poker AI Assistant - Build Status" >> $env:GITHUB_STEP_SUMMARY
+        echo "" >> $env:GITHUB_STEP_SUMMARY
+        echo "### Phase 5: Production Ready ✅" >> $env:GITHUB_STEP_SUMMARY
+        echo "- Environment: Verified" >> $env:GITHUB_STEP_SUMMARY
+        echo "- Dependencies: Installed (mss 9.0.1, PyQt5)" >> $env:GITHUB_STEP_SUMMARY
+        echo "- Integration: Passed (test_full_system.py)" >> $env:GITHUB_STEP_SUMMARY
+        echo "- Strategy: Verified (test_strategy.py)" >> $env:GITHUB_STEP_SUMMARY
+        echo "" >> $env:GITHUB_STEP_SUMMARY
+        echo "### Next Steps" >> $env:GITHUB_STEP_SUMMARY
+        echo "- Live Table Verification" >> $env:GITHUB_STEP_SUMMARY
+        echo "- Model Training (Session Logs)" >> $env:GITHUB_STEP_SUMMARY
+      shell: pwsh

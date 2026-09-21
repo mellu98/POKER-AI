@@ -1,0 +1,58 @@
+﻿python : INFO - 
+Running test: test_anch
+or_manager_init
+At line:1 char:1
++ python 
+test_full_system.py > 
+test_full_output_2.txt 
+2>&1
++ ~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~
+    + CategoryInfo     
+         : NotSpecifi  
+  ed: (INFO - Runnin   
+ g ...or_manager_in    
+it:String) [], Rem    
+oteException
+    + FullyQualifiedEr 
+   rorId : NativeComm  
+  andError
+ 
+INFO:poker_ai:Running 
+test: test_anchor_manag
+er_init
+.INFO - Running test: 
+test_config_loading
+INFO:poker_ai:Running 
+test: 
+test_config_loading
+.INFO - Running test: 
+test_imports
+INFO:poker_ai:Running 
+test: test_imports
+.INFO - Running test: t
+est_strategy_engine_ini
+t
+INFO:poker_ai:Running 
+test: test_strategy_eng
+ine_init
+.INFO - Running test: 
+test_window_finder_mock
+INFO:poker_ai:Running 
+test: 
+test_window_finder_mock
+INFO - Found window: 
+Test Window (handle: 
+12345)
+INFO:poker_ai:Found 
+window: Test Window 
+(handle: 12345)
+.
+-----------------------
+-----------------------
+-----------------------
+-
+Ran 5 tests in 0.134s
+
+OK

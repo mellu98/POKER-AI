@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.nbc
+*.nbi
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.venv/
+venv/
+.env
+.DS_Store
+
+# IDE
+.idea/
+.vscode/
+.claude/
+.agents/
+.codex/
+AGENTS.md
+CLAUDE.md
+.DS_Store
+
+# Build artifacts
+submission/
+build/
+*.log
+*.lock
+
+# Training artifacts
+checkpoints/
+
+# Benchmark results
+sims/
+sims_extra/
+sims_segmented/
+reports/
+
+# Large data files regenerated locally
+data/hand_eval_lut.npz
+
+# Private analysis data and portal snapshots
+analysis/
+docs/research/private/

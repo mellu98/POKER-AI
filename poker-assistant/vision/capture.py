@@ -75,7 +75,14 @@ def _find_window_rect_mac(title: str) -> Optional[dict]:
     with mss() as sct:
         screen_h = sct.monitors[0]["height"]
 
-    for win in window_list:
+    # Exact title match first: with several Chrome tabs open ("Poker" the table,
+    # "Poker Online: ..." the lobby) a plain substring match can grab the wrong
+    # window depending on focus order.
+    ordered = sorted(
+        window_list,
+        key=lambda w: (w.get(Quartz.kCGWindowName, "") or "") != title,
+    )
+    for win in ordered:
         win_title = win.get(Quartz.kCGWindowName, "") or ""
         if title not in win_title:
             continue

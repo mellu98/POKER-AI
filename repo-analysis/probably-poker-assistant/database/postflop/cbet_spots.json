@@ -1,0 +1,164 @@
+{
+  "_metadata": {
+    "description": "C-bet frequencies by board texture and hand strength",
+    "source": "GTO equilibrium approximation",
+    "version": "1.0.0",
+    "notes": "Frequencies are for single-raised pots in position"
+  },
+  "dry_boards": {
+    "_description": "Rainbow boards with no connectivity (e.g., K72r, A83r)",
+    "monster": {
+      "action": "bet",
+      "sizing_pct": 0.75,
+      "frequency": 1.0,
+      "reasoning": "Value bet strongly on safe board"
+    },
+    "strong": {
+      "action": "bet",
+      "sizing_pct": 0.66,
+      "frequency": 0.85,
+      "reasoning": "High frequency c-bet for value and protection"
+    },
+    "medium": {
+      "action": "bet",
+      "sizing_pct": 0.50,
+      "frequency": 0.65,
+      "reasoning": "Moderate c-bet frequency with medium sizing"
+    },
+    "weak": {
+      "action": "bet",
+      "sizing_pct": 0.33,
+      "frequency": 0.45,
+      "reasoning": "Small sizing to deny equity cheaply"
+    },
+    "draw": {
+      "action": "bet",
+      "sizing_pct": 0.50,
+      "frequency": 0.55,
+      "reasoning": "Semi-bluff draws on dry texture"
+    },
+    "air": {
+      "action": "bet",
+      "sizing_pct": 0.33,
+      "frequency": 0.35,
+      "reasoning": "Small bluffs on favorable boards"
+    }
+  },
+  "wet_boards": {
+    "_description": "Connected and/or two-tone boards (e.g., JT9ss, 876cc)",
+    "monster": {
+      "action": "bet",
+      "sizing_pct": 0.75,
+      "frequency": 0.90,
+      "reasoning": "Build pot and charge draws"
+    },
+    "strong": {
+      "action": "bet",
+      "sizing_pct": 0.66,
+      "frequency": 0.70,
+      "reasoning": "Value bet but be cautious of draws"
+    },
+    "medium": {
+      "action": "check",
+      "sizing_pct": 0.0,
+      "frequency": 0.55,
+      "reasoning": "Check more on coordinated boards"
+    },
+    "weak": {
+      "action": "check",
+      "sizing_pct": 0.0,
+      "frequency": 0.75,
+      "reasoning": "Protect checking range on wet boards"
+    },
+    "draw": {
+      "action": "bet",
+      "sizing_pct": 0.50,
+      "frequency": 0.60,
+      "reasoning": "Semi-bluff with equity"
+    },
+    "air": {
+      "action": "check",
+      "sizing_pct": 0.0,
+      "frequency": 0.80,
+      "reasoning": "Avoid bluffing into draws"
+    }
+  },
+  "dynamic_boards": {
+    "_description": "Paired or monotone boards (e.g., KK7, AhJh5h)",
+    "monster": {
+      "action": "bet",
+      "sizing_pct": 0.50,
+      "frequency": 0.85,
+      "reasoning": "Extract value from worried opponents"
+    },
+    "strong": {
+      "action": "bet",
+      "sizing_pct": 0.50,
+      "frequency": 0.60,
+      "reasoning": "Mixed strategy on dynamic textures"
+    },
+    "medium": {
+      "action": "check",
+      "sizing_pct": 0.0,
+      "frequency": 0.65,
+      "reasoning": "Exercise caution on scary boards"
+    },
+    "weak": {
+      "action": "check",
+      "sizing_pct": 0.0,
+      "frequency": 0.85,
+      "reasoning": "Rarely bluff on dynamic boards"
+    },
+    "draw": {
+      "action": "bet",
+      "sizing_pct": 0.50,
+      "frequency": 0.40,
+      "reasoning": "Selective semi-bluffing"
+    },
+    "air": {
+      "action": "check",
+      "sizing_pct": 0.0,
+      "frequency": 0.90,
+      "reasoning": "Avoid bluffing on dangerous boards"
+    }
+  },
+  "medium_boards": {
+    "_description": "Moderate connectivity/flush draws (e.g., Q84hh, T97r)",
+    "monster": {
+      "action": "bet",
+      "sizing_pct": 0.66,
+      "frequency": 0.95,
+      "reasoning": "Strong value betting"
+    },
+    "strong": {
+      "action": "bet",
+      "sizing_pct": 0.66,
+      "frequency": 0.75,
+      "reasoning": "Balanced value betting"
+    },
+    "medium": {
+      "action": "bet",
+      "sizing_pct": 0.50,
+      "frequency": 0.50,
+      "reasoning": "Mixed strategy approach"
+    },
+    "weak": {
+      "action": "check",
+      "sizing_pct": 0.0,
+      "frequency": 0.60,
+      "reasoning": "Check-call or give up"
+    },
+    "draw": {
+      "action": "bet",
+      "sizing_pct": 0.50,
+      "frequency": 0.55,
+      "reasoning": "Semi-bluff with good equity"
+    },
+    "air": {
+      "action": "bet",
+      "sizing_pct": 0.33,
+      "frequency": 0.30,
+      "reasoning": "Selective bluffing with blockers"
+    }
+  }
+}

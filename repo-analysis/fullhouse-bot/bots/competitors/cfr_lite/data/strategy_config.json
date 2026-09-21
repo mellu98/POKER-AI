@@ -1,0 +1,15 @@
+{
+  "version": "fullhouse_edge_v2_zip_2026_05_04",
+  "max_seen_hands": 120,
+  "equity_iterations": {
+    "flop": 150,
+    "turn": 180,
+    "river": 220,
+    "heads_up_bonus": 50,
+    "multiway_penalty": 55,
+    "multiway_floor": 80
+  },
+  "river_unknown_large_bet_pot_fraction": 0.32,
+  "passive_big_bet_extra_risk": 0.025,
+  "notes": "Small config payload to exercise bot.zip data loading. Larger versions can replace this with precomputed preflop/equity tables."
+}

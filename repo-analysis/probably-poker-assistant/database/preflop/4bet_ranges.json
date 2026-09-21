@@ -1,0 +1,1050 @@
+{
+  "_metadata": {
+    "description": "4-bet and call ranges vs 3-bet",
+    "sizing": "2.2-2.5x 3-bet size",
+    "version": "2.0.0"
+  },
+  "UTG_vs_3bet": {
+    "4bet": {
+      "AA": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "AKs": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "AKo": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "AQs": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "AQo": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "AJs": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "AJo": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "ATs": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "A5s": {
+        "sizing_multiplier": 2.3,
+        "frequency": 0.3
+      },
+      "A4s": {
+        "sizing_multiplier": 2.3,
+        "frequency": 0.3
+      },
+      "A3s": {
+        "sizing_multiplier": 2.3,
+        "frequency": 0.3
+      },
+      "A2s": {
+        "sizing_multiplier": 2.3,
+        "frequency": 0.3
+      },
+      "KK": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "KQs": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "KQo": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "KJs": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "KJo": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "KTs": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "QJs": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "QJo": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "QTs": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      }
+    },
+    "call": {
+      "ATo": {
+        "frequency": 0.75
+      },
+      "A9s": {
+        "frequency": 0.72
+      },
+      "A9o": {
+        "frequency": 0.64
+      },
+      "A8s": {
+        "frequency": 0.68
+      },
+      "A8o": {
+        "frequency": 0.6
+      },
+      "A7s": {
+        "frequency": 0.64
+      },
+      "KTo": {
+        "frequency": 0.73
+      },
+      "K9s": {
+        "frequency": 0.7
+      },
+      "K9o": {
+        "frequency": 0.62
+      },
+      "K8s": {
+        "frequency": 0.64
+      },
+      "QQ": {
+        "frequency": 0.75
+      },
+      "QTo": {
+        "frequency": 0.71
+      },
+      "Q9s": {
+        "frequency": 0.68
+      },
+      "Q8s": {
+        "frequency": 0.62
+      },
+      "JJ": {
+        "frequency": 0.7
+      },
+      "JTs": {
+        "frequency": 0.77
+      },
+      "JTo": {
+        "frequency": 0.69
+      },
+      "J9s": {
+        "frequency": 0.66
+      },
+      "TT": {
+        "frequency": 0.65
+      },
+      "T9s": {
+        "frequency": 0.63
+      },
+      "99": {
+        "frequency": 0.6
+      }
+    }
+  },
+  "MP_vs_3bet": {
+    "4bet": {
+      "AA": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "AKs": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "AKo": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "AQs": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "AQo": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "AJs": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "AJo": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "ATs": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "ATo": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "A5s": {
+        "sizing_multiplier": 2.3,
+        "frequency": 0.3
+      },
+      "A4s": {
+        "sizing_multiplier": 2.3,
+        "frequency": 0.3
+      },
+      "A3s": {
+        "sizing_multiplier": 2.3,
+        "frequency": 0.3
+      },
+      "A2s": {
+        "sizing_multiplier": 2.3,
+        "frequency": 0.3
+      },
+      "KK": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "KQs": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "KQo": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "KJs": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "KJo": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "KTs": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "QQ": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "QJs": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "QJo": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "QTs": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "JTs": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      }
+    },
+    "call": {
+      "A9s": {
+        "frequency": 0.77
+      },
+      "A9o": {
+        "frequency": 0.69
+      },
+      "A8s": {
+        "frequency": 0.73
+      },
+      "A8o": {
+        "frequency": 0.65
+      },
+      "A7s": {
+        "frequency": 0.69
+      },
+      "A7o": {
+        "frequency": 0.61
+      },
+      "A6s": {
+        "frequency": 0.65
+      },
+      "KTo": {
+        "frequency": 0.78
+      },
+      "K9s": {
+        "frequency": 0.75
+      },
+      "K9o": {
+        "frequency": 0.67
+      },
+      "K8s": {
+        "frequency": 0.69
+      },
+      "K8o": {
+        "frequency": 0.61
+      },
+      "K7s": {
+        "frequency": 0.65
+      },
+      "K6s": {
+        "frequency": 0.6
+      },
+      "QTo": {
+        "frequency": 0.76
+      },
+      "Q9s": {
+        "frequency": 0.73
+      },
+      "Q9o": {
+        "frequency": 0.65
+      },
+      "Q8s": {
+        "frequency": 0.67
+      },
+      "Q7s": {
+        "frequency": 0.6
+      },
+      "JJ": {
+        "frequency": 0.75
+      },
+      "JTo": {
+        "frequency": 0.74
+      },
+      "J9s": {
+        "frequency": 0.71
+      },
+      "J9o": {
+        "frequency": 0.63
+      },
+      "J8s": {
+        "frequency": 0.65
+      },
+      "TT": {
+        "frequency": 0.7
+      },
+      "T9s": {
+        "frequency": 0.68
+      },
+      "T9o": {
+        "frequency": 0.6
+      },
+      "T8s": {
+        "frequency": 0.62
+      },
+      "99": {
+        "frequency": 0.65
+      },
+      "98s": {
+        "frequency": 0.6
+      },
+      "88": {
+        "frequency": 0.6
+      }
+    }
+  },
+  "CO_vs_3bet": {
+    "4bet": {
+      "AA": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "AKs": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "AKo": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "AQs": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "AQo": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "AJs": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "AJo": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "ATs": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "ATo": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "A9s": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "A5s": {
+        "sizing_multiplier": 2.3,
+        "frequency": 0.5
+      },
+      "A4s": {
+        "sizing_multiplier": 2.3,
+        "frequency": 0.5
+      },
+      "A3s": {
+        "sizing_multiplier": 2.3,
+        "frequency": 0.5
+      },
+      "A2s": {
+        "sizing_multiplier": 2.3,
+        "frequency": 0.5
+      },
+      "KK": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "KQs": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "KQo": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "KJs": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "KJo": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "KTs": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "KTo": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "K9s": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "QQ": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "QJs": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "QJo": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "QTs": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "QTo": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "JJ": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "JTs": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      }
+    },
+    "call": {
+      "A9o": {
+        "frequency": 0.74
+      },
+      "A8s": {
+        "frequency": 0.78
+      },
+      "A8o": {
+        "frequency": 0.7
+      },
+      "A7s": {
+        "frequency": 0.74
+      },
+      "A7o": {
+        "frequency": 0.66
+      },
+      "A6s": {
+        "frequency": 0.7
+      },
+      "A6o": {
+        "frequency": 0.62
+      },
+      "K9o": {
+        "frequency": 0.72
+      },
+      "K8s": {
+        "frequency": 0.74
+      },
+      "K8o": {
+        "frequency": 0.66
+      },
+      "K7s": {
+        "frequency": 0.7
+      },
+      "K7o": {
+        "frequency": 0.62
+      },
+      "K6s": {
+        "frequency": 0.65
+      },
+      "K5s": {
+        "frequency": 0.61
+      },
+      "Q9s": {
+        "frequency": 0.78
+      },
+      "Q9o": {
+        "frequency": 0.7
+      },
+      "Q8s": {
+        "frequency": 0.72
+      },
+      "Q8o": {
+        "frequency": 0.64
+      },
+      "Q7s": {
+        "frequency": 0.65
+      },
+      "Q6s": {
+        "frequency": 0.61
+      },
+      "JTo": {
+        "frequency": 0.79
+      },
+      "J9s": {
+        "frequency": 0.76
+      },
+      "J9o": {
+        "frequency": 0.68
+      },
+      "J8s": {
+        "frequency": 0.69
+      },
+      "J8o": {
+        "frequency": 0.61
+      },
+      "J7s": {
+        "frequency": 0.63
+      },
+      "TT": {
+        "frequency": 0.75
+      },
+      "T9s": {
+        "frequency": 0.73
+      },
+      "T9o": {
+        "frequency": 0.65
+      },
+      "T8s": {
+        "frequency": 0.67
+      },
+      "T7s": {
+        "frequency": 0.61
+      },
+      "99": {
+        "frequency": 0.7
+      },
+      "98s": {
+        "frequency": 0.65
+      },
+      "88": {
+        "frequency": 0.65
+      }
+    }
+  },
+  "BTN_vs_3bet": {
+    "4bet": {
+      "AA": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "AKs": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "AKo": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "AQs": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "AQo": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "AJs": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "AJo": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "ATs": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "ATo": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "A9s": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "A8s": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "A5s": {
+        "sizing_multiplier": 2.3,
+        "frequency": 0.5
+      },
+      "A4s": {
+        "sizing_multiplier": 2.3,
+        "frequency": 0.5
+      },
+      "A3s": {
+        "sizing_multiplier": 2.3,
+        "frequency": 0.5
+      },
+      "A2s": {
+        "sizing_multiplier": 2.3,
+        "frequency": 0.5
+      },
+      "KK": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "KQs": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "KQo": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "KJs": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "KJo": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "KTs": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "KTo": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "K9s": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "QQ": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "QJs": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "QJo": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "QTs": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "QTo": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "Q9s": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "JJ": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "JTs": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "JTo": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "J9s": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "TT": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      }
+    },
+    "call": {
+      "A9o": {
+        "frequency": 0.79
+      },
+      "A8o": {
+        "frequency": 0.75
+      },
+      "A7s": {
+        "frequency": 0.79
+      },
+      "A7o": {
+        "frequency": 0.71
+      },
+      "A6s": {
+        "frequency": 0.75
+      },
+      "A6o": {
+        "frequency": 0.67
+      },
+      "A5o": {
+        "frequency": 0.62
+      },
+      "K9o": {
+        "frequency": 0.77
+      },
+      "K8s": {
+        "frequency": 0.79
+      },
+      "K8o": {
+        "frequency": 0.71
+      },
+      "K7s": {
+        "frequency": 0.75
+      },
+      "K7o": {
+        "frequency": 0.67
+      },
+      "K6s": {
+        "frequency": 0.7
+      },
+      "K6o": {
+        "frequency": 0.62
+      },
+      "K5s": {
+        "frequency": 0.66
+      },
+      "K4s": {
+        "frequency": 0.62
+      },
+      "Q9o": {
+        "frequency": 0.75
+      },
+      "Q8s": {
+        "frequency": 0.77
+      },
+      "Q8o": {
+        "frequency": 0.69
+      },
+      "Q7s": {
+        "frequency": 0.7
+      },
+      "Q7o": {
+        "frequency": 0.62
+      },
+      "Q6s": {
+        "frequency": 0.66
+      },
+      "Q5s": {
+        "frequency": 0.62
+      },
+      "J9o": {
+        "frequency": 0.73
+      },
+      "J8s": {
+        "frequency": 0.74
+      },
+      "J8o": {
+        "frequency": 0.67
+      },
+      "J7s": {
+        "frequency": 0.68
+      },
+      "J7o": {
+        "frequency": 0.6
+      },
+      "J6s": {
+        "frequency": 0.62
+      },
+      "T9s": {
+        "frequency": 0.78
+      },
+      "T9o": {
+        "frequency": 0.7
+      },
+      "T8s": {
+        "frequency": 0.72
+      },
+      "T8o": {
+        "frequency": 0.64
+      },
+      "T7s": {
+        "frequency": 0.66
+      },
+      "T6s": {
+        "frequency": 0.6
+      },
+      "99": {
+        "frequency": 0.75
+      },
+      "98s": {
+        "frequency": 0.7
+      },
+      "98o": {
+        "frequency": 0.62
+      },
+      "97s": {
+        "frequency": 0.64
+      },
+      "88": {
+        "frequency": 0.7
+      },
+      "87s": {
+        "frequency": 0.62
+      },
+      "77": {
+        "frequency": 0.65
+      },
+      "66": {
+        "frequency": 0.6
+      }
+    }
+  },
+  "SB_vs_3bet": {
+    "4bet": {
+      "AA": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "AKs": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "AKo": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "AQs": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "AQo": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "AJs": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "AJo": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "ATs": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "ATo": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "A9s": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "A5s": {
+        "sizing_multiplier": 2.3,
+        "frequency": 0.5
+      },
+      "A4s": {
+        "sizing_multiplier": 2.3,
+        "frequency": 0.5
+      },
+      "A3s": {
+        "sizing_multiplier": 2.3,
+        "frequency": 0.5
+      },
+      "A2s": {
+        "sizing_multiplier": 2.3,
+        "frequency": 0.5
+      },
+      "KK": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "KQs": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "KQo": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "KJs": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "KJo": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "KTs": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "KTo": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "K9s": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "QQ": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "QJs": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "QJo": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "QTs": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "QTo": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "JJ": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      },
+      "JTs": {
+        "sizing_multiplier": 2.3,
+        "frequency": 1.0
+      }
+    },
+    "call": {
+      "A9o": {
+        "frequency": 0.69
+      },
+      "A8s": {
+        "frequency": 0.73
+      },
+      "A8o": {
+        "frequency": 0.65
+      },
+      "A7s": {
+        "frequency": 0.69
+      },
+      "A7o": {
+        "frequency": 0.61
+      },
+      "A6s": {
+        "frequency": 0.65
+      },
+      "K9o": {
+        "frequency": 0.67
+      },
+      "K8s": {
+        "frequency": 0.69
+      },
+      "K8o": {
+        "frequency": 0.61
+      },
+      "K7s": {
+        "frequency": 0.65
+      },
+      "K6s": {
+        "frequency": 0.6
+      },
+      "Q9s": {
+        "frequency": 0.73
+      },
+      "Q9o": {
+        "frequency": 0.65
+      },
+      "Q8s": {
+        "frequency": 0.67
+      },
+      "Q7s": {
+        "frequency": 0.6
+      },
+      "JTo": {
+        "frequency": 0.74
+      },
+      "J9s": {
+        "frequency": 0.71
+      },
+      "J9o": {
+        "frequency": 0.63
+      },
+      "J8s": {
+        "frequency": 0.65
+      },
+      "TT": {
+        "frequency": 0.7
+      },
+      "T9s": {
+        "frequency": 0.68
+      },
+      "T9o": {
+        "frequency": 0.6
+      },
+      "T8s": {
+        "frequency": 0.62
+      },
+      "99": {
+        "frequency": 0.65
+      },
+      "98s": {
+        "frequency": 0.6
+      },
+      "88": {
+        "frequency": 0.6
+      }
+    }
+  }
+}
