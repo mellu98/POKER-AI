@@ -282,14 +282,22 @@ class AssistantController:
             pretty = action.upper()
             sizing = ""
 
-        # ---- 4. Update overlay ----
+        # ---- 4. Update overlay (con info FSM) ----
+        hand_id = state.get("hand_id", "")
+        spr = state.get("spr", 0)
+        legal = state.get("legal_actions", [])
+        pot_bb = state.get("pot_bb", 0)
+        legal_str = "/".join(a.upper()[:4] for a in legal[:3])
         self.overlay.update(
             equity=equity,
             action=pretty,
             sizing=sizing,
             hand=hand_str,
             board=board_str,
-            status=f"{stage.upper()} | {position} | Pot €{pot / 100:.2f}",
+            status=(
+                f"{stage.upper()} | {position} | {pot_bb:.0f}bb | "
+                f"SPR {spr:.1f} | {legal_str} | {hand_id}"
+            ),
         )
 
     def _build_history(self, state: dict) -> list:
