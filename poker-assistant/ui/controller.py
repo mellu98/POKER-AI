@@ -3,9 +3,10 @@ Controller — ties together Vision, Engine, Equity, and Overlay.
 
 Runs a loop that:
   1. Fetches current table state
-  2. Queries the CFR engine for the GTO action
-  3. Computes real-time equity
-  4. Updates the overlay window
+  2. Validates it through the HandStateMachine (typed state + FSM)
+  3. Queries the CFR engine for the GTO action (only on stable states)
+  4. Computes real-time equity
+  5. Updates the overlay window
 """
 
 import sys
@@ -32,6 +33,10 @@ from overlay import PokerOverlay
 from state_extractor import get_extractor  # type: ignore[import-not-found]
 from temporal_smoother import TemporalSmoother  # type: ignore[import-not-found]
 
+sys.path.insert(0, str(Path(__file__).parent.parent / "state"))
+from machine import HandStateMachine  # type: ignore[import-not-found]
+from models import PokerState  # type: ignore[import-not-found]
+
 
 class AssistantController:
     def __init__(
@@ -49,6 +54,9 @@ class AssistantController:
         self.overlay = PokerOverlay()
         self._running = False
         self._thread: threading.Thread | None = None
+
+        # FSM: stato tipizzato validato + tracking mano + stabilita' frame
+        self.fsm = HandStateMachine(min_confidence=0.3, stable_frames=2)
 
         # Optional temporal smoothing: protects against single-frame misreads.
         temporal_cfg = self.config.get("vision", {}).get("temporal", {})
@@ -127,6 +135,45 @@ class AssistantController:
         # propagate straight into the engine/overlay.
         if self.temporal_smoother is not None:
             state = self.temporal_smoother.update(state)
+
+        # ---- FSM: validazione tipizzata + stabilita' + tracking mano ----
+        update = self.fsm.ingest(state)
+        if not update.stable:
+            # stato non ancora stabile: overlay mostra perche'
+            reason = update.reason
+            self.overlay.update(
+                status=f"WAIT | {reason}",
+                hand=" ".join(state.get("hole", [])) if state.get("hole") else "NO CARDS",
+                board=" ".join(state.get("board", [])),
+                equity=0.0,
+                action="WAIT",
+                sizing="",
+            )
+            return
+
+        # stato stabile ma non valido (carte illeggibili): non consigliare
+        confirmed = update.state
+        if confirmed is not None and not confirmed.is_valid:
+            errs = "; ".join(confirmed.validation_errors[:2])
+            self.overlay.update(
+                status=f"WAIT | {confirmed.street.value.upper()} | {errs}",
+                hand=confirmed.hero_cards_str or "NO CARDS",
+                board=confirmed.board_str,
+                equity=0.0,
+                action="WAIT",
+                sizing="",
+            )
+            return
+
+        # stato stabile e valido: il resto del tick usa lo stato tipizzato
+        # via to_dict() per retrocompatibilita' con equity/engine/overlay
+        if confirmed is None:
+            # stabile ma senza stato (caso limite): non consigliare
+            return
+
+        state = confirmed.to_dict()
+        state["hand_id"] = update.hand_id or ""
+        state["fsm_changed"] = update.changed
 
         hole = state["hole"]
         board = state["board"]
