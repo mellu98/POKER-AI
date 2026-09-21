@@ -8,6 +8,7 @@ posizione e aggiorna chirurgicamente config.yaml preservando ancore
 
 Uso:  python3 calibrate_live.py [--seconds 90] [--title Poker]
 """
+
 import argparse
 import statistics
 import sys
@@ -25,7 +26,7 @@ _capture = __import__("capture")
 screenshot = _capture.screenshot
 
 FRAME_GAP_S = 3.0
-HOLE_Y_MIN, HOLE_Y_MAX = 0.55, 0.80   # fascia verticale delle hole (frazioni)
+HOLE_Y_MIN, HOLE_Y_MAX = 0.55, 0.80  # fascia verticale delle hole (frazioni)
 HOLE_X_MIN, HOLE_X_MAX = 0.30, 0.70
 BOARD_Y_MIN, BOARD_Y_MAX = 0.30, 0.52  # fascia del board
 BOARD_X_MIN, BOARD_X_MAX = 0.25, 0.75
@@ -65,8 +66,9 @@ def detect_hole_boxes(frame: np.ndarray) -> list[dict]:
             continue
         aspect = w / h
         if 0.5 < aspect <= 0.95:
-            out.append({"x": x, "y": y, "w": w, "h": h,
-                        "cx": (x + w / 2) / fw, "cy": cy})
+            out.append(
+                {"x": x, "y": y, "w": w, "h": h, "cx": (x + w / 2) / fw, "cy": cy}
+            )
         elif 0.95 < aspect <= 1.7 and w > single_w * 1.4:
             # coppia sovrapposta: due ROI larghe quanto una carta, il secondo
             # spostato a destra di ~62% della larghezza (angolo rank/suit visibile)
@@ -75,10 +77,12 @@ def detect_hole_boxes(frame: np.ndarray) -> list[dict]:
                 x2 = int(x + single_w * 0.62)
             except (TypeError, ValueError, OverflowError):
                 continue
-            out.append({"x": x, "y": y, "w": sw, "h": h,
-                        "cx": (x + sw / 2) / fw, "cy": cy})
-            out.append({"x": x2, "y": y, "w": sw, "h": h,
-                        "cx": (x2 + sw / 2) / fw, "cy": cy})
+            out.append(
+                {"x": x, "y": y, "w": sw, "h": h, "cx": (x + sw / 2) / fw, "cy": cy}
+            )
+            out.append(
+                {"x": x2, "y": y, "w": sw, "h": h, "cx": (x2 + sw / 2) / fw, "cy": cy}
+            )
     return out
 
 
@@ -110,8 +114,14 @@ def detect_card_boxes(frame: np.ndarray) -> list[dict]:
         if x <= 20 or y <= 20 or x + w >= fw - 20 or y + h >= fh - 20:
             continue
         boxes.append(
-            {"x": x, "y": y, "w": w, "h": h,
-             "cx": (x + w / 2) / fw, "cy": (y + h / 2) / fh}
+            {
+                "x": x,
+                "y": y,
+                "w": w,
+                "h": h,
+                "cx": (x + w / 2) / fw,
+                "cy": (y + h / 2) / fh,
+            }
         )
     return boxes
 
@@ -187,12 +197,17 @@ def main() -> None:
         fh, fw = frame.shape[:2]
         hole_boxes.extend(detect_hole_boxes(frame))
         board_boxes.extend(
-            b for b in detect_card_boxes(frame)
-            if BOARD_Y_MIN <= b["cy"] <= BOARD_Y_MAX and BOARD_X_MIN <= b["cx"] <= BOARD_X_MAX
+            b
+            for b in detect_card_boxes(frame)
+            if BOARD_Y_MIN <= b["cy"] <= BOARD_Y_MAX
+            and BOARD_X_MIN <= b["cx"] <= BOARD_X_MAX
         )
         n_hc = len(cluster_by_x(hole_boxes))
         n_bc = len(cluster_by_x(board_boxes))
-        print(f"  [{frames}] hole cluster: {n_hc}, board cluster: {n_bc} (box: {len(hole_boxes)}/{len(board_boxes)})", end="\r")
+        print(
+            f"  [{frames}] hole cluster: {n_hc}, board cluster: {n_bc} (box: {len(hole_boxes)}/{len(board_boxes)})",
+            end="\r",
+        )
         if n_hc >= 2 and n_bc >= 5:
             print("\n  >>> 5 slot board + 2 hole visti: fermo prima")
             break
@@ -203,15 +218,17 @@ def main() -> None:
         raise SystemExit("Nessun frame catturato: finestra non trovata")
 
     fh, fw = frame.shape[:2]
-    hole_clusters = sorted(cluster_by_x(hole_boxes), key=lambda cl: statistics.median(d["cx"] for d in cl))
-    board_clusters = sorted(cluster_by_x(board_boxes), key=lambda cl: statistics.median(d["cx"] for d in cl))
+    hole_clusters = sorted(
+        cluster_by_x(hole_boxes), key=lambda cl: statistics.median(d["cx"] for d in cl)
+    )
+    board_clusters = sorted(
+        cluster_by_x(board_boxes), key=lambda cl: statistics.median(d["cx"] for d in cl)
+    )
 
     # board: max 5 cluster, scarta rumore (cluster con 1 sola osservazione
     # se abbiamo abbondanza di dati)
     if len(board_clusters) > 5:
-        board_clusters = sorted(
-            board_clusters, key=lambda cl: -len(cl)
-        )[:5]
+        board_clusters = sorted(board_clusters, key=lambda cl: -len(cl))[:5]
         board_clusters.sort(key=lambda cl: statistics.median(d["cx"] for d in cl))
     board_clusters = [cl for cl in board_clusters if len(cl) >= 2] or board_clusters[:5]
 
@@ -229,9 +246,12 @@ def main() -> None:
         hole_clusters.sort(
             key=lambda cl: abs(statistics.median(d["cx"] for d in cl) - bcx)
         )
-        hole_px = [median_box(cl, fw, fh) for cl in sorted(
-            hole_clusters[:2], key=lambda cl: statistics.median(d["cx"] for d in cl)
-        )]
+        hole_px = [
+            median_box(cl, fw, fh)
+            for cl in sorted(
+                hole_clusters[:2], key=lambda cl: statistics.median(d["cx"] for d in cl)
+            )
+        ]
     else:
         # fallback geometrico dal board: delta verticale e proporzioni
         # ereditati dalla calibrazione originale del client Goldbet
@@ -249,10 +269,22 @@ def main() -> None:
         except (TypeError, ValueError, ZeroDivisionError, OverflowError):
             print("  hole: fallback geometrico fallito, uso offset del vecchio config")
             hole_px = [
-                {"x": int(fw * 0.454), "y": int(fh * 0.665), "w": int(fw * 0.045), "h": int(fh * 0.085)},
-                {"x": int(fw * 0.499), "y": int(fh * 0.665), "w": int(fw * 0.045), "h": int(fh * 0.085)},
+                {
+                    "x": int(fw * 0.454),
+                    "y": int(fh * 0.665),
+                    "w": int(fw * 0.045),
+                    "h": int(fh * 0.085),
+                },
+                {
+                    "x": int(fw * 0.499),
+                    "y": int(fh * 0.665),
+                    "w": int(fw * 0.045),
+                    "h": int(fh * 0.085),
+                },
             ]
-        print(f"  hole: fallback geometrico dal board (cluster rilevati: {len(hole_clusters)})")
+        print(
+            f"  hole: fallback geometrico dal board (cluster rilevati: {len(hole_clusters)})"
+        )
 
     # slot board mancanti (fino a 5): interpola dalla spaziatura rilevata
     if len(board_px) >= 2 and len(board_px) < 5:
@@ -271,8 +303,10 @@ def main() -> None:
             bcx = sum(c["x"] + c["w"] / 2 for c in board_px) / len(board_px)
             by = min(c["y"] for c in board_px)
             pot_px = {
-                "x": int(bcx - fw * 0.08), "y": max(0, by - int(fh * 0.10)),
-                "w": int(fw * 0.16), "h": int(fh * 0.08),
+                "x": int(bcx - fw * 0.08),
+                "y": max(0, by - int(fh * 0.10)),
+                "w": int(fw * 0.16),
+                "h": int(fh * 0.08),
             }
         except (TypeError, ValueError, ZeroDivisionError):
             pot_px = None
@@ -280,8 +314,11 @@ def main() -> None:
     def rel(px: dict) -> dict:
         try:
             return {
-                "x": round(px["x"] / fw, 3), "y": round(px["y"] / fh, 3),
-                "w": round(px["w"] / fw, 3), "h": round(px["h"] / fh, 3), "rel": True,
+                "x": round(px["x"] / fw, 3),
+                "y": round(px["y"] / fh, 3),
+                "w": round(px["w"] / fw, 3),
+                "h": round(px["h"] / fh, 3),
+                "rel": True,
             }
         except (TypeError, ValueError, ZeroDivisionError):
             return {"x": 0, "y": 0, "w": 0, "h": 0, "rel": True}
@@ -299,8 +336,12 @@ def main() -> None:
     text = (ROOT / "config.yaml").read_text(encoding="utf-8")
     lines = text.split("\n")
 
-    def replace_block(lines: list[str], start_marker: str, new_block: list[str],
-                      end_markers: list[str]) -> list[str]:
+    def replace_block(
+        lines: list[str],
+        start_marker: str,
+        new_block: list[str],
+        end_markers: list[str],
+    ) -> list[str]:
         try:
             start = next(i for i, l in enumerate(lines) if l.startswith(start_marker))
         except StopIteration:
@@ -314,25 +355,36 @@ def main() -> None:
         return lines[:start] + new_block + lines[end:]
 
     lines = replace_block(
-        lines, "    hole: &id001", roi_lines("    hole: &id001", hole_rel),
+        lines,
+        "    hole: &id001",
+        roi_lines("    hole: &id001", hole_rel),
         ["    board:", "    pot:", "    to_call:"],
     )
     lines = replace_block(
-        lines, "    board: &id002", roi_lines("    board: &id002", board_rel),
+        lines,
+        "    board: &id002",
+        roi_lines("    board: &id002", board_rel),
         ["    pot:"],
     )
     if pot_rel:
         pot_block = [
             "    pot: &id003",
-            f"      x: {pot_rel['x']}", f"      y: {pot_rel['y']}",
-            f"      w: {pot_rel['w']}", f"      h: {pot_rel['h']}", "      rel: true",
+            f"      x: {pot_rel['x']}",
+            f"      y: {pot_rel['y']}",
+            f"      w: {pot_rel['w']}",
+            f"      h: {pot_rel['h']}",
+            "      rel: true",
         ]
         lines = replace_block(lines, "    pot: &id003", pot_block, ["    to_call:"])
 
     new_text = "\n".join(lines)
     new_cfg = yaml.safe_load(new_text)
-    assert new_cfg["sites"]["golbet"]["hole"] == new_cfg["vision"]["rois"]["hole"], "alias rotti!"
-    assert new_cfg["sites"]["golbet"]["board"] == new_cfg["vision"]["rois"]["board"], "alias rotti!"
+    assert new_cfg["sites"]["golbet"]["hole"] == new_cfg["vision"]["rois"]["hole"], (
+        "alias rotti!"
+    )
+    assert new_cfg["sites"]["golbet"]["board"] == new_cfg["vision"]["rois"]["board"], (
+        "alias rotti!"
+    )
 
     backup = ROOT / "config.yaml.bak"
     backup.write_text(text, encoding="utf-8")
@@ -342,12 +394,21 @@ def main() -> None:
     # debug overlay
     debug = frame.copy()
     for c in hole_px:
-        cv2.rectangle(debug, (c["x"], c["y"]), (c["x"] + c["w"], c["y"] + c["h"]), (0, 255, 0), 3)
+        cv2.rectangle(
+            debug, (c["x"], c["y"]), (c["x"] + c["w"], c["y"] + c["h"]), (0, 255, 0), 3
+        )
     for c in board_px:
-        cv2.rectangle(debug, (c["x"], c["y"]), (c["x"] + c["w"], c["y"] + c["h"]), (255, 0, 0), 3)
+        cv2.rectangle(
+            debug, (c["x"], c["y"]), (c["x"] + c["w"], c["y"] + c["h"]), (255, 0, 0), 3
+        )
     if pot_px:
-        cv2.rectangle(debug, (pot_px["x"], pot_px["y"]),
-                      (pot_px["x"] + pot_px["w"], pot_px["y"] + pot_px["h"]), (0, 0, 255), 3)
+        cv2.rectangle(
+            debug,
+            (pot_px["x"], pot_px["y"]),
+            (pot_px["x"] + pot_px["w"], pot_px["y"] + pot_px["h"]),
+            (0, 0, 255),
+            3,
+        )
     Path(ROOT / "captures").mkdir(exist_ok=True)
     cv2.imwrite(str(ROOT / "captures/calib_live_debug.png"), debug)
     print("✓ overlay: captures/calib_live_debug.png")

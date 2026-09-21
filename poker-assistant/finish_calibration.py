@@ -3,6 +3,7 @@ cards dal modello vision (bounding boxes), pot derivato dal board.
 
 Uso:  python3 finish_calibration.py
 """
+
 import base64
 import json
 import re
@@ -47,7 +48,7 @@ def ask_llm_hero_boxes(frame: "np.ndarray") -> list[dict] | None:
         "You locate objects in poker table screenshots. Find the TWO HERO HOLE CARDS: "
         "the player's own two cards at the BOTTOM CENTER of the table (just above the "
         "hero avatar/stack, below the community board). They may slightly overlap. "
-        "Return ONLY JSON: {\"hero_cards\": [{\"x\": X, \"y\": Y, \"w\": W, \"h\": H}, ...]} "
+        'Return ONLY JSON: {"hero_cards": [{"x": X, "y": Y, "w": W, "h": H}, ...]} '
         "with x,y = top-left corner and w,h = size, all integers normalized 0-1000 "
         "relative to the full image. Two entries, left card first."
     )
@@ -55,10 +56,16 @@ def ask_llm_hero_boxes(frame: "np.ndarray") -> list[dict] | None:
         "model": "google/gemini-3.5-flash-lite",
         "messages": [
             {"role": "system", "content": system},
-            {"role": "user", "content": [
-                {"type": "text", "text": "Locate the two hero hole cards."},
-                {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{b64}"}},
-            ]},
+            {
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": "Locate the two hero hole cards."},
+                    {
+                        "type": "image_url",
+                        "image_url": {"url": f"data:image/jpeg;base64,{b64}"},
+                    },
+                ],
+            },
         ],
         "temperature": 0.0,
         "max_tokens": 200,
@@ -66,8 +73,12 @@ def ask_llm_hero_boxes(frame: "np.ndarray") -> list[dict] | None:
     try:
         resp = requests.post(
             "https://openrouter.ai/api/v1/chat/completions",
-            headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
-            json=payload, timeout=30.0,
+            headers={
+                "Authorization": f"Bearer {key}",
+                "Content-Type": "application/json",
+            },
+            json=payload,
+            timeout=30.0,
         )
     except requests.RequestException as exc:
         print(f"!! richiesta fallita: {exc}")
@@ -75,7 +86,9 @@ def ask_llm_hero_boxes(frame: "np.ndarray") -> list[dict] | None:
     if not resp.ok:
         print(f"!! HTTP {resp.status_code}: {resp.text[:200]}")
         return None
-    text = (resp.json().get("choices") or [{}])[0].get("message", {}).get("content") or ""
+    text = (resp.json().get("choices") or [{}])[0].get("message", {}).get(
+        "content"
+    ) or ""
     m = re.search(r"\{.*\}", text, re.DOTALL)
     if not m:
         print(f"!! nessun JSON: {text[:200]}")
@@ -92,12 +105,14 @@ def ask_llm_hero_boxes(frame: "np.ndarray") -> list[dict] | None:
     out = []
     for b in boxes[:2]:
         try:
-            out.append({
-                "x": max(0.0, min(1.0, float(b["x"]) / 1000.0)),
-                "y": max(0.0, min(1.0, float(b["y"]) / 1000.0)),
-                "w": max(0.005, min(1.0, float(b["w"]) / 1000.0)),
-                "h": max(0.005, min(1.0, float(b["h"]) / 1000.0)),
-            })
+            out.append(
+                {
+                    "x": max(0.0, min(1.0, float(b["x"]) / 1000.0)),
+                    "y": max(0.0, min(1.0, float(b["y"]) / 1000.0)),
+                    "w": max(0.005, min(1.0, float(b["w"]) / 1000.0)),
+                    "h": max(0.005, min(1.0, float(b["h"]) / 1000.0)),
+                }
+            )
         except (KeyError, TypeError, ValueError):
             return None
     return out
@@ -109,7 +124,9 @@ def _capture_encode(frame) -> str:
     scale = min(1.0, 1280 / max(fh, fw))
     try:
         if scale < 1.0:
-            frame = cv2.resize(frame, (int(fw * scale), int(fh * scale)), interpolation=cv2.INTER_AREA)
+            frame = cv2.resize(
+                frame, (int(fw * scale), int(fh * scale)), interpolation=cv2.INTER_AREA
+            )
         ok, buf = cv2.imencode(".jpg", frame, [int(cv2.IMWRITE_JPEG_QUALITY), 92])
     except (cv2.error, ValueError, ZeroDivisionError):
         raise RuntimeError("encode fallito") from None
@@ -129,8 +146,9 @@ def roi_lines(anchor: str, rois: list[dict]) -> list[str]:
     return lines
 
 
-def replace_block(lines: list[str], start_marker: str, new_block: list[str],
-                  end_markers: list[str]) -> list[str]:
+def replace_block(
+    lines: list[str], start_marker: str, new_block: list[str], end_markers: list[str]
+) -> list[str]:
     try:
         start = next(i for i, l in enumerate(lines) if l.startswith(start_marker))
     except StopIteration:
@@ -159,8 +177,13 @@ def main() -> None:
 
     # LLM vede il frame DOWNSCALED: le sue box sono relative -> valide direttamente
     hole_rel = [
-        {"x": round(b["x"], 3), "y": round(b["y"], 3),
-         "w": round(b["w"], 3), "h": round(b["h"], 3), "rel": True}
+        {
+            "x": round(b["x"], 3),
+            "y": round(b["y"], 3),
+            "w": round(b["w"], 3),
+            "h": round(b["h"], 3),
+            "rel": True,
+        }
         for b in boxes
     ]
 
@@ -173,22 +196,33 @@ def main() -> None:
     # pot: sopra il board (board CV stabile)
     bcx = sum(r["x"] + r["w"] / 2 for r in BOARD_REL) / len(BOARD_REL)
     by = min(r["y"] for r in BOARD_REL)
-    pot_rel = {"x": round(bcx - 0.08, 3), "y": round(max(0.0, by - 0.10), 3),
-               "w": 0.16, "h": 0.08, "rel": True}
+    pot_rel = {
+        "x": round(bcx - 0.08, 3),
+        "y": round(max(0.0, by - 0.10), 3),
+        "w": 0.16,
+        "h": 0.08,
+        "rel": True,
+    }
 
     text = (ROOT / "config.yaml").read_text(encoding="utf-8")
     lines = text.split("\n")
 
-    lines = replace_block(lines, "    hole: &id001",
-                          roi_lines("hole: &id001", hole_rel),
-                          ["    board:", "    pot:", "    to_call:"])
-    lines = replace_block(lines, "    board: &id002",
-                          roi_lines("board: &id002", BOARD_REL),
-                          ["    pot:"])
+    lines = replace_block(
+        lines,
+        "    hole: &id001",
+        roi_lines("hole: &id001", hole_rel),
+        ["    board:", "    pot:", "    to_call:"],
+    )
+    lines = replace_block(
+        lines, "    board: &id002", roi_lines("board: &id002", BOARD_REL), ["    pot:"]
+    )
     pot_block = [
         "    pot: &id003",
-        f"      x: {pot_rel['x']}", f"      y: {pot_rel['y']}",
-        f"      w: {pot_rel['w']}", f"      h: {pot_rel['h']}", "      rel: true",
+        f"      x: {pot_rel['x']}",
+        f"      y: {pot_rel['y']}",
+        f"      w: {pot_rel['w']}",
+        f"      h: {pot_rel['h']}",
+        "      rel: true",
     ]
     lines = replace_block(lines, "    pot: &id003", pot_block, ["    to_call:"])
 
