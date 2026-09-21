@@ -9,17 +9,18 @@ Environment:
     OPENROUTER_API_KEY — used if api_key is not passed explicitly.
 """
 import base64
+import contextlib
 import json
 import os
 import re
 import time
+import traceback
 from pathlib import Path
-from typing import Any, Optional, Tuple
+from typing import Any
 
 import cv2
 import numpy as np
 import yaml
-
 from local_table_state import LocalTableStateExtractor
 
 # Carica .env automaticamente se python-dotenv è installato (opzionale)
@@ -38,7 +39,7 @@ except Exception as exc:  # pragma: no cover
         "Install it: pip install requests"
     ) from exc
 
-DEFAULT_MODEL = "google/gemini-3.1-flash-lite"
+DEFAULT_MODEL = "google/gemini-3.5-flash-lite"
 DEFAULT_API_URL = "https://openrouter.ai/api/v1/chat/completions"
 
 SYSTEM_PROMPT = """You are an expert poker table OCR assistant. Analyze the screenshot carefully and extract the exact current table state.
@@ -159,7 +160,7 @@ def _encode_frame_to_base64(frame: np.ndarray, max_dim: int = 1280, jpeg_quality
     return base64.b64encode(buffer).decode("utf-8")
 
 
-def _resolve_relative_roi(roi: dict, frame: np.ndarray) -> Optional[dict]:
+def _resolve_relative_roi(roi: dict, frame: np.ndarray) -> dict | None:
     """Convert a relative ROI config to absolute pixel coordinates."""
     if roi is None:
         return None
@@ -175,7 +176,7 @@ def _resolve_relative_roi(roi: dict, frame: np.ndarray) -> Optional[dict]:
 
 
 def _extract_suit_templates(
-    templates_dir: Path, extra_suit_dir: Optional[Path] = None
+    templates_dir: Path, extra_suit_dir: Path | None = None
 ) -> dict[str, list[np.ndarray]]:
     """Load full card templates and extract only the suit ROI crops for c/s/h/d.
 
@@ -183,7 +184,7 @@ def _extract_suit_templates(
     stored there (one sub-folder per suit). More samples = more robust matching
     across screenshot variations.
     """
-    from ocr_cards import load_templates_from_dir, extract_split_templates_from_full
+    from ocr_cards import extract_split_templates_from_full, load_templates_from_dir
 
     templates: dict[str, np.ndarray] = load_templates_from_dir(str(templates_dir))
     rank_templates, suit_templates = extract_split_templates_from_full(templates)
@@ -223,8 +224,8 @@ def _best_suit(
     suit_crop: np.ndarray,
     suit_templates: dict[str, list[np.ndarray]],
     threshold: float = 0.35,
-    allowed_suits: Optional[list[str]] = None,
-) -> tuple[Optional[str], float, float]:
+    allowed_suits: list[str] | None = None,
+) -> tuple[str | None, float, float]:
     """Return (best_suit, best_score, margin) for a suit ROI.
 
     If allowed_suits is provided, only those suit templates are considered.
@@ -264,7 +265,7 @@ def _crop_suit_from_full_card(card_crop: np.ndarray) -> np.ndarray:
     return card_crop[y0:y1, x0:x1]
 
 
-def _detect_suit_color(suit_crop: np.ndarray) -> Optional[str]:
+def _detect_suit_color(suit_crop: np.ndarray) -> str | None:
     """
     Detect whether a suit symbol is red (hearts/diamonds) or black (spades/clubs).
 
@@ -304,7 +305,7 @@ def _detect_suit_color(suit_crop: np.ndarray) -> Optional[str]:
     return None
 
 
-def _detect_card_color(card_crop: np.ndarray) -> Optional[str]:
+def _detect_card_color(card_crop: np.ndarray) -> str | None:
     """
     Detect card color using only the small suit-symbol region.
 
@@ -363,7 +364,7 @@ def _build_composite_image(
     return canvas, labels
 
 
-def _parse_suits_array(text: Optional[str]) -> list[str] | None:
+def _parse_suits_array(text: str | None) -> list[str] | None:
     """Parse a JSON array of suit letters like ["s","h","d","c"]."""
     if text is None:
         return None
@@ -386,7 +387,7 @@ def _parse_suits_array(text: Optional[str]) -> list[str] | None:
     return None
 
 
-def _extract_json_from_text(text: Optional[str]) -> dict:
+def _extract_json_from_text(text: str | None) -> dict:
     """
     Extract a JSON object from text. Handles markdown code blocks, None,
     empty strings, raw lists, and other model quirks via fallback strategies.
@@ -459,16 +460,16 @@ class LLMVisionExtractor:
 
     def __init__(
         self,
-        api_key: Optional[str] = None,
+        api_key: str | None = None,
         model: str = DEFAULT_MODEL,
         api_url: str = DEFAULT_API_URL,
         cooldown_seconds: float = 1.5,
         timeout: float = 20.0,
-        position_override: Optional[str] = None,
-        position_model: Optional[str] = None,
+        position_override: str | None = None,
+        position_model: str | None = None,
         position_refresh_seconds: float = 60.0,
-        window_title: Optional[str] = None,
-        config_path: Optional[str] = None,
+        window_title: str | None = None,
+        config_path: str | None = None,
     ):
         self.api_key = api_key or os.getenv("OPENROUTER_API_KEY")
         self.model = model
@@ -481,10 +482,10 @@ class LLMVisionExtractor:
         self.position_model = position_model
         self.position_refresh_seconds = position_refresh_seconds
         self._last_call_time = 0.0
-        self._last_frame_hash: Optional[str] = None
-        self._cached_state: Optional[dict] = None
-        self._cached_position: Optional[str] = None
-        self._cached_button_seat: Optional[int] = None
+        self._last_frame_hash: str | None = None
+        self._cached_state: dict | None = None
+        self._cached_position: str | None = None
+        self._cached_button_seat: int | None = None
         self._last_button_time: float = 0.0
         self._button_ttl: float = 2.0  # seconds: re-detect button at most this often
         self._last_hole_key: str = ""
@@ -492,7 +493,7 @@ class LLMVisionExtractor:
         self._position_thread_running: bool = False
 
         # Local helpers
-        self._local_table: Optional[Any] = None
+        self._local_table: Any | None = None
         self._hero_seat = 0
         self._table_type = "9max"
         self._load_config(config_path)
@@ -503,7 +504,7 @@ class LLMVisionExtractor:
         self._suit_templates: dict[str, list[np.ndarray]] = {}
         self._load_suit_correction_resources(config_path)
 
-    def _load_config(self, config_path: Optional[str]) -> None:
+    def _load_config(self, config_path: str | None) -> None:
         """Load table config once for position computation."""
         if config_path is None:
             return
@@ -511,7 +512,7 @@ class LLMVisionExtractor:
         if not cfg_path.exists():
             return
         try:
-            with open(cfg_path, "r", encoding="utf-8") as f:
+            with open(cfg_path, encoding="utf-8") as f:
                 cfg = yaml.safe_load(f) or {}
             table_cfg = cfg.get("table", {})
             self._table_type = table_cfg.get("type", "9max")
@@ -520,7 +521,7 @@ class LLMVisionExtractor:
         except Exception as e:
             print(f"[llm_vision] Could not load local table extractor: {e}")
 
-    def _load_suit_correction_resources(self, config_path: Optional[str]) -> None:
+    def _load_suit_correction_resources(self, config_path: str | None) -> None:
         """Load ROIs and suit templates for local clubs/spades correction."""
         if config_path is None:
             return
@@ -528,7 +529,7 @@ class LLMVisionExtractor:
         if not cfg_path.exists():
             return
         try:
-            with open(cfg_path, "r") as f:
+            with open(cfg_path) as f:
                 cfg = yaml.safe_load(f) or {}
             rois = cfg.get("vision", {}).get("rois", {})
             self._hole_rois = rois.get("hole", [])
@@ -581,7 +582,7 @@ class LLMVisionExtractor:
         max_retries: int = 2,
     ) -> requests.Response:
         """Post with exponential backoff on read-timeout/connection errors."""
-        last_exc: Optional[Exception] = None
+        last_exc: Exception | None = None
         for attempt in range(max_retries + 1):
             try:
                 return requests.post(
@@ -597,6 +598,7 @@ class LLMVisionExtractor:
                     f"retrying in {sleep}s... ({exc})"
                 )
                 time.sleep(sleep)
+        assert last_exc is not None  # sempre impostato se arriviamo qui
         raise last_exc
 
     def _call_api(self, frame: np.ndarray, focused: bool = False) -> dict:
@@ -674,7 +676,9 @@ class LLMVisionExtractor:
 
         try:
             state = _extract_json_from_text(text)
-        except json.JSONDecodeError as exc:
+        except RuntimeError as exc:
+            # _extract_json_from_text solleva RuntimeError (non JSONDecodeError):
+            # il ramo focused qui sotto era irraggiungibile prima della correzione.
             # Focused mode may return a raw array like ["As", "Kh"]
             if focused and text.strip().startswith("["):
                 try:
@@ -691,7 +695,7 @@ class LLMVisionExtractor:
 
         return state
 
-    def _verify_red_suit(self, card_crop: np.ndarray, rank: str) -> Optional[str]:
+    def _verify_red_suit(self, card_crop: np.ndarray, rank: str) -> str | None:
         """
         Focused LLM call to disambiguate diamond (d) vs heart (h).
 
@@ -750,7 +754,7 @@ class LLMVisionExtractor:
             print(f"[llm_vision] red-suit verify failed: {e}")
             return None
 
-    def _verify_suit(self, card_crop: np.ndarray, rank: str, color: str) -> Optional[str]:
+    def _verify_suit(self, card_crop: np.ndarray, rank: str, color: str) -> str | None:
         """
         Focused LLM call to resolve a single ambiguous suit.
 
@@ -818,7 +822,7 @@ class LLMVisionExtractor:
             if text is None:
                 return None
             text = text.strip().lower()
-            for suit, name in zip(suits, names):
+            for suit, name in zip(suits, names, strict=True):
                 if text.startswith(suit) or name.split()[0] in text:
                     return suit
             return None
@@ -827,7 +831,7 @@ class LLMVisionExtractor:
             return None
 
     @staticmethod
-    def _ocr_number_in_roi(frame: np.ndarray, roi: dict) -> Optional[int]:
+    def _ocr_number_in_roi(frame: np.ndarray, roi: dict) -> int | None:
         """Local OCR fallback for a numeric ROI (pot, to_call, stack).
 
         Returns the value in cents (e.g. €0.26 -> 26, €5 -> 500) or None.
@@ -874,9 +878,12 @@ class LLMVisionExtractor:
             return None
 
         # Convert to cents
-        if "." in token:
-            return int(round(value * 100))
-        return int(value * 100)
+        try:
+            if "." in token:
+                return int(round(value * 100))
+            return int(value * 100)
+        except (ValueError, OverflowError):
+            return None
 
     def _ocr_text_in_roi(self, frame: np.ndarray, roi: dict) -> str:
         """Local OCR fallback that returns raw text from a ROI."""
@@ -911,7 +918,7 @@ class LLMVisionExtractor:
         """Use local OCR as fallback, but don't override a plausible LLM read."""
         corrected = dict(state)
 
-        def _close_enough(ocr_val: Optional[int], llm_val: Optional[int], tol: float = 0.30) -> bool:
+        def _close_enough(ocr_val: int | None, llm_val: int | None, tol: float = 0.30) -> bool:
             if ocr_val is None or llm_val is None:
                 return False
             if llm_val == 0:
@@ -990,7 +997,12 @@ class LLMVisionExtractor:
                 continue
             gray = cv2.cvtColor(crop, cv2.COLOR_BGR2GRAY)
             # Gray card backgrounds are ~120-180; green felt is ~60-100.
-            light_ratio = float((gray > 120).sum()) / gray.size
+            if gray.size == 0:
+                continue
+            try:
+                light_ratio = float((gray > 120).sum()) / gray.size
+            except (ValueError, ZeroDivisionError):
+                continue
             details.append(f"{light_ratio:.2f}")
             if light_ratio > 0.25:
                 card_like += 1
@@ -1078,7 +1090,7 @@ class LLMVisionExtractor:
                 return state
 
             corrected = dict(state)
-            for (card, slot, _, idx), suit in zip(uncertain_items, suits):
+            for (card, slot, _, idx), suit in zip(uncertain_items, suits, strict=True):
                 if suit in ("s", "h", "d", "c") and suit != card[1].lower():
                     new_card = card[0].upper() + suit
                     target = corrected.setdefault(slot, [])
@@ -1103,8 +1115,9 @@ class LLMVisionExtractor:
             return state
 
         from pathlib import Path
-        from ocr_cards import load_templates_from_dir, extract_split_templates_from_full
+
         from capture import crop_roi
+        from ocr_cards import extract_split_templates_from_full, load_templates_from_dir
 
         corrected = dict(state)
         templates_dir = Path("vision/templates")
@@ -1141,7 +1154,6 @@ class LLMVisionExtractor:
                 if roi is None:
                     out.append(card)
                     continue
-                from capture import crop_roi
                 card_crop = crop_roi(frame, roi["x"], roi["y"], roi["w"], roi["h"])
                 if card_crop is None or card_crop.size == 0:
                     out.append(card)
@@ -1169,7 +1181,7 @@ class LLMVisionExtractor:
                 best_suit, score, margin = _best_suit(
                     suit_crop, candidates, threshold=0.0, allowed_suits=None
                 )
-                new_card: Optional[str] = None
+                new_card: str | None = None
 
                 if current_suit not in allowed:
                     # Cross-color misread: trust local color and pick the best
@@ -1340,7 +1352,7 @@ class LLMVisionExtractor:
                 return state
 
             corrected = dict(state)
-            for (card, slot, _, idx), suit in zip(missing_items, suits):
+            for (card, slot, _, idx), suit in zip(missing_items, suits, strict=True):
                 if suit in ("s", "h", "d", "c") and suit != card[1].lower():
                     new_card = card[0].upper() + suit
                     target = corrected.setdefault(slot, [])
@@ -1356,7 +1368,7 @@ class LLMVisionExtractor:
     #  Public API
     # ------------------------------------------------------------------ #
 
-    def extract(self, frame: Optional[np.ndarray] = None) -> dict:
+    def extract(self, frame: np.ndarray | None = None) -> dict:
         """
         Extract table state from a frame.
         If *frame* is None, captures a fresh screenshot.
@@ -1375,6 +1387,7 @@ class LLMVisionExtractor:
                 raise RuntimeError("Screenshot failed: window not found")
 
         if self._should_skip(frame):
+            assert self._cached_state is not None  # impostato dall'ultima extract() riuscita
             return self._cached_state
 
         raw_state = self._call_api(frame, focused=False)
@@ -1458,7 +1471,7 @@ class LLMVisionExtractor:
 
         return state
 
-    def _detect_button_local(self, frame: np.ndarray) -> Tuple[Optional[int], float]:
+    def _detect_button_local(self, frame: np.ndarray) -> tuple[int | None, float]:
         """Use local CV to find the dealer button seat and confidence."""
         if self._local_table is None:
             return None, 0.0
@@ -1469,7 +1482,7 @@ class LLMVisionExtractor:
             return None, 0.0
 
     def _position_from_button(
-        self, button_seat: Optional[int], hole: list[str]
+        self, button_seat: int | None, hole: list[str]
     ) -> str:
         """Compute hero position from button_seat using SeatLayout.
 
@@ -1514,8 +1527,8 @@ class LLMVisionExtractor:
             else:
                 print(f"[llm_vision] position confirmed: {pos} (button seat {button_seat})")
             return pos
-        except Exception as e:
-            print(f"[llm_vision] position compute failed: {e}")
+        except Exception:
+            print(f"[llm_vision] position compute failed:\n{traceback.format_exc()}")
             return self._cached_position or "BTN"
 
     def _maybe_refresh_position_async(self, frame: np.ndarray) -> None:
@@ -1540,7 +1553,7 @@ class LLMVisionExtractor:
     def _refresh_position_worker(self, frame: np.ndarray) -> None:
         """Background worker: call position_model to get the D-button position."""
         try:
-            pos = self._call_api_position_only(frame, model=self.position_model)
+            pos = self._call_api_position_only(frame, model=self.position_model or self.model)
             if pos:
                 if pos != self._cached_position:
                     print(f"[llm_vision] position changed: {self._cached_position} -> {pos}")
@@ -1553,7 +1566,7 @@ class LLMVisionExtractor:
         finally:
             self._position_thread_running = False
 
-    def _call_api_position_only(self, frame: np.ndarray, model: str) -> Optional[str]:
+    def _call_api_position_only(self, frame: np.ndarray, model: str) -> str | None:
         """
         Focused, model-agnostic call to extract ONLY the position (D button).
         Uses max_tokens=8 for speed and a position-specific prompt.
@@ -1628,7 +1641,7 @@ class LLMVisionExtractor:
                 return pos
         return None
 
-    def get_position(self, frame: np.ndarray) -> Optional[str]:
+    def get_position(self, frame: np.ndarray) -> str | None:
         """
         Quickly extract ONLY the player's position (D button) from a frame.
         Returns one of: SB, BB, BTN, CO, MP, UTG, or None on failure.
@@ -1756,12 +1769,15 @@ class LLMVisionExtractor:
 
         for key in ("pot", "to_call", "stack"):
             val = raw_state.get(key)
-            if isinstance(val, (int, float)):
-                state[key] = int(val)
-            elif isinstance(val, str):
-                cleaned = "".join(ch for ch in val if ch.isdigit())
-                if cleaned:
-                    state[key] = int(cleaned)
+            try:
+                if isinstance(val, (int, float)):
+                    state[key] = int(val)
+                elif isinstance(val, str):
+                    cleaned = "".join(ch for ch in val if ch.isdigit())
+                    if cleaned:
+                        state[key] = int(cleaned)
+            except (ValueError, OverflowError):
+                continue
 
         stage = raw_state.get("stage", "preflop")
         if stage in ("preflop", "flop", "turn", "river"):
@@ -1792,19 +1808,23 @@ class LLMVisionExtractor:
         if isinstance(btn, int):
             state["button_seat"] = btn
         elif isinstance(btn, str) and btn.isdigit():
-            state["button_seat"] = int(btn)
+            with contextlib.suppress(ValueError, OverflowError):
+                state["button_seat"] = int(btn)
 
         # Parse opponent stacks and compute effective stack / active count
         opp = raw_state.get("opponent_stacks")
         opponent_stacks: dict = {}
         if isinstance(opp, dict):
             for k, v in opp.items():
-                if isinstance(v, (int, float)):
-                    opponent_stacks[str(k)] = int(v)
-                elif isinstance(v, str):
-                    cleaned = "".join(ch for ch in v if ch.isdigit())
-                    if cleaned:
-                        opponent_stacks[str(k)] = int(cleaned)
+                try:
+                    if isinstance(v, (int, float)):
+                        opponent_stacks[str(k)] = int(v)
+                    elif isinstance(v, str):
+                        cleaned = "".join(ch for ch in v if ch.isdigit())
+                        if cleaned:
+                            opponent_stacks[str(k)] = int(cleaned)
+                except (ValueError, OverflowError):
+                    continue
         state["opponent_stacks"] = opponent_stacks
         state["num_active"] = 1 + len(opponent_stacks)
         if opponent_stacks:

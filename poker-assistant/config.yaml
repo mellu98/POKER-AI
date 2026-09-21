@@ -13,8 +13,8 @@ vision:
   llm:
     enabled: true
     api_key: ""
-    model: google/gemini-3.1-flash-lite
-    position_model: google/gemini-3.1-flash-lite
+    model: google/gemini-3.5-flash-lite
+    position_model: google/gemini-3.5-flash-lite
     position_refresh_seconds: 30
     cooldown_seconds: 1.5
   position: null
@@ -47,42 +47,42 @@ vision:
     skip_duplicates: true
   rois:
     hole: &id001
-    - x: 0.454
-      y: 0.665
-      w: 0.045
-      h: 0.085
-      rel: true
-    - x: 0.499
-      y: 0.665
-      w: 0.045
-      h: 0.085
-      rel: true
+      - x: 0.454
+        y: 0.665
+        w: 0.045
+        h: 0.085
+        rel: true
+      - x: 0.499
+        y: 0.665
+        w: 0.045
+        h: 0.085
+        rel: true
     board: &id002
-    - x: 0.350
-      y: 0.437
-      w: 0.056
-      h: 0.120
-      rel: true
-    - x: 0.413
-      y: 0.437
-      w: 0.056
-      h: 0.120
-      rel: true
-    - x: 0.477
-      y: 0.437
-      w: 0.056
-      h: 0.120
-      rel: true
-    - x: 0.540
-      y: 0.437
-      w: 0.056
-      h: 0.120
-      rel: true
-    - x: 0.604
-      y: 0.437
-      w: 0.056
-      h: 0.120
-      rel: true
+      - x: 0.350
+        y: 0.437
+        w: 0.056
+        h: 0.120
+        rel: true
+      - x: 0.413
+        y: 0.437
+        w: 0.056
+        h: 0.120
+        rel: true
+      - x: 0.477
+        y: 0.437
+        w: 0.056
+        h: 0.120
+        rel: true
+      - x: 0.540
+        y: 0.437
+        w: 0.056
+        h: 0.120
+        rel: true
+      - x: 0.604
+        y: 0.437
+        w: 0.056
+        h: 0.120
+        rel: true
     pot: &id003
       x: 0.43
       y: 0.37
@@ -120,86 +120,87 @@ sites:
     dealer_button: *id006
     seats:
     # Seat indices MUST increase clockwise around the table.
-    # 0 = hero (bottom-center), then bottom-right -> right -> top-right -> top -> top-left -> left -> bottom-left.
-    - index: 0
-      x: 0.50
-      y: 0.72
-      stack_roi:
-        x: 0.45
-        y: 0.79
-        w: 0.10
-        h: 0.025
-        rel: true
-    - index: 1
-      x: 0.70
-      y: 0.68
-      stack_roi:
-        x: 0.64
-        y: 0.725
-        w: 0.09
-        h: 0.025
-        rel: true
-    - index: 2
-      x: 0.85
-      y: 0.32
-      stack_roi:
-        x: 0.80
-        y: 0.365
-        w: 0.09
-        h: 0.025
-        rel: true
-    - index: 3
-      x: 0.72
-      y: 0.22
-      stack_roi:
-        x: 0.66
-        y: 0.275
-        w: 0.09
-        h: 0.025
-        rel: true
-    - index: 4
-      x: 0.50
-      y: 0.18
-      stack_roi:
-        x: 0.44
-        y: 0.225
-        w: 0.09
-        h: 0.025
-        rel: true
-    - index: 5
-      x: 0.28
-      y: 0.22
-      stack_roi:
-        x: 0.22
-        y: 0.275
-        w: 0.09
-        h: 0.025
-        rel: true
-    - index: 6
-      x: 0.15
-      y: 0.32
-      stack_roi:
-        x: 0.10
-        y: 0.365
-        w: 0.09
-        h: 0.025
-        rel: true
-    - index: 7
-      x: 0.21
-      y: 0.48
-      stack_roi:
+    # 0 = hero (bottom-center), then bottom-right -> right -> top-right -> top -> top-left -> left
+    # -> bottom-left.
+      - index: 0
+        x: 0.50
+        y: 0.72
+        stack_roi:
+          x: 0.45
+          y: 0.79
+          w: 0.10
+          h: 0.025
+          rel: true
+      - index: 1
+        x: 0.70
+        y: 0.68
+        stack_roi:
+          x: 0.64
+          y: 0.725
+          w: 0.09
+          h: 0.025
+          rel: true
+      - index: 2
+        x: 0.85
+        y: 0.32
+        stack_roi:
+          x: 0.80
+          y: 0.365
+          w: 0.09
+          h: 0.025
+          rel: true
+      - index: 3
+        x: 0.72
+        y: 0.22
+        stack_roi:
+          x: 0.66
+          y: 0.275
+          w: 0.09
+          h: 0.025
+          rel: true
+      - index: 4
+        x: 0.50
+        y: 0.18
+        stack_roi:
+          x: 0.44
+          y: 0.225
+          w: 0.09
+          h: 0.025
+          rel: true
+      - index: 5
+        x: 0.28
+        y: 0.22
+        stack_roi:
+          x: 0.22
+          y: 0.275
+          w: 0.09
+          h: 0.025
+          rel: true
+      - index: 6
         x: 0.15
-        y: 0.525
-        w: 0.09
-        h: 0.025
-        rel: true
-    - index: 8
-      x: 0.31
-      y: 0.68
-      stack_roi:
-        x: 0.24
-        y: 0.725
-        w: 0.09
-        h: 0.025
-        rel: true
+        y: 0.32
+        stack_roi:
+          x: 0.10
+          y: 0.365
+          w: 0.09
+          h: 0.025
+          rel: true
+      - index: 7
+        x: 0.21
+        y: 0.48
+        stack_roi:
+          x: 0.15
+          y: 0.525
+          w: 0.09
+          h: 0.025
+          rel: true
+      - index: 8
+        x: 0.31
+        y: 0.68
+        stack_roi:
+          x: 0.24
+          y: 0.725
+          w: 0.09
+          h: 0.025
+          rel: true
 update_interval: 2.0
