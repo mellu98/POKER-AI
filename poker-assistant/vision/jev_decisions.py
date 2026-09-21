@@ -24,6 +24,7 @@ Schema dell'endpoint (reverse-engineered, non ancora nei listati pubblici):
     200 -> {"answers": {"<id>": {"choice": "...", "probabilities": {...},
                                  "confidence": 0.0-1.0}}, "usage": {...}}
 """
+
 from __future__ import annotations
 
 import os

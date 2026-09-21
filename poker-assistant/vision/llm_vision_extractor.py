@@ -575,10 +575,7 @@ class LLMVisionExtractor:
             self._jev_auditor = JevAuditor(
                 client, check_interval_seconds=float(interval)
             )
-            print(
-                f"[llm_vision] Jev auditor attivo ({client.model}, "
-                f"ogni {interval}s)"
-            )
+            print(f"[llm_vision] Jev auditor attivo ({client.model}, ogni {interval}s)")
         except (
             ImportError,
             ValueError,

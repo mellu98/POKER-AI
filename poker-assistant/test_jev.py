@@ -6,6 +6,7 @@
 
 Uso:  python3 test_jev.py
 """
+
 import importlib
 import sys
 import time
@@ -84,7 +85,9 @@ def main() -> None:
         and report_broken.get("stage_consistent", {}).get("choice") == "no"
         and report_broken.get("numbers_plausible", {}).get("choice") == "no"
     )
-    print(f"\n=== ESITO: audit reale risponde={ok_real}, rotto intercettato={catches} ===")
+    print(
+        f"\n=== ESITO: audit reale risponde={ok_real}, rotto intercettato={catches} ==="
+    )
 
 
 if __name__ == "__main__":
