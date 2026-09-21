@@ -4,6 +4,7 @@ Assistant Engine — CFR Blueprint Lookup Wrapper.
 Loads pre-trained CFR strategies and provides a clean API for real-time
 poker decision recommendations.
 """
+
 import copy
 import sys
 from pathlib import Path
@@ -123,20 +124,42 @@ class AssistantEngine:
         opp_placeholder = "XX"
 
         # Determina posizione precisa
-        actual_position = position.upper() if position else ("BTN" if is_dealer else "BB")
+        actual_position = (
+            position.upper() if position else ("BTN" if is_dealer else "BB")
+        )
 
         # Stack effettivo: se non fornito, usa quello dell'eroe
-        eff_stack = effective_stack if effective_stack is not None and effective_stack > 0 else stack
+        eff_stack = (
+            effective_stack
+            if effective_stack is not None and effective_stack > 0
+            else stack
+        )
 
         if len(board) == 0:
             result = self._recommend_preflop(
-                hole_str, opp_placeholder, history, pot, stack, big_blind, actual_position, eff_stack, num_active
+                hole_str,
+                opp_placeholder,
+                history,
+                pot,
+                stack,
+                big_blind,
+                actual_position,
+                eff_stack,
+                num_active,
             )
         else:
             board_strs = ["".join(board)]
             equity = calculate_equity(hole, board, n=1000)
             result = self._recommend_postflop(
-                hole_str, opp_placeholder, history, pot, stack, big_blind, board_strs, equity, eff_stack
+                hole_str,
+                opp_placeholder,
+                history,
+                pot,
+                stack,
+                big_blind,
+                board_strs,
+                equity,
+                eff_stack,
             )
             # Enrich postflop result with draw info (outs + type)
             outs_calc = OutsCalculator(list(hole), list(board))
@@ -174,11 +197,7 @@ class AssistantEngine:
                 result["board_danger"] = board_danger
 
         # QUICK WIN #3: Cap bet size at 30% of effective stack on postflop to avoid spew.
-        if (
-            result.get("action", "").startswith("b")
-            and len(board) > 0
-            and stack > 0
-        ):
+        if result.get("action", "").startswith("b") and len(board) > 0 and stack > 0:
             try:
                 bet_size = int(result["action"][1:])
                 sizing_stack = effective_stack if effective_stack is not None else stack
@@ -260,7 +279,7 @@ class AssistantEngine:
         if len(set(ranks)) >= 3:
             sorted_ranks = sorted(set(ranks), key=lambda r: rank_order.index(r))
             for i in range(len(sorted_ranks) - 2):
-                a, b, c = (rank_order.index(r) for r in sorted_ranks[i:i+3])
+                a, b, c = (rank_order.index(r) for r in sorted_ranks[i : i + 3])
                 if b - a == 1 and c - b == 1:
                     return "high"
                 if b - a == 2 and c - b == 2:
@@ -271,7 +290,18 @@ class AssistantEngine:
     #  Preflop
     # ------------------------------------------------------------------ #
 
-    def _recommend_preflop(self, hole_str, opp_str, history, pot, stack, big_blind, position, effective_stack, num_active):
+    def _recommend_preflop(
+        self,
+        hole_str,
+        opp_str,
+        history,
+        pot,
+        stack,
+        big_blind,
+        position,
+        effective_stack,
+        num_active,
+    ):
         # Use GTO chart lookup for preflop (far more accurate than under-trained CFR)
         rec = preflop_charts.lookup(
             hole=[hole_str[:2], hole_str[2:4]],
@@ -291,7 +321,12 @@ class AssistantEngine:
             and rec["strategy"].get("bMIN", 0) < 1.0
         ):
             # Marginali: da raise a fold in tavoli pieni early
-            rec = {"action": "f", "strategy": {"f": 1.0}, "infoset_key": rec["infoset_key"], "stage": "preflop"}
+            rec = {
+                "action": "f",
+                "strategy": {"f": 1.0},
+                "infoset_key": rec["infoset_key"],
+                "stage": "preflop",
+            }
 
         abstract_action = rec["action"]
         final_action = self._translate_preflop_action(
@@ -386,7 +421,16 @@ class AssistantEngine:
     # ------------------------------------------------------------------ #
 
     def _recommend_postflop(
-        self, hole_str, opp_str, history, pot, stack, big_blind, board_strs, equity: float | None = None, effective_stack: float | None = None
+        self,
+        hole_str,
+        opp_str,
+        history,
+        pot,
+        stack,
+        big_blind,
+        board_strs,
+        equity: float | None = None,
+        effective_stack: float | None = None,
     ):
         raw_history = [hole_str, opp_str, "/"] + board_strs + list(history)
         abstracted = self._abstract_postflop_history(raw_history, big_blind)

@@ -5,17 +5,17 @@ the player function, the utility function, or the function that computes and upd
 
 We can either treat them as methods of a class (OOP), or a separate function that takes in a class as an argument (procedural).
 
-Let us consider the terminal_utility(), which returns the utility of a terminal history for a particular player. If we choose 
+Let us consider the terminal_utility(), which returns the utility of a terminal history for a particular player. If we choose
 to write this function outside of the class (procedural approach), we could do something like this:
 
 def terminal_utility(i: Player, history: History) -> float:
-	if isinstance(history, KuhnHistory):
-		#dosomething
-	elif isinstance(history, LeducHistory):
-		#dosomethingelse
+        if isinstance(history, KuhnHistory):
+                #dosomething
+        elif isinstance(history, LeducHistory):
+                #dosomethingelse
 
-While this way of writing is more consistent with the mathematical notations, the problem that if we add a new game, then we would need to add a new 
-elif statement for all of our functions. With OOP, we can simply make `terminal_utility()` an abstract method of the `History` class. Childrens of `History` class 
+While this way of writing is more consistent with the mathematical notations, the problem that if we add a new game, then we would need to add a new
+elif statement for all of our functions. With OOP, we can simply make `terminal_utility()` an abstract method of the `History` class. Childrens of `History` class
 are then  forced to define the utility function. This approach helps us easily extend to more games, and is the approach I will take below.
 
 
@@ -24,7 +24,6 @@ Strategy is stored at the infoset level.
 """
 
 # TODO: use NumPy lookup instead of dictionary lookup for drastic speed improvement https://stackoverflow.com/questions/36652533/looking-up-large-sets-of-keys-dictionary-vs-numpy-array
-
 
 import time
 from typing import NewType
@@ -101,7 +100,9 @@ class InfoSet:
 
     """
 
-    def __init__(self, infoSet_key: list[Action], actions: list[Action], player: Player):
+    def __init__(
+        self, infoSet_key: list[Action], actions: list[Action], player: Player
+    ):
         self.infoSet = infoSet_key
         self.__actions = actions
         self.__player = player
@@ -185,7 +186,9 @@ class CFR:
 
         infoSet_key_str = "".join(infoSet_key)
         if infoSet_key_str not in self.infoSets:
-            self.infoSets[infoSet_key_str] = self.create_infoSet(infoSet_key, actions, player)
+            self.infoSets[infoSet_key_str] = self.create_infoSet(
+                infoSet_key, actions, player
+            )
 
         return self.infoSets[infoSet_key_str]
 
@@ -230,7 +233,9 @@ class CFR:
             for a in infoSet.actions():
                 infoSet.regret[a] += (pi_1 if i == 0 else pi_0) * (va[a] - v)
                 # Update cumulative strategy values, this will be used to calculate the average strategy at the end
-                infoSet.cumulative_strategy[a] += (pi_0 if i == 0 else pi_1) * infoSet.strategy[a]
+                infoSet.cumulative_strategy[a] += (
+                    pi_0 if i == 0 else pi_1
+                ) * infoSet.strategy[a]
 
             # Update regret matching values
             infoSet.get_strategy()
@@ -241,7 +246,9 @@ class CFR:
 
         return v
 
-    def vanilla_cfr_speedup(self, history: History, t: int, pi_0: float, pi_1: float, debug=False):
+    def vanilla_cfr_speedup(
+        self, history: History, t: int, pi_0: float, pi_1: float, debug=False
+    ):
         """
         We double the speed by updating both player values simultaneously, since this is a zero-sum game.
 
@@ -349,7 +356,9 @@ class CFR:
             for a in infoSet.actions():
                 infoSet.regret[a] += (pi_1 if i == 0 else pi_0) * (va[a] - v)
                 # Update cumulative strategy values, this will be used to calculate the average strategy at the end
-                infoSet.cumulative_strategy[a] += (pi_0 if i == 0 else pi_1) * infoSet.strategy[a]
+                infoSet.cumulative_strategy[a] += (
+                    pi_0 if i == 0 else pi_1
+                ) * infoSet.strategy[a]
 
             # Update regret matching values
             infoSet.get_strategy()
@@ -381,7 +390,9 @@ class CFR:
                         )
 
             elif method == "vanilla_speedup":
-                util_0 += self.vanilla_cfr_speedup(self.create_history(t), t, 1, 1, debug=debug)
+                util_0 += self.vanilla_cfr_speedup(
+                    self.create_history(t), t, 1, 1, debug=debug
+                )
 
             elif method == "manim" and t < 10:
                 for player in range(self.n_players):
@@ -440,7 +451,9 @@ class CFR:
 
             ev = 0
             for a in infoSet.actions():
-                value = self.get_expected_value(history + a, player, player_strategy, opp_strategy)
+                value = self.get_expected_value(
+                    history + a, player, player_strategy, opp_strategy
+                )
                 ev += average_strategy[a] * value
 
             return ev
@@ -530,7 +543,9 @@ class InfoSetTracker:
 
     def __init__(self):
         self.tracker_hist = []
-        self.exploitability: dict[int, float] = {}  # A dictionary of exploitability for index
+        self.exploitability: dict[
+            int, float
+        ] = {}  # A dictionary of exploitability for index
         # tracker.set_histogram(f'strategy.*')
         # tracker.set_histogram(f'average_strategy.*')
         # tracker.set_histogram(f'regret.*')
