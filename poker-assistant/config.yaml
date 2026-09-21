@@ -17,6 +17,12 @@ vision:
     position_model: google/gemini-3.5-flash-lite
     position_refresh_seconds: 30
     cooldown_seconds: 1.5
+  jev:
+    # Auditor di coerenza (text-only, /api/alpha/decisions): non blocca il loop,
+    # gira in background e allega jev_audit allo stato. ~1.8s per check.
+    enabled: false
+    model: "typesafe/jev-1.13"
+    check_interval_seconds: 10.0
   position: null
   nn:
     enabled: false
@@ -120,8 +126,8 @@ sites:
     dealer_button: *id006
     seats:
     # Seat indices MUST increase clockwise around the table.
-    # 0 = hero (bottom-center), then bottom-right -> right -> top-right -> top -> top-left -> left
-    # -> bottom-left.
+    # 0 = hero (bottom-center), then bottom-right -> right -> top-right -> top
+    # -> top-left -> left -> bottom-left.
       - index: 0
         x: 0.50
         y: 0.72

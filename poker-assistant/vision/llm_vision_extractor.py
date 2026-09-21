@@ -548,6 +548,47 @@ class LLMVisionExtractor:
         self._suit_templates: dict[str, list[np.ndarray]] = {}
         self._load_suit_correction_resources(config_path)
 
+        # Jev auditor (opzionale, text-only): audit di coerenza in background
+        self._jev_auditor: Any | None = None
+        self._load_jev_auditor(config_path)
+
+    def _load_jev_auditor(self, config_path: str | None) -> None:
+        """Crea il JevAuditor se vision.jev.enabled è true nel config."""
+        if config_path is None:
+            return
+        cfg_path = Path(config_path)
+        if not cfg_path.exists():
+            return
+        try:
+            with open(cfg_path, encoding="utf-8") as f:
+                cfg = yaml.safe_load(f) or {}
+            jev_cfg = cfg.get("vision", {}).get("jev", {}) or {}
+            if not jev_cfg.get("enabled", False):
+                return
+            from jev_decisions import JevAuditor, JevClient
+
+            client = JevClient(
+                api_key=self.api_key,
+                model=str(jev_cfg.get("model", "typesafe/jev-1.13")),
+            )
+            interval = jev_cfg.get("check_interval_seconds", 10.0)
+            self._jev_auditor = JevAuditor(
+                client, check_interval_seconds=float(interval)
+            )
+            print(
+                f"[llm_vision] Jev auditor attivo ({client.model}, "
+                f"ogni {interval}s)"
+            )
+        except (
+            ImportError,
+            ValueError,
+            TypeError,
+            KeyError,
+            OSError,
+            yaml.YAMLError,
+        ) as e:
+            print(f"[llm_vision] Jev auditor non caricato: {e}")
+
     def _load_config(self, config_path: str | None) -> None:
         """Load table config once for position computation."""
         if config_path is None:
@@ -1628,6 +1669,11 @@ class LLMVisionExtractor:
         state["position"] = self._position_from_button(
             state.get("button_seat"), state.get("hole", [])
         )
+
+        # ---- Jev audit (opzionale): background, allega jev_audit allo stato ----
+        if self._jev_auditor is not None:
+            self._jev_auditor.maybe_check_async(state)
+            state = self._jev_auditor.attach(state)
 
         return state
 
