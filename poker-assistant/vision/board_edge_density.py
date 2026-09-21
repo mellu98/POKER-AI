@@ -1,4 +1,5 @@
 """Compare edge density in board ROI for empty vs populated boards."""
+
 import sys
 from pathlib import Path
 
@@ -40,7 +41,9 @@ def main():
         raise SystemExit(f"config.yaml non leggibile: {exc}") from exc
     board_rois = cfg.get("vision", {}).get("rois", {}).get("board", [])
     for num in (18, 22, 25, 26, 27, 28, 29):
-        path = CACHE_ROOT / f"image-cache/1d3f0527-6075-4c16-bd0d-401136adb5a4/{num}.png"
+        path = (
+            CACHE_ROOT / f"image-cache/1d3f0527-6075-4c16-bd0d-401136adb5a4/{num}.png"
+        )
         frame = cv2.imread(str(path))
         if frame is None:
             print(f"{num}.png: non leggibile, salto")

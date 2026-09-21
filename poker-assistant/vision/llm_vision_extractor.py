@@ -29,7 +29,9 @@ try:
 
     load_dotenv()
 except ImportError as exc:
-    print(f"[llm_vision] python-dotenv non disponibile ({exc}); uso le variabili d'ambiente di sistema")
+    print(
+        f"[llm_vision] python-dotenv non disponibile ({exc}); uso le variabili d'ambiente di sistema"
+    )
 
 # requests may not be installed; give a helpful error.
 try:
@@ -416,7 +418,9 @@ def _parse_suits_array(text: str | None) -> list[str] | None:
         if isinstance(arr, list):
             return [str(x).lower() for x in arr]
     except json.JSONDecodeError:
-        print(f"[llm_vision] suits array non e' JSON valido, provo con i fallback: {text[:80]}")
+        print(
+            f"[llm_vision] suits array non e' JSON valido, provo con i fallback: {text[:80]}"
+        )
     # Fallback: extract quoted letters
     matches = re.findall(r"['\"]([shdc])['\"]", text)
     if matches:
@@ -1565,7 +1569,9 @@ class LLMVisionExtractor:
         # ripristina le carte lette dall'LLM.
         cards_now = list(state.get("hole", [])) + list(state.get("board", []))
         cards_pre = pre_correction["hole"] + pre_correction["board"]
-        if len(cards_now) != len(set(cards_now)) and len(cards_pre) == len(set(cards_pre)):
+        if len(cards_now) != len(set(cards_now)) and len(cards_pre) == len(
+            set(cards_pre)
+        ):
             print(
                 f"[llm_vision] Suit correction ha introdotto duplicati "
                 f"(hole={state['hole']}, board={state['board']}) -> "
@@ -1631,7 +1637,14 @@ class LLMVisionExtractor:
             return None, 0.0
         try:
             return self._local_table.detect_button_seat_with_score(frame)
-        except (cv2.error, ValueError, KeyError, AttributeError, IndexError, TypeError) as e:
+        except (
+            cv2.error,
+            ValueError,
+            KeyError,
+            AttributeError,
+            IndexError,
+            TypeError,
+        ) as e:
             print(f"[llm_vision] Local button detection failed: {e}")
             return None, 0.0
 
@@ -1685,7 +1698,14 @@ class LLMVisionExtractor:
                     f"[llm_vision] position confirmed: {pos} (button seat {button_seat})"
                 )
             return pos
-        except (ImportError, ValueError, KeyError, AttributeError, IndexError, TypeError):
+        except (
+            ImportError,
+            ValueError,
+            KeyError,
+            AttributeError,
+            IndexError,
+            TypeError,
+        ):
             print(f"[llm_vision] position compute failed:\n{traceback.format_exc()}")
             if self._cached_position:
                 return self._cached_position
