@@ -1,9 +1,15 @@
 """
 Overlay UI — always-on-top Tkinter window showing real-time poker advice.
+
+Thread-safety: update() è chiamata dal thread worker del controller.
+Tkinter NON è thread-safe: i widget si toccano SOLO dal main thread.
+Pattern usato: coda thread-safe + poller schedulato con root.after()
+nel mainloop — nessuna chiamata Tk dal thread worker (root.after da
+thread esterno può gelare la UI su macOS).
 """
+import queue
 import tkinter as tk
 from tkinter import ttk
-from typing import Optional
 
 
 class PokerOverlay:
@@ -17,6 +23,8 @@ class PokerOverlay:
         self.root.geometry("640x480")
         self.root.attributes("-topmost", True)
         self.root.resizable(False, False)
+        # coda thread-safe: il worker ci mette, il mainloop ci legge
+        self._updates: queue.Queue = queue.Queue()
 
         # Style
         self.root.configure(bg="#1e1e1e")
@@ -58,17 +66,19 @@ class PokerOverlay:
 
     def update(
         self,
-        equity: Optional[float] = None,
-        action: Optional[str] = None,
-        sizing: Optional[str] = None,
-        hand: Optional[str] = None,
-        board: Optional[str] = None,
-        status: Optional[str] = None,
+        equity: float | None = None,
+        action: str | None = None,
+        sizing: str | None = None,
+        hand: str | None = None,
+        board: str | None = None,
+        status: str | None = None,
     ):
-        # Schedule all widget updates on the Tkinter main thread
-        self.root.after(0, self._do_update, equity, action, sizing, hand, board, status)
+        # Thread-safe: nessuna chiamata Tk qui, solo accodamento.
+        # Il poller nel mainloop (vedi _poll_updates) applica gli update.
+        self._updates.put((equity, action, sizing, hand, board, status))
 
     def _do_update(self, equity, action, sizing, hand, board, status):
+        """Applica un update ai widget — SOLO dal main thread Tk."""
         if equity is not None:
             self.lbl_equity.configure(text=f"{equity:.1%}")
         if action is not None:
@@ -81,9 +91,33 @@ class PokerOverlay:
         if status is not None:
             self.lbl_status.configure(text=status)
 
-        self.root.update_idletasks()
+    def _poll_updates(self):
+        """Draina la coda nel main thread e ri-schedula se stesso (100ms)."""
+        try:
+            while True:
+                payload = self._updates.get_nowait()
+                self._do_update(*payload)
+        except queue.Empty:
+            pass
+        if self._updates.qsize() > 10:
+            # il worker produce più veloce della UI: scarta il backlog,
+            # teniamo solo l'ultimo stato (la UI mostra il presente)
+            last = None
+            while True:
+                try:
+                    last = self._updates.get_nowait()
+                except queue.Empty:
+                    break
+            if last is not None:
+                self._updates.put(last)
+        try:
+            self.root.after(100, self._poll_updates)
+        except tk.TclError:
+            # finestra già chiusa: smetti di schedulare
+            pass
 
     def run(self):
+        self._poll_updates()  # avvia il poller nel main thread
         self.root.mainloop()
 
     def close(self):
@@ -97,6 +131,5 @@ class PokerOverlay:
 if __name__ == "__main__":
     overlay = PokerOverlay()
     # Simulate a few updates
-    import time
     overlay.update(equity=0.62, action="RAISE", sizing="b75", hand="As Kh", board="Qd Jh 2c")
     overlay.run()

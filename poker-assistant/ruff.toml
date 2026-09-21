@@ -10,6 +10,9 @@
 # (verify focus, import opzionali, guardie config, detection locale).
 [lint.per-file-ignores]
 "vision/llm_vision_extractor.py" = ["E402", "BLE001"]
+# il loop live dell'assistente NON deve mai morire a meta' sessione:
+# il catch-all in _loop con traceback + status e' architettura intenzionale
+"ui/controller.py" = ["BLE001"]
 "vision/*.py" = ["E402"]
 "*.py" = ["E402"]
 

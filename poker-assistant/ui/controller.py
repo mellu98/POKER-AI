@@ -8,8 +8,8 @@ Runs a loop that:
   4. Updates the overlay window
 """
 import sys
-import time
 import threading
+import time
 import traceback
 from pathlib import Path
 
@@ -20,12 +20,14 @@ sys.path.insert(0, str(Path(__file__).parent.parent / "engine"))
 sys.path.insert(0, str(Path(__file__).parent.parent / "vision"))
 sys.path.insert(0, str(Path(__file__).parent))
 
-from assistant_engine import AssistantEngine
+from assistant_engine import AssistantEngine  # type: ignore[import-not-found]
 from confidence_gate import confidence_block_reasons
-from equity_service import calculate_equity, get_hand_strength_class
-from state_extractor import get_extractor
+from equity_service import (  # type: ignore[import-not-found]  # path dinamico via main.py
+    calculate_equity,
+)
 from overlay import PokerOverlay
-from temporal_smoother import TemporalSmoother
+from state_extractor import get_extractor  # type: ignore[import-not-found]
+from temporal_smoother import TemporalSmoother  # type: ignore[import-not-found]
 
 
 class AssistantController:
@@ -49,18 +51,25 @@ class AssistantController:
         temporal_cfg = self.config.get("vision", {}).get("temporal", {})
         self.temporal_smoother: TemporalSmoother | None = None
         if temporal_cfg.get("enabled"):
-            self.temporal_smoother = TemporalSmoother(
-                window_size=int(temporal_cfg.get("window_size", 5)),
-                agreement_threshold=float(temporal_cfg.get("agreement_threshold", 0.6)),
-                min_samples=int(temporal_cfg.get("min_samples", 3)),
-            )
+            try:
+                self.temporal_smoother = TemporalSmoother(
+                    window_size=int(temporal_cfg.get("window_size", 5)),
+                    agreement_threshold=float(temporal_cfg.get("agreement_threshold", 0.6)),
+                    min_samples=int(temporal_cfg.get("min_samples", 3)),
+                )
+            except (TypeError, ValueError) as exc:
+                print(f"[controller] TemporalSmoother config non valida, disattivato: {exc}")
+                self.temporal_smoother = None
 
     def _load_config(self) -> dict:
         path = Path(self.config_path)
         if not path.exists():
             return {}
-        with open(path, "r") as f:
-            return yaml.safe_load(f) or {}
+        try:
+            with open(path, encoding="utf-8") as f:
+                return yaml.safe_load(f) or {}
+        except OSError:
+            return {}
 
     def start(self):
         """Start the assistant loop in a background thread; overlay runs on main."""
