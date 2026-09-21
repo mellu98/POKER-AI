@@ -6,26 +6,34 @@ poker decision recommendations.
 """
 import copy
 import sys
-import joblib
-import numpy as np
 from pathlib import Path
 
-from abstraction import get_preflop_cluster_id, predict_cluster
-from preflop_holdem import PreflopHoldemHistory, PreflopHoldemInfoSet
-from postflop_holdem import PostflopHoldemHistory, PostflopHoldemInfoSet
+import joblib
+import numpy as np
 import preflop_charts
 import preflop_equity_lookup
+from abstraction import predict_cluster
 from equity_service import calculate_equity
 from outs_calculator import OutsCalculator
+from postflop_holdem import PostflopHoldemHistory, PostflopHoldemInfoSet
+from preflop_holdem import PreflopHoldemInfoSet
 
 # Fix joblib unpickling: models were saved when preflop/postflop scripts
 # were run as __main__, so pickle looks for classes in __main__.
 _main = sys.modules["__main__"]
-setattr(_main, "PreflopHoldemInfoSet", PreflopHoldemInfoSet)
-setattr(_main, "PostflopHoldemInfoSet", PostflopHoldemInfoSet)
+_main.PreflopHoldemInfoSet = PreflopHoldemInfoSet
+_main.PostflopHoldemInfoSet = PostflopHoldemInfoSet
 
 PREFLOP_DISCRETE = {"k", "bMIN", "bMID", "bMAX", "c", "f"}
 POSTFLOP_DISCRETE = {"k", "bMIN", "bMID", "bMAX", "c", "f"}
+
+
+def _safe_int(value, default: int = 0) -> int:
+    """Conversione difensiva per sizing/limiti (input da config/stato)."""
+    try:
+        return int(value)
+    except (TypeError, ValueError, OverflowError, ZeroDivisionError):
+        return default
 
 
 def _get_action(strategy: dict) -> str:
@@ -53,7 +61,7 @@ class AssistantEngine:
         )
     """
 
-    def __init__(self, models_dir: str | None = None):
+    def __init__(self, models_dir: "str | Path | None" = None):
         if models_dir is None:
             models_dir = Path(__file__).parent / "models"
         self.models_dir = Path(models_dir)
@@ -158,9 +166,9 @@ class AssistantEngine:
                 and equity_val >= required_equity
                 and result.get("action") in ("k", "c", "f")
             ):
-                bet_size = max(int(0.5 * pot), 2 * int(big_blind))
+                bet_size = max(_safe_int(0.5 * pot), 2 * _safe_int(big_blind))
                 sizing_stack = effective_stack if effective_stack is not None else stack
-                bet_size = min(bet_size, int(sizing_stack))
+                bet_size = min(bet_size, _safe_int(sizing_stack))
                 result["action"] = f"b{bet_size}"
                 result["value_bet_override"] = True
                 result["board_danger"] = board_danger
@@ -174,7 +182,7 @@ class AssistantEngine:
             try:
                 bet_size = int(result["action"][1:])
                 sizing_stack = effective_stack if effective_stack is not None else stack
-                cap = max(int(0.30 * sizing_stack), 2 * int(big_blind))
+                cap = max(_safe_int(0.30 * sizing_stack), 2 * _safe_int(big_blind))
                 if bet_size > cap:
                     result["action"] = f"b{cap}"
                     result["bet_capped_for_stack"] = True
@@ -276,10 +284,14 @@ class AssistantEngine:
 
         # Aggiustamento base per numero di giocatori attivi:
         # più siamo in tanti, più stringiamo (specialmente early).
-        if num_active > 6 and position in ("UTG", "UTG+1", "UTG+2", "LJ", "MP"):
-            if rec["action"] == "bMIN" and rec["strategy"].get("bMIN", 0) < 1.0:
-                # Marginali: da raise a fold in tavoli pieni early
-                rec = {"action": "f", "strategy": {"f": 1.0}, "infoset_key": rec["infoset_key"], "stage": "preflop"}
+        if (
+            num_active > 6
+            and position in ("UTG", "UTG+1", "UTG+2", "LJ", "MP")
+            and rec["action"] == "bMIN"
+            and rec["strategy"].get("bMIN", 0) < 1.0
+        ):
+            # Marginali: da raise a fold in tavoli pieni early
+            rec = {"action": "f", "strategy": {"f": 1.0}, "infoset_key": rec["infoset_key"], "stage": "preflop"}
 
         abstract_action = rec["action"]
         final_action = self._translate_preflop_action(
@@ -308,12 +320,12 @@ class AssistantEngine:
             return abstracted
 
         bet_size = big_blind
-        pot_total = big_blind + int(big_blind / 2)
+        pot_total = big_blind + _safe_int(big_blind / 2)
 
         for action in stage[2:]:
             if action.startswith("b"):
                 try:
-                    bet_size = int(action[1:])
+                    bet_size = _safe_int(action[1:], 0)
                 except ValueError:
                     bet_size = big_blind
 
@@ -348,9 +360,9 @@ class AssistantEngine:
     def _translate_preflop_action(abstract_action, pot, stack, big_blind, history=None):
         if abstract_action == "bMIN":
             # Standard open raise sizing
-            return f"b{int(2.5 * big_blind)}"
+            return f"b{_safe_int(2.5 * big_blind)}"
         elif abstract_action == "bMID":
-            return f"b{max(big_blind, 2 * int(pot))}"
+            return f"b{max(big_blind, 2 * _safe_int(pot))}"
         elif abstract_action == "bMAX":
             # 3bet / 4bet sizing — roughly 3x the last bet
             last_bet = big_blind
@@ -362,9 +374,9 @@ class AssistantEngine:
                         except ValueError:
                             pass
                         break
-            sizing = int(3 * last_bet)
+            sizing = _safe_int(3 * last_bet)
             if sizing >= stack:
-                sizing = int(stack)
+                sizing = _safe_int(stack)
             return f"b{sizing}"
         else:
             return abstract_action
@@ -456,11 +468,7 @@ class AssistantEngine:
                         nc = _norm_card(c)
                         if nc:
                             community_cards.append(nc)
-                if stage_i == 1:
-                    infoset.append(str(predict_cluster(hand + community_cards)))
-                elif stage_i == 2:
-                    infoset.append(str(predict_cluster(hand + community_cards)))
-                elif stage_i == 3:
+                if stage_i == 1 or stage_i == 2 or stage_i == 3:
                     infoset.append(str(predict_cluster(hand + community_cards)))
             else:
                 infoset.append(action)
@@ -475,7 +483,7 @@ class AssistantEngine:
         flop_start = history.index("/")
         for action in history[:flop_start]:
             if action.startswith("b"):
-                bet_size = int(action[1:])
+                bet_size = _safe_int(action[1:], 0)
                 pot_total = 2 * bet_size
 
         abstracted = history[:2]
@@ -504,7 +512,7 @@ class AssistantEngine:
             else:
                 for action in stage:
                     if action.startswith("b"):
-                        bet_size = int(action[1:])
+                        bet_size = _safe_int(action[1:], 0)
                         latest_bet = bet_size
 
                         if abstracted[-1] == "bMIN":
@@ -532,12 +540,12 @@ class AssistantEngine:
 
     @staticmethod
     def _translate_postflop_action(abstract_action, pot, stack, big_blind):
-        smallest_bet = int(big_blind / 2)
+        smallest_bet = _safe_int(big_blind / 2, 1)
         if abstract_action == "bMIN":
-            size = max(big_blind, int(1 / 3 * pot / smallest_bet) * smallest_bet)
+            size = max(big_blind, _safe_int(1 / 3 * pot / smallest_bet) * smallest_bet)
             return f"b{size}"
         elif abstract_action == "bMAX":
-            size = min(int(pot), int(stack))
+            size = min(_safe_int(pot), _safe_int(stack))
             return f"b{size}"
         else:
             return abstract_action
