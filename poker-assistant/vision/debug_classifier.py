@@ -1,16 +1,21 @@
 """Test trained classifier on case screenshots."""
+import importlib
 import sys
 from pathlib import Path
+
+import cv2
+import yaml
 
 ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "vision"))
 
-import cv2
-import yaml
-from card_classifier import CardClassifier
-from llm_vision_extractor import _resolve_relative_roi
-from capture import crop_roi
+_card_classifier = importlib.import_module("card_classifier")
+CardClassifier = _card_classifier.CardClassifier
+_llm_vision_extractor = importlib.import_module("llm_vision_extractor")
+_resolve_relative_roi = _llm_vision_extractor._resolve_relative_roi
+_capture = importlib.import_module("capture")
+crop_roi = _capture.crop_roi
 
 CONFIG_PATH = ROOT / "config.yaml"
 CACHE_ROOT = Path("C:/Users/franc/.claude")
@@ -33,8 +38,11 @@ def main():
     if not clf.is_ready:
         print("Classifier not ready")
         return
-    with open(CONFIG_PATH, "r") as f:
-        cfg = yaml.safe_load(f) or {}
+    try:
+        with open(CONFIG_PATH) as f:
+            cfg = yaml.safe_load(f) or {}
+    except OSError as exc:
+        raise SystemExit(f"config.yaml non leggibile: {exc}") from exc
     rois = cfg.get("vision", {}).get("rois", {})
     hole_rois = rois.get("hole", [])
     board_rois = rois.get("board", [])
@@ -43,6 +51,9 @@ def main():
     total = 0
     for img_rel, expected in CASES:
         frame = cv2.imread(str(CACHE_ROOT / img_rel))
+        if frame is None:
+            print(f"\n=== {Path(img_rel).name}: non leggibile, salto ===")
+            continue
         print(f"\n=== {Path(img_rel).name} ===")
         for slot, cards, roi_list in [("hole", expected["hole"], hole_rois), ("board", expected["board"], board_rois)]:
             if not cards:
@@ -51,6 +62,8 @@ def main():
                 if i >= len(roi_list):
                     continue
                 roi = _resolve_relative_roi(roi_list[i], frame)
+                if roi is None:
+                    continue
                 crop = crop_roi(frame, roi["x"], roi["y"], roi["w"], roi["h"])
                 pred, conf = clf.predict_card(crop)
                 ok = pred == expected_card[0].upper() + expected_card[1].lower()

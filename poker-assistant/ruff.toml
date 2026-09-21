@@ -1,0 +1,17 @@
+# Config ruff per poker-assistant
+#
+# E402: gli script eseguibili (vision/debug_*.py, vision/test_*.py, ecc.)
+# inseriscono ROOT e ROOT/vision in sys.path PRIMA degli import locali:
+# "import non in testa al file" e' strutturale per questo pattern.
+#
+# BLE001: l'estrattore live DEVE degradare su qualunque errore senza crashare
+# a meta' mano (assistente durante il gioco): le guardie ampie
+# `except Exception` con log + fallback sono architettura intenzionale
+# (verify focus, import opzionali, guardie config, detection locale).
+[lint.per-file-ignores]
+"vision/llm_vision_extractor.py" = ["E402", "BLE001"]
+"vision/*.py" = ["E402"]
+"*.py" = ["E402"]
+
+[lint]
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"

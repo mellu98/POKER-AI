@@ -8,8 +8,8 @@ Usage:
 Environment:
     OPENROUTER_API_KEY — used if api_key is not passed explicitly.
 """
+
 import base64
-import contextlib
 import json
 import os
 import re
@@ -26,9 +26,10 @@ from local_table_state import LocalTableStateExtractor
 # Carica .env automaticamente se python-dotenv è installato (opzionale)
 try:
     from dotenv import load_dotenv
+
     load_dotenv()
-except Exception:
-    pass
+except ImportError as exc:
+    print(f"[llm_vision] python-dotenv non disponibile ({exc}); uso le variabili d'ambiente di sistema")
 
 # requests may not be installed; give a helpful error.
 try:
@@ -135,16 +136,22 @@ TOCALL RECOGNITION for Goldbet:
 
 def _resize_frame(frame: np.ndarray, max_dim: int = 1024) -> np.ndarray:
     """Resize so the longest side is at most max_dim, preserving aspect ratio."""
-    h, w = frame.shape[:2]
-    if max(h, w) <= max_dim:
+    try:
+        h, w = frame.shape[:2]
+        if max(h, w) <= max_dim:
+            return frame
+        scale = max_dim / max(h, w)
+        new_w = int(w * scale)
+        new_h = int(h * scale)
+        return cv2.resize(frame, (new_w, new_h), interpolation=cv2.INTER_AREA)
+    except (ValueError, OverflowError):
+        # degradazione graduale: frame non ridimensionato (payload piu' grande ma valido)
         return frame
-    scale = max_dim / max(h, w)
-    new_w = int(w * scale)
-    new_h = int(h * scale)
-    return cv2.resize(frame, (new_w, new_h), interpolation=cv2.INTER_AREA)
 
 
-def _encode_frame_to_base64(frame: np.ndarray, max_dim: int = 1280, jpeg_quality: int = 92) -> str:
+def _encode_frame_to_base64(
+    frame: np.ndarray, max_dim: int = 1280, jpeg_quality: int = 92
+) -> str:
     """
     Resize and encode an OpenCV BGR image to base64 JPEG.
 
@@ -153,8 +160,11 @@ def _encode_frame_to_base64(frame: np.ndarray, max_dim: int = 1280, jpeg_quality
     under ~250KB and API latency low.
     """
     frame = _resize_frame(frame, max_dim)
-    encode_params = [int(cv2.IMWRITE_JPEG_QUALITY), jpeg_quality]
-    success, buffer = cv2.imencode(".jpg", frame, encode_params)
+    try:
+        encode_params = [int(cv2.IMWRITE_JPEG_QUALITY), jpeg_quality]
+        success, buffer = cv2.imencode(".jpg", frame, encode_params)
+    except (ValueError, cv2.error):
+        raise RuntimeError("Failed to encode image to JPEG") from None
     if not success:
         raise RuntimeError("Failed to encode image to JPEG")
     return base64.b64encode(buffer).decode("utf-8")
@@ -166,12 +176,16 @@ def _resolve_relative_roi(roi: dict, frame: np.ndarray) -> dict | None:
         return None
     if roi.get("rel"):
         h, w = frame.shape[:2]
-        return {
-            "x": int(roi["x"] * w),
-            "y": int(roi["y"] * h),
-            "w": int(roi["w"] * w),
-            "h": int(roi["h"] * h),
-        }
+        try:
+            return {
+                "x": int(roi["x"] * w),
+                "y": int(roi["y"] * h),
+                "w": int(roi["w"] * w),
+                "h": int(roi["h"] * h),
+            }
+        except (KeyError, TypeError, ValueError):
+            # ROI malformato nel config: il caller salta i ROI None
+            return None
     return roi
 
 
@@ -187,7 +201,7 @@ def _extract_suit_templates(
     from ocr_cards import extract_split_templates_from_full, load_templates_from_dir
 
     templates: dict[str, np.ndarray] = load_templates_from_dir(str(templates_dir))
-    rank_templates, suit_templates = extract_split_templates_from_full(templates)
+    _, suit_templates = extract_split_templates_from_full(templates)
 
     if extra_suit_dir and extra_suit_dir.exists():
         for suit_sub in extra_suit_dir.iterdir():
@@ -205,19 +219,25 @@ def _extract_suit_templates(
     return suit_templates
 
 
-def _match_template_resized(image: np.ndarray, template: np.ndarray, std_size: tuple = (60, 60)) -> float:
+def _match_template_resized(
+    image: np.ndarray, template: np.ndarray, std_size: tuple = (60, 60)
+) -> float:
     """Resize both images to std_size and return normalized cross-correlation score."""
     if image is None or template is None or image.size == 0 or template.size == 0:
         return -1.0
-    if image.ndim == 3:
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    if template.ndim == 3:
-        template = cv2.cvtColor(template, cv2.COLOR_BGR2GRAY)
-    img_resized = cv2.resize(image, std_size, interpolation=cv2.INTER_AREA)
-    tmpl_resized = cv2.resize(template, std_size, interpolation=cv2.INTER_AREA)
-    res = cv2.matchTemplate(img_resized, tmpl_resized, cv2.TM_CCOEFF_NORMED)
-    _, max_val, _, _ = cv2.minMaxLoc(res)
-    return float(max_val)
+    try:
+        if image.ndim == 3:
+            image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        if template.ndim == 3:
+            template = cv2.cvtColor(template, cv2.COLOR_BGR2GRAY)
+        img_resized = cv2.resize(image, std_size, interpolation=cv2.INTER_AREA)
+        tmpl_resized = cv2.resize(template, std_size, interpolation=cv2.INTER_AREA)
+        res = cv2.matchTemplate(img_resized, tmpl_resized, cv2.TM_CCOEFF_NORMED)
+        _, max_val, _, _ = cv2.minMaxLoc(res)
+        return float(max_val)
+    except (cv2.error, ValueError):
+        # sentinel di errore gia' usato dai caller (-1.0 = match non valido)
+        return -1.0
 
 
 def _best_suit(
@@ -260,9 +280,13 @@ def _crop_suit_from_full_card(card_crop: np.ndarray) -> np.ndarray:
     differences across card sizes.
     """
     h, w = card_crop.shape[:2]
-    y0, y1 = int(h * 0.28), int(h * 0.55)
-    x0, x1 = int(w * 0.08), int(w * 0.30)
-    return card_crop[y0:y1, x0:x1]
+    try:
+        y0, y1 = int(h * 0.28), int(h * 0.55)
+        x0, x1 = int(w * 0.08), int(w * 0.30)
+        return card_crop[y0:y1, x0:x1]
+    except (ValueError, IndexError):
+        # crop vuoto: i caller gia' gestiscono size == 0
+        return np.zeros((0, 0, 3), dtype=np.uint8)
 
 
 def _detect_suit_color(suit_crop: np.ndarray) -> str | None:
@@ -283,8 +307,12 @@ def _detect_suit_color(suit_crop: np.ndarray) -> str | None:
     if fg.sum() > 0:
         red = ((h < 18) | (h > 165)) & (s > 30) & (v > 40)
         black = (v < 130) & (s < 130)
-        red_count = int(red[fg].sum())
-        black_count = int(black[fg].sum())
+        try:
+            red_count = int(red[fg].sum())
+            black_count = int(black[fg].sum())
+        except (ValueError, OverflowError):
+            red_count = 0
+            black_count = 0
         if red_count > black_count * 1.3 and red_count > 10:
             return "red"
         if black_count > red_count * 1.3 and black_count > 10:
@@ -295,9 +323,12 @@ def _detect_suit_color(suit_crop: np.ndarray) -> str | None:
     fg = (b > 40) | (g > 40) | (r > 40)
     if fg.sum() < 10:
         return None
-    mr = float(r[fg].mean())
-    mg = float(g[fg].mean())
-    mb = float(b[fg].mean())
+    try:
+        mr = float(r[fg].mean())
+        mg = float(g[fg].mean())
+        mb = float(b[fg].mean())
+    except (ValueError, ZeroDivisionError):
+        return None
     if mr > max(mg, mb) + 15:
         return "red"
     if max(mr, mg, mb) < 140:
@@ -341,9 +372,12 @@ def _build_composite_image(
     if n == 0:
         return np.zeros((cell_size[1], cell_size[0], 3), dtype=np.uint8), []
     rows = (n + cols - 1) // cols
-    canvas = np.ones((rows * cell_size[1], cols * cell_size[0], 3), dtype=np.uint8) * 255
+    canvas = (
+        np.ones((rows * cell_size[1], cols * cell_size[0], 3), dtype=np.uint8) * 255
+    )
     labels: list[tuple[int, str]] = []
     from capture import crop_roi
+
     for i, (label, roi_cfg) in enumerate(items):
         roi = _resolve_relative_roi(roi_cfg, frame)
         if roi is None:
@@ -355,10 +389,16 @@ def _build_composite_image(
         r = i // cols
         c = i % cols
         y0, x0 = r * cell_size[1], c * cell_size[0]
-        canvas[y0:y0 + cell_size[1], x0:x0 + cell_size[0]] = crop
+        canvas[y0 : y0 + cell_size[1], x0 : x0 + cell_size[0]] = crop
         cv2.putText(
-            canvas, f"{i + 1}", (x0 + 2, y0 + 20),
-            cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2, cv2.LINE_AA
+            canvas,
+            f"{i + 1}",
+            (x0 + 2, y0 + 20),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.6,
+            (0, 255, 0),
+            2,
+            cv2.LINE_AA,
         )
         labels.append((i + 1, label))
     return canvas, labels
@@ -375,8 +415,8 @@ def _parse_suits_array(text: str | None) -> list[str] | None:
         arr = json.loads(text)
         if isinstance(arr, list):
             return [str(x).lower() for x in arr]
-    except Exception:
-        pass
+    except json.JSONDecodeError:
+        print(f"[llm_vision] suits array non e' JSON valido, provo con i fallback: {text[:80]}")
     # Fallback: extract quoted letters
     matches = re.findall(r"['\"]([shdc])['\"]", text)
     if matches:
@@ -538,7 +578,9 @@ class LLMVisionExtractor:
             self._to_call_roi = rois.get("to_call")
             self._stack_roi = rois.get("stack")
 
-            templates_dir = Path(cfg.get("vision", {}).get("template_dir", "vision/templates"))
+            templates_dir = Path(
+                cfg.get("vision", {}).get("template_dir", "vision/templates")
+            )
             if not templates_dir.is_absolute():
                 templates_dir = cfg_path.parent / templates_dir
             extra_suit_dir = templates_dir.parent / "suit_templates"
@@ -588,7 +630,10 @@ class LLMVisionExtractor:
                 return requests.post(
                     url, headers=headers, json=json_payload, timeout=timeout
                 )
-            except (requests.exceptions.ReadTimeout, requests.exceptions.ConnectionError) as exc:
+            except (
+                requests.exceptions.ReadTimeout,
+                requests.exceptions.ConnectionError,
+            ) as exc:
                 last_exc = exc
                 if attempt == max_retries:
                     break
@@ -625,7 +670,7 @@ class LLMVisionExtractor:
                 "Ignore all other cards. Pay extreme attention to the suit COLOR (black=spades/clubs, red=hearts/diamonds) "
                 "and the suit SYMBOL shape. Return ONLY the two hole cards."
             )
-            user_text = "What are the two hole cards at the bottom center? Return ONLY [\"Xs\", \"Yh\"] format."
+            user_text = 'What are the two hole cards at the bottom center? Return ONLY ["Xs", "Yh"] format.'
         else:
             system = SYSTEM_PROMPT
             user_text = "Extract the full poker table state from this screenshot."
@@ -661,8 +706,8 @@ class LLMVisionExtractor:
         )
         t_api = time.time() - t1
         print(
-            f"[llm_vision] encode={t_encode*1000:.0f}ms api={t_api*1000:.0f}ms "
-            f"payload={payload_kb}KB total={(t_encode+t_api)*1000:.0f}ms"
+            f"[llm_vision] encode={t_encode * 1000:.0f}ms api={t_api * 1000:.0f}ms "
+            f"payload={payload_kb}KB total={(t_encode + t_api) * 1000:.0f}ms"
         )
         if not resp.ok:
             print(f"[llm_vision] HTTP {resp.status_code} BODY: {resp.text[:500]}")
@@ -674,17 +719,19 @@ class LLMVisionExtractor:
         except (KeyError, IndexError) as exc:
             raise RuntimeError(f"Unexpected API response structure: {data}") from exc
 
+        # Nota: bool(text) evita AttributeError se il modello ha risposto None
+        focused_array_retry = focused and bool(text) and text.strip().startswith("[")
         try:
             state = _extract_json_from_text(text)
         except RuntimeError as exc:
             # _extract_json_from_text solleva RuntimeError (non JSONDecodeError):
             # il ramo focused qui sotto era irraggiungibile prima della correzione.
             # Focused mode may return a raw array like ["As", "Kh"]
-            if focused and text.strip().startswith("["):
+            if focused_array_retry:
                 try:
                     hole_list = json.loads(text.strip())
                     state = {"hole": hole_list}
-                except Exception:
+                except json.JSONDecodeError:
                     raise RuntimeError(
                         f"Failed to parse JSON from model response. Raw text:\n{text[:800]}"
                     ) from exc
@@ -723,7 +770,12 @@ class LLMVisionExtractor:
                         "role": "user",
                         "content": [
                             {"type": "text", "text": "Heart or diamond?"},
-                            {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{b64_img}"}},
+                            {
+                                "type": "image_url",
+                                "image_url": {
+                                    "url": f"data:image/jpeg;base64,{b64_img}"
+                                },
+                            },
                         ],
                     },
                 ],
@@ -738,7 +790,9 @@ class LLMVisionExtractor:
                 self.api_url, headers=headers, json_payload=payload, timeout=15.0
             )
             if not resp.ok:
-                print(f"[llm_vision] red-suit verify HTTP {resp.status_code}: {resp.text[:200]}")
+                print(
+                    f"[llm_vision] red-suit verify HTTP {resp.status_code}: {resp.text[:200]}"
+                )
                 return None
             data = resp.json()
             text = data["choices"][0]["message"]["content"]
@@ -800,7 +854,12 @@ class LLMVisionExtractor:
                         "role": "user",
                         "content": [
                             {"type": "text", "text": ask},
-                            {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{b64_img}"}},
+                            {
+                                "type": "image_url",
+                                "image_url": {
+                                    "url": f"data:image/jpeg;base64,{b64_img}"
+                                },
+                            },
                         ],
                     },
                 ],
@@ -815,7 +874,9 @@ class LLMVisionExtractor:
                 self.api_url, headers=headers, json_payload=payload, timeout=15.0
             )
             if not resp.ok:
-                print(f"[llm_vision] single-suit verify HTTP {resp.status_code}: {resp.text[:200]}")
+                print(
+                    f"[llm_vision] single-suit verify HTTP {resp.status_code}: {resp.text[:200]}"
+                )
                 return None
             data = resp.json()
             text = data["choices"][0]["message"]["content"]
@@ -847,6 +908,7 @@ class LLMVisionExtractor:
 
         # Resolve Tesseract binary (Windows bundle, macOS Homebrew, or PATH)
         from tesseract_utils import find_tesseract_binary
+
         pytesseract.pytesseract.tesseract_cmd = find_tesseract_binary()
 
         try:
@@ -854,7 +916,9 @@ class LLMVisionExtractor:
         except Exception:
             return None
 
-        crop = crop_roi(frame, resolved["x"], resolved["y"], resolved["w"], resolved["h"])
+        crop = crop_roi(
+            frame, resolved["x"], resolved["y"], resolved["w"], resolved["h"]
+        )
         if crop is None or crop.size == 0:
             return None
 
@@ -880,7 +944,7 @@ class LLMVisionExtractor:
         # Convert to cents
         try:
             if "." in token:
-                return int(round(value * 100))
+                return round(value * 100)
             return int(value * 100)
         except (ValueError, OverflowError):
             return None
@@ -905,7 +969,9 @@ class LLMVisionExtractor:
         except Exception:
             return ""
 
-        crop = crop_roi(frame, resolved["x"], resolved["y"], resolved["w"], resolved["h"])
+        crop = crop_roi(
+            frame, resolved["x"], resolved["y"], resolved["w"], resolved["h"]
+        )
         if crop is None or crop.size == 0:
             return ""
 
@@ -918,7 +984,9 @@ class LLMVisionExtractor:
         """Use local OCR as fallback, but don't override a plausible LLM read."""
         corrected = dict(state)
 
-        def _close_enough(ocr_val: int | None, llm_val: int | None, tol: float = 0.30) -> bool:
+        def _close_enough(
+            ocr_val: int | None, llm_val: int | None, tol: float = 0.30
+        ) -> bool:
             if ocr_val is None or llm_val is None:
                 return False
             if llm_val == 0:
@@ -931,16 +999,22 @@ class LLMVisionExtractor:
                 llm_pot = corrected.get("pot")
                 if ocr_pot is not None and ocr_pot >= 0:
                     if llm_pot is None:
-                        print(f"[llm_vision] Pot OCR fallback (LLM missing): None -> {ocr_pot}")
+                        print(
+                            f"[llm_vision] Pot OCR fallback (LLM missing): None -> {ocr_pot}"
+                        )
                         corrected["pot"] = ocr_pot
                     elif llm_pot == 0 and ocr_pot > 0:
-                        print(f"[llm_vision] Pot OCR override (LLM zero): 0 -> {ocr_pot}")
+                        print(
+                            f"[llm_vision] Pot OCR override (LLM zero): 0 -> {ocr_pot}"
+                        )
                         corrected["pot"] = ocr_pot
                     elif _close_enough(ocr_pot, llm_pot):
                         print(f"[llm_vision] Pot OCR confirm: {llm_pot} -> {ocr_pot}")
                         corrected["pot"] = ocr_pot
                     else:
-                        print(f"[llm_vision] Pot OCR ignored (mismatch): LLM={llm_pot}, OCR={ocr_pot}")
+                        print(
+                            f"[llm_vision] Pot OCR ignored (mismatch): LLM={llm_pot}, OCR={ocr_pot}"
+                        )
             except Exception as e:
                 print(f"[llm_vision] Pot OCR fallback failed: {e}")
 
@@ -954,21 +1028,38 @@ class LLMVisionExtractor:
                     is_check = "check" in text.lower() or "gratis" in text.lower()
 
                     if ocr_to_call == 0 and llm_to_call > 0 and is_check:
-                        print(f"[llm_vision] ToCall OCR override (Check): {llm_to_call} -> 0")
+                        print(
+                            f"[llm_vision] ToCall OCR override (Check): {llm_to_call} -> 0"
+                        )
                         corrected["to_call"] = 0
                     elif ocr_to_call > 0 and llm_to_call == 0:
                         # OCR sees a bet but LLM says 0. Only trust OCR if it is a
                         # plausible call size (not a random stack/chip misread).
-                        if _close_enough(ocr_to_call, corrected.get("pot"), tol=0.5) or ocr_to_call <= 4:
-                            print(f"[llm_vision] ToCall OCR override: {llm_to_call} -> {ocr_to_call}")
+                        if (
+                            _close_enough(ocr_to_call, corrected.get("pot"), tol=0.5)
+                            or ocr_to_call <= 4
+                        ):
+                            print(
+                                f"[llm_vision] ToCall OCR override: {llm_to_call} -> {ocr_to_call}"
+                            )
                             corrected["to_call"] = ocr_to_call
                         else:
-                            print(f"[llm_vision] ToCall OCR ignored (implausible): LLM={llm_to_call}, OCR={ocr_to_call}")
-                    elif ocr_to_call > 0 and llm_to_call > 0 and _close_enough(ocr_to_call, llm_to_call):
-                        print(f"[llm_vision] ToCall OCR confirm: {llm_to_call} -> {ocr_to_call}")
+                            print(
+                                f"[llm_vision] ToCall OCR ignored (implausible): LLM={llm_to_call}, OCR={ocr_to_call}"
+                            )
+                    elif (
+                        ocr_to_call > 0
+                        and llm_to_call > 0
+                        and _close_enough(ocr_to_call, llm_to_call)
+                    ):
+                        print(
+                            f"[llm_vision] ToCall OCR confirm: {llm_to_call} -> {ocr_to_call}"
+                        )
                         corrected["to_call"] = ocr_to_call
                     else:
-                        print(f"[llm_vision] ToCall OCR ignored (mismatch): LLM={llm_to_call}, OCR={ocr_to_call}")
+                        print(
+                            f"[llm_vision] ToCall OCR ignored (mismatch): LLM={llm_to_call}, OCR={ocr_to_call}"
+                        )
             except Exception as e:
                 print(f"[llm_vision] ToCall OCR fallback failed: {e}")
 
@@ -1054,7 +1145,7 @@ class LLMVisionExtractor:
                 "- c = clubs (♣), black three-leaf clover\n\n"
                 f"The ranks in order (1 to {len(ranks_list)}) are: {ranks_list}\n\n"
                 "Return ONLY a JSON array with the suit letter for each card, in the same order.\n"
-                f'Example for {len(ranks_list)} cards: {json.dumps(["s"] * len(ranks_list))}\n'
+                f"Example for {len(ranks_list)} cards: {json.dumps(['s'] * len(ranks_list))}\n"
                 "No explanation, no markdown."
             )
             payload = {
@@ -1064,8 +1155,16 @@ class LLMVisionExtractor:
                     {
                         "role": "user",
                         "content": [
-                            {"type": "text", "text": "What is the suit of each numbered card?"},
-                            {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{b64_img}"}},
+                            {
+                                "type": "text",
+                                "text": "What is the suit of each numbered card?",
+                            },
+                            {
+                                "type": "image_url",
+                                "image_url": {
+                                    "url": f"data:image/jpeg;base64,{b64_img}"
+                                },
+                            },
                         ],
                     },
                 ],
@@ -1080,13 +1179,17 @@ class LLMVisionExtractor:
                 self.api_url, headers=headers, json_payload=payload, timeout=20.0
             )
             if not resp.ok:
-                print(f"[llm_vision] uncertain-suits verify HTTP {resp.status_code}: {resp.text[:200]}")
+                print(
+                    f"[llm_vision] uncertain-suits verify HTTP {resp.status_code}: {resp.text[:200]}"
+                )
                 return state
             data = resp.json()
             text = data["choices"][0]["message"]["content"]
             suits = _parse_suits_array(text)
             if suits is None or len(suits) != len(uncertain_items):
-                print(f"[llm_vision] Could not parse uncertain suits array: {text[:200]}")
+                print(
+                    f"[llm_vision] Could not parse uncertain suits array: {text[:200]}"
+                )
                 return state
 
             corrected = dict(state)
@@ -1095,14 +1198,22 @@ class LLMVisionExtractor:
                     new_card = card[0].upper() + suit
                     target = corrected.setdefault(slot, [])
                     if idx < len(target):
-                        print(f"[llm_vision] Uncertain-suit verify: {card} -> {new_card}")
+                        print(
+                            f"[llm_vision] Uncertain-suit verify: {card} -> {new_card}"
+                        )
                         target[idx] = new_card
             return corrected
         except Exception as e:
             print(f"[llm_vision] uncertain-suits verify failed: {e}")
             return state
 
-    def _correct_suits(self, frame: np.ndarray, state: dict, threshold: float = 0.35, min_margin: float = 0.08) -> dict:
+    def _correct_suits(
+        self,
+        frame: np.ndarray,
+        state: dict,
+        threshold: float = 0.35,
+        min_margin: float = 0.08,
+    ) -> dict:
         """
         Local color + same-rank template-matching fix for LLM suit confusion.
 
@@ -1125,7 +1236,9 @@ class LLMVisionExtractor:
         full_templates = load_templates_from_dir(str(templates_dir))
         _, full_suit_templates = extract_split_templates_from_full(full_templates)
 
-        def candidate_suit_templates(rank: str, allowed: list[str]) -> dict[str, list[np.ndarray]]:
+        def candidate_suit_templates(
+            rank: str, allowed: list[str]
+        ) -> dict[str, list[np.ndarray]]:
             candidates: dict[str, list[np.ndarray]] = {}
             for suit in allowed:
                 if not (templates_dir / f"{rank}{suit}.png").exists():
@@ -1186,11 +1299,7 @@ class LLMVisionExtractor:
                 if current_suit not in allowed:
                     # Cross-color misread: trust local color and pick the best
                     # same-color suit if the template match is decent.
-                    if (
-                        best_suit is not None
-                        and score >= 0.35
-                        and margin >= 0.10
-                    ):
+                    if best_suit is not None and score >= 0.35 and margin >= 0.10:
                         new_card = f"{rank}{best_suit}"
                         print(
                             f"[llm_vision] Cross-color correction: {card} -> {new_card} "
@@ -1228,8 +1337,12 @@ class LLMVisionExtractor:
                     out.append(card)
             return out
 
-        corrected["hole"] = fix_card_list(state.get("hole", []), self._hole_rois, "hole")
-        corrected["board"] = fix_card_list(state.get("board", []), self._board_rois, "board")
+        corrected["hole"] = fix_card_list(
+            state.get("hole", []), self._hole_rois, "hole"
+        )
+        corrected["board"] = fix_card_list(
+            state.get("board", []), self._board_rois, "board"
+        )
 
         if uncertain_items:
             # Verify uncertain cards when suits matter for the decision:
@@ -1241,7 +1354,9 @@ class LLMVisionExtractor:
             board_color_counts: dict[str, int] = {}
             for card in corrected.get("board", []):
                 if len(card) == 2:
-                    color = {"s": "black", "c": "black", "h": "red", "d": "red"}.get(card[1].lower())
+                    color = {"s": "black", "c": "black", "h": "red", "d": "red"}.get(
+                        card[1].lower()
+                    )
                     if color:
                         board_color_counts[color] = board_color_counts.get(color, 0) + 1
 
@@ -1251,7 +1366,9 @@ class LLMVisionExtractor:
                 card, slot, _, _ = it
                 if slot != "board" or len(card) != 2:
                     continue
-                color = {"s": "black", "c": "black", "h": "red", "d": "red"}.get(card[1].lower())
+                color = {"s": "black", "c": "black", "h": "red", "d": "red"}.get(
+                    card[1].lower()
+                )
                 # Always verify board suits once the flop is out; otherwise only
                 # when two cards of the same color are already present.
                 if board_len >= 3 or (color and board_color_counts.get(color, 0) >= 2):
@@ -1280,7 +1397,9 @@ class LLMVisionExtractor:
         from pathlib import Path
 
         templates_dir = Path("vision/templates")
-        missing_items: list[tuple[str, str, dict, int]] = []  # label, slot, roi, list_idx
+        missing_items: list[
+            tuple[str, str, dict, int]
+        ] = []  # label, slot, roi, list_idx
 
         for slot, rois, cards in (
             ("hole", self._hole_rois, state.get("hole", [])),
@@ -1316,7 +1435,7 @@ class LLMVisionExtractor:
                 "- c = clubs (♣), black three-leaf clover\n\n"
                 f"The ranks in order (1 to {len(ranks_list)}) are: {ranks_list}\n\n"
                 "Return ONLY a JSON array with the suit letter for each card, in the same order.\n"
-                f'Example for {len(ranks_list)} cards: {json.dumps(["s"] * len(ranks_list))}\n'
+                f"Example for {len(ranks_list)} cards: {json.dumps(['s'] * len(ranks_list))}\n"
                 "No explanation, no markdown."
             )
             payload = {
@@ -1326,8 +1445,16 @@ class LLMVisionExtractor:
                     {
                         "role": "user",
                         "content": [
-                            {"type": "text", "text": "What is the suit of each numbered card?"},
-                            {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{b64_img}"}},
+                            {
+                                "type": "text",
+                                "text": "What is the suit of each numbered card?",
+                            },
+                            {
+                                "type": "image_url",
+                                "image_url": {
+                                    "url": f"data:image/jpeg;base64,{b64_img}"
+                                },
+                            },
                         ],
                     },
                 ],
@@ -1342,7 +1469,9 @@ class LLMVisionExtractor:
                 self.api_url, headers=headers, json_payload=payload, timeout=20.0
             )
             if not resp.ok:
-                print(f"[llm_vision] missing-suits verify HTTP {resp.status_code}: {resp.text[:200]}")
+                print(
+                    f"[llm_vision] missing-suits verify HTTP {resp.status_code}: {resp.text[:200]}"
+                )
                 return state
             data = resp.json()
             text = data["choices"][0]["message"]["content"]
@@ -1387,7 +1516,9 @@ class LLMVisionExtractor:
                 raise RuntimeError("Screenshot failed: window not found")
 
         if self._should_skip(frame):
-            assert self._cached_state is not None  # impostato dall'ultima extract() riuscita
+            assert (
+                self._cached_state is not None
+            )  # impostato dall'ultima extract() riuscita
             return self._cached_state
 
         raw_state = self._call_api(frame, focused=False)
@@ -1400,7 +1531,9 @@ class LLMVisionExtractor:
         # when the board area is actually empty (e.g. between hands or preflop).
         try:
             if self._is_board_empty(frame) and state.get("board"):
-                print(f"[llm_vision] Board looks empty; clearing hallucinated board {state['board']}")
+                print(
+                    f"[llm_vision] Board looks empty; clearing hallucinated board {state['board']}"
+                )
                 state["board"] = []
                 state["stage"] = "preflop"
         except Exception as e:
@@ -1418,10 +1551,29 @@ class LLMVisionExtractor:
         # Fast local color + template matching to fix cross-color suit swaps
         # (e.g. red heart read as black club) without extra API calls.
         # Same-color uncertainty (h/d or s/c) is verified only when needed.
+        pre_correction = {
+            "hole": list(state.get("hole", [])),
+            "board": list(state.get("board", [])),
+        }
         try:
             state = self._correct_suits(frame, state)
         except Exception as e:
             print(f"[llm_vision] Suit correction failed: {e}")
+
+        # Sanity post-correzione: se la correzione locale ha introdotto duplicati
+        # (dentro uno slot o tra hole e board), la correzione e' sbagliata:
+        # ripristina le carte lette dall'LLM.
+        cards_now = list(state.get("hole", [])) + list(state.get("board", []))
+        cards_pre = pre_correction["hole"] + pre_correction["board"]
+        if len(cards_now) != len(set(cards_now)) and len(cards_pre) == len(set(cards_pre)):
+            print(
+                f"[llm_vision] Suit correction ha introdotto duplicati "
+                f"(hole={state['hole']}, board={state['board']}) -> "
+                f"ripristino lettura LLM (hole={pre_correction['hole']}, "
+                f"board={pre_correction['board']})"
+            )
+            state["hole"] = list(pre_correction["hole"])
+            state["board"] = list(pre_correction["board"])
 
         # ---- Focused retry on hole cards DISABLED ----
         # The focused retry often pulled board cards into the hole list when
@@ -1467,7 +1619,9 @@ class LLMVisionExtractor:
         # ---- Position: compute locally from button_seat ----
         # The LLM reports button_seat; SeatLayout derives hero position.
         # This is faster and more reliable than a separate position-only LLM call.
-        state["position"] = self._position_from_button(state.get("button_seat"), state.get("hole", []))
+        state["position"] = self._position_from_button(
+            state.get("button_seat"), state.get("hole", [])
+        )
 
         return state
 
@@ -1477,13 +1631,11 @@ class LLMVisionExtractor:
             return None, 0.0
         try:
             return self._local_table.detect_button_seat_with_score(frame)
-        except Exception as e:
+        except (cv2.error, ValueError, KeyError, AttributeError, IndexError, TypeError) as e:
             print(f"[llm_vision] Local button detection failed: {e}")
             return None, 0.0
 
-    def _position_from_button(
-        self, button_seat: int | None, hole: list[str]
-    ) -> str:
+    def _position_from_button(self, button_seat: int | None, hole: list[str]) -> str:
         """Compute hero position from button_seat using SeatLayout.
 
         Position is kept stable within the same hand (same hole cards) unless
@@ -1520,20 +1672,29 @@ class LLMVisionExtractor:
             self._cached_button_seat = button_seat
             if pos != self._cached_position:
                 if self._cached_position:
-                    print(f"[llm_vision] position changed: {self._cached_position} -> {pos} (button seat {button_seat})")
+                    print(
+                        f"[llm_vision] position changed: {self._cached_position} -> {pos} (button seat {button_seat})"
+                    )
                 else:
-                    print(f"[llm_vision] position detected: {pos} (button seat {button_seat})")
+                    print(
+                        f"[llm_vision] position detected: {pos} (button seat {button_seat})"
+                    )
                 self._cached_position = pos
             else:
-                print(f"[llm_vision] position confirmed: {pos} (button seat {button_seat})")
+                print(
+                    f"[llm_vision] position confirmed: {pos} (button seat {button_seat})"
+                )
             return pos
-        except Exception:
+        except (ImportError, ValueError, KeyError, AttributeError, IndexError, TypeError):
             print(f"[llm_vision] position compute failed:\n{traceback.format_exc()}")
-            return self._cached_position or "BTN"
+            if self._cached_position:
+                return self._cached_position
+            return "BTN"
 
     def _maybe_refresh_position_async(self, frame: np.ndarray) -> None:
         """Start a background thread to refresh position if cache is stale."""
         import threading
+
         now = time.time()
         if self._position_thread_running:
             return
@@ -1553,15 +1714,19 @@ class LLMVisionExtractor:
     def _refresh_position_worker(self, frame: np.ndarray) -> None:
         """Background worker: call position_model to get the D-button position."""
         try:
-            pos = self._call_api_position_only(frame, model=self.position_model or self.model)
+            pos = self._call_api_position_only(
+                frame, model=self.position_model or self.model
+            )
             if pos:
                 if pos != self._cached_position:
-                    print(f"[llm_vision] position changed: {self._cached_position} -> {pos}")
+                    print(
+                        f"[llm_vision] position changed: {self._cached_position} -> {pos}"
+                    )
                 else:
                     print(f"[llm_vision] position confirmed: {pos}")
                 self._cached_position = pos
                 self._last_position_time = time.time()
-        except Exception as e:
+        except (requests.RequestException, KeyError, IndexError, ValueError) as e:
             print(f"[llm_vision] position refresh failed: {e}")
         finally:
             self._position_thread_running = False
@@ -1605,8 +1770,14 @@ class LLMVisionExtractor:
                 {
                     "role": "user",
                     "content": [
-                        {"type": "text", "text": "Find the D button. Return ONLY the position code."},
-                        {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{b64_img}"}},
+                        {
+                            "type": "text",
+                            "text": "Find the D button. Return ONLY the position code.",
+                        },
+                        {
+                            "type": "image_url",
+                            "image_url": {"url": f"data:image/jpeg;base64,{b64_img}"},
+                        },
                     ],
                 },
             ],
@@ -1625,8 +1796,8 @@ class LLMVisionExtractor:
         )
         t_api = time.time() - t1
         print(
-            f"[llm_position] model={model} encode={t_encode*1000:.0f}ms "
-            f"api={t_api*1000:.0f}ms payload={payload_kb}KB"
+            f"[llm_position] model={model} encode={t_encode * 1000:.0f}ms "
+            f"api={t_api * 1000:.0f}ms payload={payload_kb}KB"
         )
         if not resp.ok:
             print(f"[llm_position] HTTP {resp.status_code} BODY: {resp.text[:300]}")
@@ -1676,8 +1847,14 @@ class LLMVisionExtractor:
                 {
                     "role": "user",
                     "content": [
-                        {"type": "text", "text": "Find the D button. Return ONLY the position code (e.g. BTN)."},
-                        {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{b64_img}"}},
+                        {
+                            "type": "text",
+                            "text": "Find the D button. Return ONLY the position code (e.g. BTN).",
+                        },
+                        {
+                            "type": "image_url",
+                            "image_url": {"url": f"data:image/jpeg;base64,{b64_img}"},
+                        },
                     ],
                 },
             ],
@@ -1693,12 +1870,15 @@ class LLMVisionExtractor:
         t1 = time.time()
         try:
             resp = self._post_with_retry(
-                self.api_url, headers=headers, json_payload=payload, timeout=self.timeout
+                self.api_url,
+                headers=headers,
+                json_payload=payload,
+                timeout=self.timeout,
             )
             t_api = time.time() - t1
             print(
-                f"[llm_position] encode={t_encode*1000:.0f}ms api={t_api*1000:.0f}ms "
-                f"payload={payload_kb}KB total={(t_encode+t_api)*1000:.0f}ms"
+                f"[llm_position] encode={t_encode * 1000:.0f}ms api={t_api * 1000:.0f}ms "
+                f"payload={payload_kb}KB total={(t_encode + t_api) * 1000:.0f}ms"
             )
             resp.raise_for_status()
             data = resp.json()
@@ -1710,7 +1890,7 @@ class LLMVisionExtractor:
                 if pos in text:
                     return pos
             return None
-        except Exception as e:
+        except (requests.RequestException, KeyError, IndexError, ValueError) as e:
             print(f"[llm_position] Failed: {e}")
             return None
 
@@ -1752,7 +1932,9 @@ class LLMVisionExtractor:
             hole_set = set(state["hole"])
             cleaned_board = [c for c in state["board"] if c not in hole_set]
             if len(cleaned_board) != len(state["board"]):
-                print(f"[llm_vision] Sanitized board: removed hole duplicates -> {cleaned_board}")
+                print(
+                    f"[llm_vision] Sanitized board: removed hole duplicates -> {cleaned_board}"
+                )
                 state["board"] = cleaned_board
 
         # Sanitize: board community cards are always unique
@@ -1764,7 +1946,9 @@ class LLMVisionExtractor:
                     seen.add(c)
                     unique_board.append(c)
             if len(unique_board) != len(state["board"]):
-                print(f"[llm_vision] Sanitized board: removed board duplicates -> {unique_board}")
+                print(
+                    f"[llm_vision] Sanitized board: removed board duplicates -> {unique_board}"
+                )
                 state["board"] = unique_board
 
         for key in ("pot", "to_call", "stack"):
@@ -1808,8 +1992,10 @@ class LLMVisionExtractor:
         if isinstance(btn, int):
             state["button_seat"] = btn
         elif isinstance(btn, str) and btn.isdigit():
-            with contextlib.suppress(ValueError, OverflowError):
+            try:
                 state["button_seat"] = int(btn)
+            except (ValueError, OverflowError):
+                state["button_seat"] = None
 
         # Parse opponent stacks and compute effective stack / active count
         opp = raw_state.get("opponent_stacks")
@@ -1834,7 +2020,16 @@ class LLMVisionExtractor:
 
         # Config override takes precedence (useful when LLM can't read position reliably)
         if self.position_override and self.position_override in (
-            "SB", "BB", "BTN", "CO", "MP", "UTG", "UTG+1", "UTG+2", "LJ", "HJ"
+            "SB",
+            "BB",
+            "BTN",
+            "CO",
+            "MP",
+            "UTG",
+            "UTG+1",
+            "UTG+2",
+            "LJ",
+            "HJ",
         ):
             state["position"] = self.position_override
 

@@ -12,6 +12,7 @@ Per ogni modello × immagine esegue N run sequenziali, misura:
 
 Uso:  python3 benchmark_models.py
 """
+
 import importlib
 import json
 import os
@@ -39,7 +40,7 @@ if not API_KEY:
     sys.exit("OPENROUTER_API_KEY mancante (.env)")
 
 MODELS = [
-    "google/gemini-3.1-flash-lite",   # baseline attuale
+    "google/gemini-3.1-flash-lite",  # baseline attuale
     "google/gemini-3.5-flash-lite",
     "google/gemini-3.6-flash",
     "google/gemini-3.8-flash",
@@ -75,10 +76,19 @@ def call_model(model, b64):
         "model": model,
         "messages": [
             {"role": "system", "content": SYSTEM_PROMPT},
-            {"role": "user", "content": [
-                {"type": "text", "text": "Extract the full poker table state from this screenshot."},
-                {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{b64}"}},
-            ]},
+            {
+                "role": "user",
+                "content": [
+                    {
+                        "type": "text",
+                        "text": "Extract the full poker table state from this screenshot.",
+                    },
+                    {
+                        "type": "image_url",
+                        "image_url": {"url": f"data:image/jpeg;base64,{b64}"},
+                    },
+                ],
+            },
         ],
         "temperature": 0.1,
         "max_tokens": 1024,
@@ -127,15 +137,17 @@ def main():
             print(f"!! {img_name} non trovata, salto")
             continue
         b64 = _encode_frame_to_base64(frame)
-        print(f"\n### {img_name} ({len(b64)//1024}KB payload)")
+        print(f"\n### {img_name} ({len(b64) // 1024}KB payload)")
         for model in MODELS:
             runs = []
             for i in range(RUNS):
                 r = call_model(model, b64)
                 runs.append(r)
                 tag = "OK " if r["ok"] else "ERR"
-                extra = "" if r["ok"] else f" :: {r.get('error', r.get('raw', ''))[:80]}"
-                print(f"  {tag} {model:32s} run{i+1} {r['latency']:5.2f}s{extra}")
+                extra = (
+                    "" if r["ok"] else f" :: {r.get('error', r.get('raw', ''))[:80]}"
+                )
+                print(f"  {tag} {model:32s} run{i + 1} {r['latency']:5.2f}s{extra}")
                 time.sleep(0.4)
             results[(model, img_name)] = runs
 
@@ -147,7 +159,12 @@ def main():
         tok_in, tok_out = 0, 0
         for img_name in IMAGES:
             runs = results.get((model, img_name), [])
-            all_runs_img = [rr for mm in MODELS for rr in results.get((mm, img_name), []) if rr["ok"]]
+            all_runs_img = [
+                rr
+                for mm in MODELS
+                for rr in results.get((mm, img_name), [])
+                if rr["ok"]
+            ]
             consensus = {}
             for f in FIELDS:
                 vals = [normalize_field(rr["state"], f) for rr in all_runs_img]
@@ -161,14 +178,22 @@ def main():
                     lat.append(rr["latency"])
                     tok_in += rr["usage"]["prompt"]
                     tok_out += rr["usage"]["completion"]
-                    matches = sum(1 for f in FIELDS
-                                  if normalize_field(rr["state"], f) is not None
-                                  and normalize_field(rr["state"], f) == consensus.get(f))
+                    matches = sum(
+                        1
+                        for f in FIELDS
+                        if normalize_field(rr["state"], f) is not None
+                        and normalize_field(rr["state"], f) == consensus.get(f)
+                    )
                     denom = sum(1 for f in FIELDS if consensus.get(f) is not None)
                     agree += matches / max(denom, 1)
             # stabilità: stessa risposta su tutte le run dell'immagine
-            ok_states = [json.dumps({f: normalize_field(rr["state"], f) for f in FIELDS}, default=str)
-                         for rr in runs if rr["ok"]]
+            ok_states = [
+                json.dumps(
+                    {f: normalize_field(rr["state"], f) for f in FIELDS}, default=str
+                )
+                for rr in runs
+                if rr["ok"]
+            ]
             if ok_states and len(set(ok_states)) == 1:
                 stable += 1
         n_ok = max(ok_cnt, 1)
@@ -194,7 +219,9 @@ def main():
     print("-" * len(hdr))
     for model, s in sorted(summary.items(), key=lambda kv: kv[1]["latency_avg"]):
         cost_1k = s["cost_total"] / max(len(IMAGES) * RUNS, 1) * 1000
-        print(f"{model:32s} {s['latency_avg']:7.2f}s {s['latency_min']:7.2f}s {s['valid_pct']:6.0f} {s['consensus_pct']:8.0f} {s['stability']:>8s} {cost_1k:10.2f}")
+        print(
+            f"{model:32s} {s['latency_avg']:7.2f}s {s['latency_min']:7.2f}s {s['valid_pct']:6.0f} {s['consensus_pct']:8.0f} {s['stability']:>8s} {cost_1k:10.2f}"
+        )
 
     # dettaglio estrazioni per immagine
     print("\n--- Estrazioni (run migliore per immagine) ---")
@@ -205,7 +232,18 @@ def main():
             ok_runs = [rr for rr in runs if rr["ok"]]
             if ok_runs:
                 st = ok_runs[0]["state"]
-                comp = {k: st.get(k) for k in ("hole", "board", "pot", "to_call", "stack", "stage", "button_seat")}
+                comp = {
+                    k: st.get(k)
+                    for k in (
+                        "hole",
+                        "board",
+                        "pot",
+                        "to_call",
+                        "stack",
+                        "stage",
+                        "button_seat",
+                    )
+                }
                 print(f"  {model:32s} {comp}")
             else:
                 print(f"  {model:32s} NESSUNA ESTRAZIONE VALIDA")
