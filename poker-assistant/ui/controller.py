@@ -7,6 +7,7 @@ Runs a loop that:
   3. Computes real-time equity
   4. Updates the overlay window
 """
+
 import sys
 import threading
 import time
@@ -56,11 +57,15 @@ class AssistantController:
             try:
                 self.temporal_smoother = TemporalSmoother(
                     window_size=int(temporal_cfg.get("window_size", 5)),
-                    agreement_threshold=float(temporal_cfg.get("agreement_threshold", 0.6)),
+                    agreement_threshold=float(
+                        temporal_cfg.get("agreement_threshold", 0.6)
+                    ),
                     min_samples=int(temporal_cfg.get("min_samples", 3)),
                 )
             except (TypeError, ValueError) as exc:
-                print(f"[controller] TemporalSmoother config non valida, disattivato: {exc}")
+                print(
+                    f"[controller] TemporalSmoother config non valida, disattivato: {exc}"
+                )
                 self.temporal_smoother = None
 
     def _load_config(self) -> dict:
@@ -236,7 +241,7 @@ class AssistantController:
             sizing=sizing,
             hand=hand_str,
             board=board_str,
-            status=f"{stage.upper()} | {position} | Pot €{pot/100:.2f}",
+            status=f"{stage.upper()} | {position} | Pot €{pot / 100:.2f}",
         )
 
     def _build_history(self, state: dict) -> list:
@@ -264,14 +269,16 @@ class AssistantController:
 if __name__ == "__main__":
     ctrl = AssistantController(mode="manual")
     # Demo state
-    ctrl.set_manual_state({
-        "hole": ["As", "Kh"],
-        "board": ["Qd", "Jh", "2c"],
-        "pot": 120,
-        "to_call": 20,
-        "position": "BTN",
-        "stage": "flop",
-        "stack": 980,
-        "big_blind": 2,
-    })
+    ctrl.set_manual_state(
+        {
+            "hole": ["As", "Kh"],
+            "board": ["Qd", "Jh", "2c"],
+            "pot": 120,
+            "to_call": 20,
+            "position": "BTN",
+            "stage": "flop",
+            "stack": 980,
+            "big_blind": 2,
+        }
+    )
     ctrl.start()

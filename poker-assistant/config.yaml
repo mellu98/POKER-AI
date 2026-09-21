@@ -42,9 +42,9 @@ vision:
     max_latency_ms: 300
   temporal:
     enabled: true
-    window_size: 5
-    agreement_threshold: 0.6
-    min_samples: 3
+    window_size: 3
+    agreement_threshold: 0.5
+    min_samples: 2
   table_collection:
     output_dir: "captures/raw"
     window_title: "Poker"

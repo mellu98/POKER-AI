@@ -541,6 +541,7 @@ class LLMVisionExtractor:
         self._frozen_ranks: list[str] = []
         self._hand_votes: dict[tuple[str, str], int] = {}
         self._board_suit_votes: dict[tuple[int, str], dict[str, int]] = {}
+        self._consecutive_skips: int = 0  # guardia anti-drift dello skip hole
 
         # Local helpers
         self._local_table: Any | None = None
@@ -1113,6 +1114,24 @@ class LLMVisionExtractor:
 
         return corrected
 
+    def _hole_cards_visible(self, frame: np.ndarray) -> bool:
+        """True se almeno un ROI hole mostra una carta (sfondo chiaro)."""
+        for r in self._hole_rois:
+            roi = _resolve_relative_roi(r, frame)
+            if roi is None:
+                continue
+            crop = frame[roi["y"] : roi["y"] + roi["h"], roi["x"] : roi["x"] + roi["w"]]
+            if crop.size == 0:
+                continue
+            gray = cv2.cvtColor(crop, cv2.COLOR_BGR2GRAY)
+            try:
+                light_ratio = float((gray > 120).sum()) / gray.size
+            except (ValueError, ZeroDivisionError):
+                continue
+            if light_ratio > 0.25:
+                return True
+        return False
+
     def _is_board_empty(self, frame: np.ndarray) -> bool:
         """
         Heuristic: true if the board ROIs contain almost no visible board cards.
@@ -1568,6 +1587,27 @@ class LLMVisionExtractor:
                 self._cached_state is not None
             )  # impostato dall'ultima extract() riuscita
             return self._cached_state
+
+        # Skip API quando le hole cards NON sono visibili nei ROI (mano finita,
+        # fold, attesa): check locale economico invece di una chiamata da ~2s.
+        # Risposta istantanea = il loop resta reattivo tra le mani.
+        if (
+            self._hole_rois
+            and self._cached_state is not None
+            and not self._hole_cards_visible(frame)
+            and self._consecutive_skips < 20
+        ):
+            self._consecutive_skips += 1
+            self._last_call_time = time.time()
+            self._last_frame_hash = self._frame_hash(frame)
+            self._cached_state["hole"] = []
+            self._cached_state["board"] = []
+            self._cached_state["stage"] = "preflop"
+            print("[llm_vision] skip: hole cards non visibili (nessuna chiamata API)")
+            return self._cached_state
+        if self._hole_rois and self._hole_cards_visible(frame):
+            # carte tornate visibili: resetta il contatore anti-drift
+            self._consecutive_skips = 0
 
         raw_state = self._call_api(frame, focused=False)
 

@@ -7,6 +7,7 @@ Pattern usato: coda thread-safe + poller schedulato con root.after()
 nel mainloop — nessuna chiamata Tk dal thread worker (root.after da
 thread esterno può gelare la UI su macOS).
 """
+
 import queue
 import tkinter as tk
 from tkinter import ttk
@@ -31,10 +32,18 @@ class PokerOverlay:
         style = ttk.Style()
         style.theme_use("clam")
         style.configure("TFrame", background="#1e1e1e")
-        style.configure("TLabel", background="#1e1e1e", foreground="#ffffff", font=("Segoe UI", 16))
-        style.configure("Header.TLabel", foreground="#00ff88", font=("Segoe UI", 22, "bold"))
-        style.configure("Big.TLabel", foreground="#ffcc00", font=("Segoe UI", 36, "bold"))
-        style.configure("Action.TLabel", foreground="#00ccff", font=("Segoe UI", 28, "bold"))
+        style.configure(
+            "TLabel", background="#1e1e1e", foreground="#ffffff", font=("Segoe UI", 16)
+        )
+        style.configure(
+            "Header.TLabel", foreground="#00ff88", font=("Segoe UI", 22, "bold")
+        )
+        style.configure(
+            "Big.TLabel", foreground="#ffcc00", font=("Segoe UI", 36, "bold")
+        )
+        style.configure(
+            "Action.TLabel", foreground="#00ccff", font=("Segoe UI", 28, "bold")
+        )
 
         self._build_ui()
 
@@ -48,7 +57,9 @@ class PokerOverlay:
         self.lbl_equity.pack(anchor=tk.W)
 
         # Recommended action
-        ttk.Label(container, text="ACTION", style="Header.TLabel").pack(anchor=tk.W, pady=(10, 0))
+        ttk.Label(container, text="ACTION", style="Header.TLabel").pack(
+            anchor=tk.W, pady=(10, 0)
+        )
         self.lbl_action = ttk.Label(container, text="--", style="Action.TLabel")
         self.lbl_action.pack(anchor=tk.W)
 
@@ -61,7 +72,9 @@ class PokerOverlay:
         self.lbl_hand.pack(anchor=tk.W, pady=(10, 0))
 
         # Status / errors
-        self.lbl_status = ttk.Label(container, text="Waiting for state...", foreground="#888888")
+        self.lbl_status = ttk.Label(
+            container, text="Waiting for state...", foreground="#888888"
+        )
         self.lbl_status.pack(side=tk.BOTTOM, anchor=tk.W)
 
     def update(
@@ -131,5 +144,7 @@ class PokerOverlay:
 if __name__ == "__main__":
     overlay = PokerOverlay()
     # Simulate a few updates
-    overlay.update(equity=0.62, action="RAISE", sizing="b75", hand="As Kh", board="Qd Jh 2c")
+    overlay.update(
+        equity=0.62, action="RAISE", sizing="b75", hand="As Kh", board="Qd Jh 2c"
+    )
     overlay.run()
