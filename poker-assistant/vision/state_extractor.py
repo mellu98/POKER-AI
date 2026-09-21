@@ -13,21 +13,22 @@ Example output:
 """
 import sys
 import time
-from typing import Optional, Dict, List
-import yaml
 from pathlib import Path
+
 import cv2
 import numpy as np
+import requests
+import yaml
 
 sys.path.insert(0, str(Path(__file__).parent))
 
-from llm_vision_extractor import LLMVisionExtractor
 from card_classifier import CardClassifier
-from local_table_state import LocalTableStateExtractor, TableState
-from seat_layout import SeatLayout
-from consistency_checker import ConsistencyChecker, format_report
-from yolo_detector import PokerYOLODetector
 from confidence_merger import merge_card_confidence, parse_yolo_label
+from consistency_checker import ConsistencyChecker, format_report
+from llm_vision_extractor import LLMVisionExtractor
+from local_table_state import LocalTableStateExtractor
+from seat_layout import SeatLayout
+from yolo_detector import PokerYOLODetector
 
 
 class ManualStateExtractor:
@@ -62,8 +63,11 @@ class SupervisionStateExtractor:
     def _load_config(self) -> dict:
         if not self.config_path.exists():
             return {}
-        with open(self.config_path, "r") as f:
-            return yaml.safe_load(f) or {}
+        try:
+            with open(self.config_path, encoding="utf-8") as f:
+                return yaml.safe_load(f) or {}
+        except OSError:
+            return {}
 
     def extract(self, frame=None) -> dict:
         from capture import screenshot
@@ -124,8 +128,11 @@ class SupervisionStateExtractor:
         hole_yolo: list[tuple[str, np.ndarray, float]] = []
         board_yolo: list[tuple[str, np.ndarray, float]] = []
         for label, bbox, conf in yolo_cards:
-            cx = (float(bbox[0]) + float(bbox[2])) / 2.0
-            cy = (float(bbox[1]) + float(bbox[3])) / 2.0
+            try:
+                cx = (float(bbox[0]) + float(bbox[2])) / 2.0
+                cy = (float(bbox[1]) + float(bbox[3])) / 2.0
+            except (TypeError, ValueError, IndexError):
+                continue
             if self._local._point_in_any_roi(cx, cy, hole_rois, frame):
                 hole_yolo.append((label, bbox, conf))
             elif self._local._point_in_any_roi(cx, cy, board_rois, frame):
@@ -167,7 +174,7 @@ class ScreenshotStateExtractor:
                 else:
                     print("[extract] Full-card classifier could not load; disabled.")
                     self._card_classifier = None
-            except Exception as e:
+            except (ImportError, OSError, ValueError, AttributeError) as e:
                 print(f"[extract] Full-card classifier requested but unavailable: {e}")
 
         # Site-specific calibration (optional). Se manca, fallback su rois legacy.
@@ -189,8 +196,11 @@ class ScreenshotStateExtractor:
     def _load_config(self) -> dict:
         if not self.config_path.exists():
             return {}
-        with open(self.config_path, "r") as f:
-            return yaml.safe_load(f) or {}
+        try:
+            with open(self.config_path, encoding="utf-8") as f:
+                return yaml.safe_load(f) or {}
+        except OSError:
+            return {}
 
     def _ensure_templates_loaded(self) -> None:
         """Lazy-load card templates (real ones if available, else synthetic)."""
@@ -199,11 +209,11 @@ class ScreenshotStateExtractor:
         vision = self.cfg.get("vision", {})
         tmpl_dir = vision.get("template_dir")
         from ocr_cards import (
+            extract_split_templates_from_full,
             generate_card_templates,
-            load_templates_from_dir,
             load_rank_templates,
             load_suit_templates,
-            extract_split_templates_from_full,
+            load_templates_from_dir,
         )
         if tmpl_dir and Path(tmpl_dir).exists():
             self.templates = load_templates_from_dir(tmpl_dir)
@@ -245,7 +255,6 @@ class ScreenshotStateExtractor:
             )
 
         from capture import screenshot
-        from ocr_cards import recognize_cards_rois
 
         if frame is None:
             frame = screenshot(window_title="Free Poker")
@@ -287,7 +296,7 @@ class ScreenshotStateExtractor:
                     hero_seat=table_state.hero_seat,
                 )
                 position = layout.hero_position()
-            except Exception as e:
+            except (ImportError, ValueError, KeyError, TypeError) as e:
                 print(f"[extract] Seat layout failed: {e}")
 
         # --- Fallback per software che NON mostrano to_call esplicito ---
@@ -359,27 +368,31 @@ class ScreenshotStateExtractor:
         return card
 
     @staticmethod
-    def _resolve_roi(roi: Optional[dict], frame: np.ndarray) -> Optional[dict]:
+    def _resolve_roi(roi: dict | None, frame: np.ndarray) -> dict | None:
         """Converte un ROI percentuale (rel=True) in assoluto."""
         if roi is None:
             return None
         if roi.get("rel"):
             h, w = frame.shape[:2]
-            return {
-                "x": int(roi["x"] * w),
-                "y": int(roi["y"] * h),
-                "w": int(roi["w"] * w),
-                "h": int(roi["h"] * h),
-            }
+            try:
+                return {
+                    "x": int(roi["x"] * w),
+                    "y": int(roi["y"] * h),
+                    "w": int(roi["w"] * w),
+                    "h": int(roi["h"] * h),
+                }
+            except (KeyError, TypeError, ValueError):
+                return None
         return roi
 
     @staticmethod
-    def _resolve_rois(rois: List[dict], frame: np.ndarray) -> List[dict]:
+    def _resolve_rois(rois: list[dict], frame: np.ndarray) -> list[dict]:
         """Converte una lista di ROI percentuali in assoluti."""
-        return [ScreenshotStateExtractor._resolve_roi(r, frame) for r in rois if r]
+        resolved = [ScreenshotStateExtractor._resolve_roi(r, frame) for r in rois if r]
+        return [roi for roi in resolved if roi is not None]
 
     @staticmethod
-    def _point_in_any_roi(x: float, y: float, rois: List[dict], frame: np.ndarray) -> bool:
+    def _point_in_any_roi(x: float, y: float, rois: list[dict], frame: np.ndarray) -> bool:
         """Return True if (x, y) lies inside any resolved ROI."""
         for roi in ScreenshotStateExtractor._resolve_rois(rois, frame):
             if (
@@ -390,8 +403,8 @@ class ScreenshotStateExtractor:
         return False
 
     def _read_cards_with_confidence(
-        self, frame, rois: List[dict]
-    ) -> tuple[list[Optional[str]], list[float]]:
+        self, frame, rois: list[dict]
+    ) -> tuple[list[str | None], list[float]]:
         """Read cards from ROIs and return per-slot cards + confidence scores."""
         if not rois:
             return [], []
@@ -399,29 +412,36 @@ class ScreenshotStateExtractor:
         resolved = self._resolve_rois(rois, frame)
         from ocr_cards import recognize_cards_rois_with_confidence
 
+        templates = self.templates or {}
+        rank_templates = self.rank_templates or {}
+        suit_templates = self.suit_templates or {}
+
         cards_scores = recognize_cards_rois_with_confidence(
             frame,
             resolved,
-            self.templates,
-            rank_templates=self.rank_templates,
-            suit_templates=self.suit_templates,
+            templates,
+            rank_templates=rank_templates,
+            suit_templates=suit_templates,
             card_classifier=self._card_classifier,
         )
-        cards: list[Optional[str]] = []
+        cards: list[str | None] = []
         scores: list[float] = []
         for card, score in cards_scores:
-            norm = self._normalize_card(card)
+            norm = self._normalize_card(card) if isinstance(card, str) else None
             cards.append(norm)
-            scores.append(float(score) if norm is not None else 0.0)
+            try:
+                scores.append(float(score) if norm is not None else 0.0)
+            except (TypeError, ValueError):
+                scores.append(0.0)
         return cards, scores
 
-    def _read_cards(self, frame, rois: List[dict]) -> List[str]:
+    def _read_cards(self, frame, rois: list[dict]) -> list[str]:
         """Read cards from ROIs and filter out empty slots."""
         cards, _ = self._read_cards_with_confidence(frame, rois)
         return [c for c in cards if c is not None]
 
     @staticmethod
-    def _read_text(frame, roi: Optional[dict]) -> str:
+    def _read_text(frame, roi: dict | None) -> str:
         """Extract raw text from a ROI using Tesseract OCR."""
         roi = ScreenshotStateExtractor._resolve_roi(roi, frame)
         if roi is None:
@@ -433,7 +453,7 @@ class ScreenshotStateExtractor:
 
         try:
             import pytesseract
-        except Exception:
+        except ImportError:
             return ""
 
         # Resolve Tesseract binary (Windows bundle, macOS Homebrew, or PATH)
@@ -457,7 +477,7 @@ class ScreenshotStateExtractor:
         return text
 
     @staticmethod
-    def _read_number(frame, roi: Optional[dict]) -> Optional[int]:
+    def _read_number(frame, roi: dict | None) -> int | None:
         """Extract a numeric value from a ROI using Tesseract OCR."""
         roi = ScreenshotStateExtractor._resolve_roi(roi, frame)
         if roi is None:
@@ -469,7 +489,7 @@ class ScreenshotStateExtractor:
 
         try:
             import pytesseract
-        except Exception:
+        except ImportError:
             return None
 
         # Resolve Tesseract binary (Windows bundle, macOS Homebrew, or PATH)
@@ -500,7 +520,7 @@ class ScreenshotStateExtractor:
             return None
 
     @staticmethod
-    def _infer_stage(board: List[str]) -> str:
+    def _infer_stage(board: list[str]) -> str:
         n = len(board)
         if n == 0:
             return "preflop"
@@ -525,7 +545,7 @@ class HybridStateExtractor:
         self.config_path = Path(config_path)
         self.cfg = self._load_config()
         self._screenshot = ScreenshotStateExtractor(config_path)
-        self._llm: Optional[LLMVisionExtractor] = None
+        self._llm: LLMVisionExtractor | None = None
         self._position_cache: str = "BTN"
         self._last_position_time: float = 0.0
         self._position_ttl = position_ttl
@@ -536,10 +556,13 @@ class HybridStateExtractor:
     def _load_config(self) -> dict:
         if not self.config_path.exists():
             return {}
-        with open(self.config_path, "r") as f:
-            return yaml.safe_load(f) or {}
+        try:
+            with open(self.config_path, encoding="utf-8") as f:
+                return yaml.safe_load(f) or {}
+        except OSError:
+            return {}
 
-    def _ensure_llm(self) -> Optional[LLMVisionExtractor]:
+    def _ensure_llm(self) -> LLMVisionExtractor | None:
         if self._llm is None:
             vision_cfg = self.cfg.get("vision", {})
             llm_cfg = vision_cfg.get("llm", {})
@@ -583,7 +606,7 @@ class HybridStateExtractor:
                             self._position_cache = pos
                             self._last_position_time = now
                             print(f"[hybrid] Position refreshed via LLM: {pos}")
-                except Exception as e:
+                except (requests.RequestException, KeyError, IndexError, ValueError, RuntimeError) as e:
                     print(f"[hybrid] Position refresh failed: {e}")
 
         # Usa posizione locale se valida, altrimenti cache LLM
@@ -620,7 +643,7 @@ class HybridStateExtractor:
                             self._position_cache = llm_state["position"]
                             self._last_position_time = now
                         self._last_position_time = now
-                except Exception as e:
+                except (requests.RequestException, KeyError, IndexError, ValueError, RuntimeError, OSError) as e:
                     print(f"[hybrid] Full LLM fallback failed: {e}")
 
         return state

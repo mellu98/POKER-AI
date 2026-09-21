@@ -25,6 +25,7 @@ Flow:
 IMPORTANT: label lines with class id 52 are placeholders. Run
 ``python vision/review_labels.py --dir <out>`` before training.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -114,6 +115,7 @@ def parse_card_code(text: str) -> str | None:
 # Config / ROI helpers
 # ---------------------------------------------------------------------------
 
+
 def _load_config(config_path: Path) -> dict:
     if not config_path.exists():
         print(f"[data] Config not found: {config_path}, using defaults.")
@@ -147,14 +149,19 @@ def resolve_roi(roi: dict, frame: np.ndarray) -> dict:
                 "w": int(roi["w"] * w),
                 "h": int(roi["h"] * h),
             }
-        return {"x": int(roi["x"]), "y": int(roi["y"]),
-                "w": int(roi["w"]), "h": int(roi["h"])}
+        return {
+            "x": int(roi["x"]),
+            "y": int(roi["y"]),
+            "w": int(roi["w"]),
+            "h": int(roi["h"]),
+        }
     except (KeyError, TypeError, ValueError):
         return {"x": 0, "y": 0, "w": 0, "h": 0}
 
 
-def _normalize_bbox(x: int, y: int, w: int, h: int,
-                    frame_w: int, frame_h: int) -> tuple[float, float, float, float]:
+def _normalize_bbox(
+    x: int, y: int, w: int, h: int, frame_w: int, frame_h: int
+) -> tuple[float, float, float, float]:
     """Pixel bbox -> YOLO normalized (cx, cy, w, h), clamped to [0, 1]."""
     cx = (x + w / 2) / frame_w
     cy = (y + h / 2) / frame_h
@@ -216,6 +223,7 @@ def snap_to_card(crop: np.ndarray) -> tuple[int, int, int, int] | None:
 # Tesseract setup (graceful on macOS — never crashes the module import)
 # ---------------------------------------------------------------------------
 
+
 def _setup_tesseract() -> bool:
     """Point pytesseract at a valid binary. Returns False if unavailable."""
     try:
@@ -225,14 +233,17 @@ def _setup_tesseract() -> bool:
         pytesseract.pytesseract.tesseract_cmd = find_tesseract_binary()
         return True
     except (ImportError, OSError, RuntimeError, AttributeError) as exc:
-        print(f"[data] Tesseract unavailable, OCR-rank disabled ({exc}). "
-              f"Falling back to template matching only.")
+        print(
+            f"[data] Tesseract unavailable, OCR-rank disabled ({exc}). "
+            f"Falling back to template matching only."
+        )
         return False
 
 
 # ---------------------------------------------------------------------------
 # Card guesser — reuses ocr_cards recognition to PROPOSE labels
 # ---------------------------------------------------------------------------
+
 
 class CardGuesser:
     """Proposes card labels for crops using the existing ocr_cards pipeline.
@@ -244,7 +255,9 @@ class CardGuesser:
 
     def __init__(self, cfg: dict):
         self.ocr_enabled = _setup_tesseract()
-        self.templates, self.rank_templates, self.suit_templates = self._load_templates(cfg)
+        self.templates, self.rank_templates, self.suit_templates = self._load_templates(
+            cfg
+        )
         # Reference suit-glyph contours from real full-card templates, for
         # classify_suit_by_shape (color-constrained matchShapes).
         self.suit_refs: dict[str, list] = {}
@@ -260,9 +273,11 @@ class CardGuesser:
         """Load real card templates; fall back to synthetic ones (Windows-style
         'vision\\templates' paths from config are normalized for macOS)."""
         tmpl_dir = cfg.get("vision", {}).get("template_dir", "")
-        candidates = [Path(str(tmpl_dir).replace("\\", "/")),
-                      PROJECT_ROOT / "vision" / "templates",
-                      PROJECT_ROOT / "vision" / "templates_goldbet"]
+        candidates = [
+            Path(str(tmpl_dir).replace("\\", "/")),
+            PROJECT_ROOT / "vision" / "templates",
+            PROJECT_ROOT / "vision" / "templates_goldbet",
+        ]
         for candidate in candidates:
             if candidate.exists():
                 templates = load_templates_from_dir(str(candidate))
@@ -284,11 +299,15 @@ class CardGuesser:
                         for s, tl in suit_templates.items()
                     }
                     suit_templates = {s: tl for s, tl in suit_templates.items() if tl}
-                    print(f"[data] Loaded {len(templates)} full templates from {candidate} "
-                          f"(suit templates: { {s: len(tl) for s, tl in sorted(suit_templates.items())} })")
+                    print(
+                        f"[data] Loaded {len(templates)} full templates from {candidate} "
+                        f"(suit templates: { {s: len(tl) for s, tl in sorted(suit_templates.items())} })"
+                    )
                     return templates, rank_templates, suit_templates
-        print("[data] No real templates found; using synthetic templates "
-              "(proposals will be unreliable until real ones are captured).")
+        print(
+            "[data] No real templates found; using synthetic templates "
+            "(proposals will be unreliable until real ones are captured)."
+        )
         return generate_card_templates(), {}, {}
 
     def guess(self, crop: np.ndarray) -> tuple[str | None, float, str]:
@@ -337,6 +356,7 @@ class CardGuesser:
 # Capture / labeling
 # ---------------------------------------------------------------------------
 
+
 def capture_frame(window_title: str | None = None) -> tuple[np.ndarray | None, str]:
     """Grab the poker table window and return (BGR frame, timestamp string).
 
@@ -349,8 +369,10 @@ def capture_frame(window_title: str | None = None) -> tuple[np.ndarray | None, s
         from capture import _find_window_rect_mac
 
         if _find_window_rect_mac(window_title) is None:
-            print(f"[data] Window {window_title!r} not on screen — frame skipped "
-                  f"(no full-screen fallback).")
+            print(
+                f"[data] Window {window_title!r} not on screen — frame skipped "
+                f"(no full-screen fallback)."
+            )
             return None, ts
     frame = screenshot(window_title=window_title)
     return frame, ts
@@ -401,11 +423,12 @@ def label_frame(
         snap = snap_to_card(crop)
         if snap is not None:
             sx, sy, sw, sh = snap
-            crop = crop[sy:sy + sh, sx:sx + sw]
+            crop = crop[sy : sy + sh, sx : sx + sw]
             px = {"x": px["x"] + sx, "y": px["y"] + sy, "w": sw, "h": sh}
 
-        cx, cy, nw, nh = _normalize_bbox(px["x"], px["y"], px["w"], px["h"],
-                                         frame_w, frame_h)
+        cx, cy, nw, nh = _normalize_bbox(
+            px["x"], px["y"], px["w"], px["h"], frame_w, frame_h
+        )
         card, conf, _ = guesser.guess(crop)
 
         if card and conf >= threshold:
@@ -434,8 +457,12 @@ def label_frame(
 
     label_path = labels_dir / f"frame_{ts}.txt"
     label_path.write_text("\n".join(lines) + ("\n" if lines else ""))
-    return {"stats": stats, "review_entries": review_entries,
-            "frame": str(frame_path), "label": str(label_path)}
+    return {
+        "stats": stats,
+        "review_entries": review_entries,
+        "frame": str(frame_path),
+        "label": str(label_path),
+    }
 
 
 def collect(
@@ -478,8 +505,10 @@ def collect(
             totals["empty"] += s["empty"]
             review_index.update(result["review_entries"])
 
-            print(f"[data] [{i}/{n}] frame_{ts}: "
-                  f"auto={s['auto']} review={s['review']} empty={s['empty']}")
+            print(
+                f"[data] [{i}/{n}] frame_{ts}: "
+                f"auto={s['auto']} review={s['review']} empty={s['empty']}"
+            )
 
             if i < n:
                 time.sleep(interval)
@@ -530,20 +559,41 @@ def main():
     parser = argparse.ArgumentParser(
         description="Collect Goldbet table frames + assisted YOLO card labels."
     )
-    parser.add_argument("--n", type=int, default=100,
-                        help="Number of frames to capture (default: 100)")
-    parser.add_argument("--interval", type=float, default=3.0,
-                        help="Seconds between captures (default: 3)")
-    parser.add_argument("--out", type=str, default="vision/dataset/yolo_goldbet",
-                        help="Output dataset directory")
-    parser.add_argument("--config", type=str, default=str(DEFAULT_CONFIG),
-                        help="Path to config.yaml")
-    parser.add_argument("--threshold", type=float, default=DEFAULT_CONFIDENCE_THRESHOLD,
-                        help="Min confidence to auto-accept a proposed label")
-    parser.add_argument("--window-title", type=str, default=None,
-                        help="Override the poker window title from config")
-    parser.add_argument("--yaml-only", action="store_true",
-                        help="Only (re)write data.yaml, do not capture")
+    parser.add_argument(
+        "--n", type=int, default=100, help="Number of frames to capture (default: 100)"
+    )
+    parser.add_argument(
+        "--interval",
+        type=float,
+        default=3.0,
+        help="Seconds between captures (default: 3)",
+    )
+    parser.add_argument(
+        "--out",
+        type=str,
+        default="vision/dataset/yolo_goldbet",
+        help="Output dataset directory",
+    )
+    parser.add_argument(
+        "--config", type=str, default=str(DEFAULT_CONFIG), help="Path to config.yaml"
+    )
+    parser.add_argument(
+        "--threshold",
+        type=float,
+        default=DEFAULT_CONFIDENCE_THRESHOLD,
+        help="Min confidence to auto-accept a proposed label",
+    )
+    parser.add_argument(
+        "--window-title",
+        type=str,
+        default=None,
+        help="Override the poker window title from config",
+    )
+    parser.add_argument(
+        "--yaml-only",
+        action="store_true",
+        help="Only (re)write data.yaml, do not capture",
+    )
     args = parser.parse_args()
 
     if args.yaml_only:

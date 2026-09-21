@@ -2,8 +2,8 @@
 Screen capture utilities — cross-platform.
 Supports desktop screenshot (mss), window capture (Windows/macOS), and webcam (OpenCV).
 """
+
 import platform
-from typing import Optional
 
 import cv2
 import numpy as np
@@ -16,6 +16,7 @@ def _set_dpi_aware() -> None:
         return
     try:
         import ctypes
+
         ctypes.windll.user32.SetProcessDPIAware()  # type: ignore
     except Exception:
         pass
@@ -30,6 +31,7 @@ def _get_dpi_scale() -> float:
         return 1.0
     try:
         import ctypes
+
         dc = ctypes.windll.user32.GetDC(0)  # type: ignore
         dpi = ctypes.windll.gdi32.GetDeviceCaps(dc, 88)  # LOGPIXELSX  # type: ignore
         ctypes.windll.user32.ReleaseDC(0, dc)  # type: ignore
@@ -48,7 +50,7 @@ def _get_window_rect_win(hwnd: int):
     return rect.left, rect.top, rect.right, rect.bottom
 
 
-def _find_window_rect_mac(title: str) -> Optional[dict]:
+def _find_window_rect_mac(title: str) -> dict | None:
     """
     Find a window by title substring on macOS using Quartz.
 
@@ -67,7 +69,8 @@ def _find_window_rect_mac(title: str) -> Optional[dict]:
         return None
 
     window_list = Quartz.CGWindowListCopyWindowInfo(  # type: ignore
-        Quartz.kCGWindowListExcludeDesktopElements | Quartz.kCGWindowListOptionOnScreenOnly,  # type: ignore
+        Quartz.kCGWindowListExcludeDesktopElements
+        | Quartz.kCGWindowListOptionOnScreenOnly,  # type: ignore
         Quartz.kCGNullWindowID,  # type: ignore
     )
 
@@ -114,7 +117,9 @@ def _capture_with_mss(monitor: dict) -> np.ndarray:
         return cv2.cvtColor(np.array(img), cv2.COLOR_BGRA2BGR)
 
 
-def screenshot(monitor: dict | None = None, window_title: str | None = None) -> np.ndarray:
+def screenshot(
+    monitor: dict | None = None, window_title: str | None = None
+) -> np.ndarray:
     """
     Capture the screen and return it as a BGR numpy array.
 
@@ -162,10 +167,19 @@ def screenshot(monitor: dict | None = None, window_title: str | None = None) -> 
                             frame, (log_w, log_h), interpolation=cv2.INTER_LANCZOS4
                         )
                     return frame
-            except (ImportError, OSError, ValueError, AttributeError, IndexError, cv2.error) as e:
+            except (
+                ImportError,
+                OSError,
+                ValueError,
+                AttributeError,
+                IndexError,
+                cv2.error,
+            ) as e:
                 print(f"[capture] Window capture failed: {e}")
 
-        print(f"[capture] Window '{window_title}' not found; falling back to full screen")
+        print(
+            f"[capture] Window '{window_title}' not found; falling back to full screen"
+        )
 
     if monitor is None:
         with mss() as sct:

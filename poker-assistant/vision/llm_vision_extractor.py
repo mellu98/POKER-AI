@@ -536,6 +536,12 @@ class LLMVisionExtractor:
         self._last_position_time: float = 0.0
         self._position_thread_running: bool = False
 
+        # Suit memory per mano (voto temporale): i rank non cambiano durante
+        # una mano, i semi si'. Si congela la coppia di semi piu' votata.
+        self._frozen_ranks: list[str] = []
+        self._hand_votes: dict[tuple[str, str], int] = {}
+        self._board_suit_votes: dict[tuple[int, str], dict[str, int]] = {}
+
         # Local helpers
         self._local_table: Any | None = None
         self._hero_seat = 0
@@ -1619,6 +1625,15 @@ class LLMVisionExtractor:
             state["hole"] = list(pre_correction["hole"])
             state["board"] = list(pre_correction["board"])
 
+        # ---- Suit memory per mano ----
+        # I semi non cambiano durante una mano: voto temporale sulla coppia
+        # di semi piu' vista per gli stessi rank + suit piu' votato per
+        # posizione del board. Reset al cambio di mano.
+        try:
+            state = self._apply_hand_suit_memory(state)
+        except (ValueError, TypeError, KeyError, AttributeError, IndexError) as e:
+            print(f"[llm_vision] Hand suit memory failed: {e}")
+
         # ---- Focused retry on hole cards DISABLED ----
         # The focused retry often pulled board cards into the hole list when
         # the LLM reported duplicates. We now trust the main LLM call and log
@@ -1793,6 +1808,80 @@ class LLMVisionExtractor:
             print(f"[llm_vision] position refresh failed: {e}")
         finally:
             self._position_thread_running = False
+
+    def _apply_hand_suit_memory(self, state: dict) -> dict:
+        """Congela i semi per mano tramite voto temporale.
+
+        I rank sono stabili tra le letture della stessa mano mentre i semi
+        oscillano (downscale + suit-correction rumorosa): si vota la coppia
+        di semi piu' vista per gli stessi rank, e il suit piu' votato per
+        ogni posizione del board. Reset completo al cambio di mano.
+        Override solo con >= 2 voti (maggioranza), mai introdurre duplicati.
+        """
+        hole = [c for c in state.get("hole", []) if isinstance(c, str) and len(c) == 2]
+        board = [c for c in state.get("board", []) if isinstance(c, str) and len(c) == 2]
+        hole_ok = len(hole) == 2 and "?" not in hole[0] + hole[1]
+        if not hole_ok:
+            return state
+
+        ranks_now = sorted(c[0] for c in hole)
+
+        # Nuova mano: rank diversi da quelli votati finora -> reset voti
+        if self._frozen_ranks and ranks_now != self._frozen_ranks:
+            print(
+                f"[llm_vision] Nuova mano: {self._frozen_ranks} -> {ranks_now}, "
+                f"reset voti semi"
+            )
+            self._hand_votes = {}
+            self._board_suit_votes = {}
+            self._frozen_ranks = []
+        if not self._frozen_ranks:
+            self._frozen_ranks = ranks_now
+
+        merged_hole = list(hole)
+        merged_board = list(board)
+
+        # --- voto hole: coppia di semi piu' vista per questi rank ---
+        a, b = sorted(hole)
+        key = (a, b)
+        self._hand_votes[key] = self._hand_votes.get(key, 0) + 1
+        best_pair = max(self._hand_votes.items(), key=lambda kv: kv[1])[0]
+        if best_pair != key and self._hand_votes[best_pair] >= 2:
+            # preserva l'ordine di lettura: mappa i semi vincenti sui rank
+            # attuali (gestisce anche le coppie, es. KK)
+            pool: dict[str, list[str]] = {}
+            for c in best_pair:
+                pool.setdefault(c[0], []).append(c)
+            merged_hole = []
+            for c in hole:
+                candidates = pool.get(c[0])
+                if candidates:
+                    merged_hole.append(candidates.pop(0))
+                else:
+                    merged_hole.append(c)
+            print(
+                f"[llm_vision] Suit memory hole (voto {self._hand_votes[best_pair]}x): "
+                f"{hole} -> {merged_hole}"
+            )
+
+        # --- voto board: suit piu' votato per (posizione, rank) ---
+        changed = False
+        for i, c in enumerate(board):
+            votes = self._board_suit_votes.setdefault((i, c[0]), {})
+            votes[c[1]] = votes.get(c[1], 0) + 1
+            best_suit, best_n = max(votes.items(), key=lambda kv: kv[1])
+            if best_n >= 2 and best_suit != c[1]:
+                merged_board[i] = c[0] + best_suit
+                changed = True
+        if changed:
+            print(f"[llm_vision] Suit memory board (voto): {board} -> {merged_board}")
+
+        # sicurezza: mai introdurre duplicati (intra o cross-slot)
+        all_merged = merged_hole + merged_board
+        if len(all_merged) == len(set(all_merged)):
+            state["hole"] = merged_hole
+            state["board"] = merged_board
+        return state
 
     def _call_api_position_only(self, frame: np.ndarray, model: str) -> str | None:
         """

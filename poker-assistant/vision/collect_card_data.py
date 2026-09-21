@@ -30,6 +30,7 @@ Modalità MANUALE:
 I file vengono salvati in:
     vision/dataset/cards/<GUESS>_<timestamp>_<slot>.png
 """
+
 import subprocess
 import sys
 import threading
@@ -91,7 +92,9 @@ def parse_label(text: str) -> str | None:
 
 def show_image(full_crop: np.ndarray, title: str = "card"):
     """Open a card crop in the default system viewer (headless-safe)."""
-    rgb = cv2.cvtColor(full_crop, cv2.COLOR_BGR2RGB) if full_crop.ndim == 3 else full_crop
+    rgb = (
+        cv2.cvtColor(full_crop, cv2.COLOR_BGR2RGB) if full_crop.ndim == 3 else full_crop
+    )
     Image.fromarray(rgb).show(title=title)
 
 
@@ -108,6 +111,7 @@ class Guesser:
         if RANK_MODEL.exists() and SUIT_MODEL.exists():
             try:
                 from card_classifier import CardClassifier
+
                 self.classifier = CardClassifier(
                     str(RANK_MODEL), str(SUIT_MODEL), confidence_threshold=0.35
                 )
@@ -146,7 +150,9 @@ def save_card(slot: str, full_crop: np.ndarray, label: str) -> Path:
     return full_path
 
 
-def is_similar(a: np.ndarray | None, b: np.ndarray | None, threshold: float = 8.0) -> bool:
+def is_similar(
+    a: np.ndarray | None, b: np.ndarray | None, threshold: float = 8.0
+) -> bool:
     """Return True if two card crops are visually similar (skip duplicates)."""
     if a is None or b is None or a.size == 0 or b.size == 0:
         return False
@@ -162,7 +168,9 @@ def is_similar(a: np.ndarray | None, b: np.ndarray | None, threshold: float = 8.
     return diff < threshold
 
 
-def manual_capture(frame: np.ndarray, slots: list[tuple[str, int, dict]], saved_total_ref: list[int]):
+def manual_capture(
+    frame: np.ndarray, slots: list[tuple[str, int, dict]], saved_total_ref: list[int]
+):
     for roi_type, idx, roi_cfg in slots:
         slot = f"{roi_type}{idx}"
         roi = resolve_roi(roi_cfg, frame)
@@ -192,8 +200,12 @@ def manual_capture(frame: np.ndarray, slots: list[tuple[str, int, dict]], saved_
         print(f"[collect] Salvata {label} -> {path.name}")
 
 
-def fast_capture(frame: np.ndarray, slots: list[tuple[str, int, dict]],
-                 guesser: Guesser, saved_total_ref: list[int]):
+def fast_capture(
+    frame: np.ndarray,
+    slots: list[tuple[str, int, dict]],
+    guesser: Guesser,
+    saved_total_ref: list[int],
+):
     print("[collect] FAST capture in corso...")
     summary = []
     for roi_type, idx, roi_cfg in slots:
@@ -246,7 +258,9 @@ def auto_capture_once(
         last_crops[slot] = full_crop
 
     if saved_this_round:
-        print(f"[collect] Auto saved {saved_this_round} new cards (total {saved_total_ref[0]})")
+        print(
+            f"[collect] Auto saved {saved_this_round} new cards (total {saved_total_ref[0]})"
+        )
     return last_crops
 
 
@@ -267,7 +281,9 @@ def auto_capture_loop(
         try:
             frame = screenshot(window_title=window_title)
             if frame is not None:
-                last_crops = auto_capture_once(frame, slots, guesser, last_crops, saved_total)
+                last_crops = auto_capture_once(
+                    frame, slots, guesser, last_crops, saved_total
+                )
         except (OSError, ValueError, cv2.error) as e:
             print(f"[collect] Auto capture error: {e}")
 
@@ -345,9 +361,13 @@ def capture_loop(cfg: dict, mode: str = "fast"):
             auto_thread = None
             continue
 
-        key = input(
-            f"\n[{mode.upper()}] SPAZIO=cattura A=auto F=fast M=manuale R=review T=train Q=esci: "
-        ).strip().lower()
+        key = (
+            input(
+                f"\n[{mode.upper()}] SPAZIO=cattura A=auto F=fast M=manuale R=review T=train Q=esci: "
+            )
+            .strip()
+            .lower()
+        )
 
         if key == "q":
             if auto_thread is not None and auto_thread.is_alive():
