@@ -2172,6 +2172,23 @@ class LLMVisionExtractor:
         else:
             state["effective_stack"] = state.get("stack", 1000)
 
+        # Sanitize: to_call non puo' superare lo stack effettivo (una call
+        # oltre e' fisicamente impossibile: sara' una mislettura LLM).
+        # Regola del gioco: si calla al massimo all-in per lo stack effettivo.
+        eff = state["effective_stack"]
+        if isinstance(eff, (int, float)) and eff > 0 and state["to_call"] > eff:
+            try:
+                eff_int = int(eff)
+            except (ValueError, OverflowError):
+                pass
+            else:
+                print(
+                    f"[llm_vision] Sanitized to_call: {state['to_call']} -> {eff_int} "
+                    f"(impossibile callare oltre lo stack effettivo)"
+                )
+                state["to_call"] = eff_int
+                state.setdefault("estimated_fields", []).append("to_call")
+
         # Config override takes precedence (useful when LLM can't read position reliably)
         if self.position_override and self.position_override in (
             "SB",
