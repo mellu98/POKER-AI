@@ -1,0 +1,205 @@
+big_blind: 2
+stack: 1000
+table:
+  site: golbet
+  type: 9max
+  hero_seat: 0
+  max_seats: 9
+vision:
+  mode: screenshot
+  site: golbet
+  window_title: Poker - Opera
+  template_dir: vision\templates
+  llm:
+    enabled: true
+    api_key: ""
+    model: google/gemini-3.1-flash-lite
+    position_model: google/gemini-3.1-flash-lite
+    position_refresh_seconds: 30
+    cooldown_seconds: 1.5
+  position: null
+  nn:
+    enabled: false
+    rank_model_path: vision/models/card_rank_classifier.joblib
+    suit_model_path: vision/models/card_suit_classifier.joblib
+    confidence_threshold: 0.5
+  yolo:
+    enabled: false
+    model_path: "vision/models/poker_yolo.pt"
+    confidence_threshold: 0.5
+    device: "auto"
+    use_for_cards: true
+    use_for_numbers: true
+    use_for_button: true
+    validation_mode: true
+    inference_size: 640
+    max_latency_ms: 300
+  temporal:
+    enabled: true
+    window_size: 5
+    agreement_threshold: 0.6
+    min_samples: 3
+  table_collection:
+    output_dir: "captures/raw"
+    window_title: "Poker - Opera"
+    interval_seconds: 2.0
+    max_screenshots: null
+    skip_duplicates: true
+  rois:
+    hole: &id001
+    - x: 0.46
+      y: 0.67
+      w: 0.04
+      h: 0.07
+      rel: true
+    - x: 0.51
+      y: 0.67
+      w: 0.04
+      h: 0.07
+      rel: true
+    board: &id002
+    - x: 0.36
+      y: 0.40
+      w: 0.05
+      h: 0.09
+      rel: true
+    - x: 0.41
+      y: 0.40
+      w: 0.05
+      h: 0.09
+      rel: true
+    - x: 0.47
+      y: 0.40
+      w: 0.05
+      h: 0.09
+      rel: true
+    - x: 0.53
+      y: 0.40
+      w: 0.05
+      h: 0.09
+      rel: true
+    - x: 0.59
+      y: 0.40
+      w: 0.05
+      h: 0.09
+      rel: true
+    pot: &id003
+      x: 0.43
+      y: 0.37
+      w: 0.14
+      h: 0.05
+      rel: true
+    to_call: &id004
+      x: 0.80
+      y: 0.88
+      w: 0.075
+      h: 0.05
+      rel: true
+    stack: &id005
+      x: 0.45
+      y: 0.79
+      w: 0.10
+      h: 0.025
+      rel: true
+    dealer: null
+    dealer_button: &id006
+      x: 0.455
+      y: 0.275
+      w: 0.04
+      h: 0.05
+      rel: true
+sites:
+  golbet:
+    table_type: 9max
+    hero_seat: 0
+    hole: *id001
+    board: *id002
+    pot: *id003
+    to_call: *id004
+    stack: *id005
+    dealer_button: *id006
+    seats:
+    # Seat indices MUST increase clockwise around the table.
+    # 0 = hero (bottom-center), then bottom-right -> right -> top-right -> top -> top-left -> left -> bottom-left.
+    - index: 0
+      x: 0.50
+      y: 0.72
+      stack_roi:
+        x: 0.45
+        y: 0.79
+        w: 0.10
+        h: 0.025
+        rel: true
+    - index: 1
+      x: 0.70
+      y: 0.68
+      stack_roi:
+        x: 0.64
+        y: 0.725
+        w: 0.09
+        h: 0.025
+        rel: true
+    - index: 2
+      x: 0.85
+      y: 0.32
+      stack_roi:
+        x: 0.80
+        y: 0.365
+        w: 0.09
+        h: 0.025
+        rel: true
+    - index: 3
+      x: 0.72
+      y: 0.22
+      stack_roi:
+        x: 0.66
+        y: 0.275
+        w: 0.09
+        h: 0.025
+        rel: true
+    - index: 4
+      x: 0.50
+      y: 0.18
+      stack_roi:
+        x: 0.44
+        y: 0.225
+        w: 0.09
+        h: 0.025
+        rel: true
+    - index: 5
+      x: 0.28
+      y: 0.22
+      stack_roi:
+        x: 0.22
+        y: 0.275
+        w: 0.09
+        h: 0.025
+        rel: true
+    - index: 6
+      x: 0.15
+      y: 0.32
+      stack_roi:
+        x: 0.10
+        y: 0.365
+        w: 0.09
+        h: 0.025
+        rel: true
+    - index: 7
+      x: 0.21
+      y: 0.48
+      stack_roi:
+        x: 0.15
+        y: 0.525
+        w: 0.09
+        h: 0.025
+        rel: true
+    - index: 8
+      x: 0.31
+      y: 0.68
+      stack_roi:
+        x: 0.24
+        y: 0.725
+        w: 0.09
+        h: 0.025
+        rel: true
+update_interval: 2.0
