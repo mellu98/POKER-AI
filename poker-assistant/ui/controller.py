@@ -13,6 +13,8 @@ import time
 import traceback
 from pathlib import Path
 
+import cv2
+import requests
 import yaml
 
 # Allow imports from sibling packages
@@ -88,7 +90,17 @@ class AssistantController:
         while self._running:
             try:
                 self._tick()
-            except Exception as e:
+            except (
+                requests.RequestException,
+                KeyError,
+                IndexError,
+                ValueError,
+                TypeError,
+                AttributeError,
+                RuntimeError,
+                OSError,
+                cv2.error,
+            ) as e:
                 traceback.print_exc()
                 self.overlay.update(status=f"Error: {e}")
             time.sleep(self.update_interval)
