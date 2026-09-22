@@ -55,7 +55,7 @@ class AssistantController:
         self._thread: threading.Thread | None = None
 
         # FSM: stato tipizzato validato + tracking mano + stabilita' frame
-        self.fsm = HandStateMachine(min_confidence=0.3, stable_frames=2)
+        self.fsm = HandStateMachine(min_confidence=0.3, stable_frames=1)
 
         # Optional temporal smoothing: protects against single-frame misreads.
         temporal_cfg = self.config.get("vision", {}).get("temporal", {})
