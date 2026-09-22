@@ -328,10 +328,12 @@ class AssistantEngine:
         # Allargamento light per late position (CO/BTN/SB): se il chart dice
         # fold ma la mano è decente ( equity > soglia ), promuovi a raise.
         # Questo simula steal/attacco in posizione.
-        if self.AGGRESSIVENESS > 0 and rec["action"] == "f" and position in ("CO", "BTN", "SB", "HJ"):
-            pe = preflop_equity_lookup.get_preflop_equity(
-                [hole_str[:2], hole_str[2:4]]
-            )
+        if (
+            self.AGGRESSIVENESS > 0
+            and rec["action"] == "f"
+            and position in ("CO", "BTN", "SB", "HJ")
+        ):
+            pe = preflop_equity_lookup.get_preflop_equity([hole_str[:2], hole_str[2:4]])
             # soglia scende con l'aggressività: 0.5 → equity > 0.35 apre
             threshold = 0.50 - (self.AGGRESSIVENESS * 0.30)
             if pe and pe > threshold:
