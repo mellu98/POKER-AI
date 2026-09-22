@@ -22,8 +22,8 @@ from preflop_holdem import PreflopHoldemInfoSet
 # Fix joblib unpickling: models were saved when preflop/postflop scripts
 # were run as __main__, so pickle looks for classes in __main__.
 _main = sys.modules["__main__"]
-_main.PreflopHoldemInfoSet = PreflopHoldemInfoSet
-_main.PostflopHoldemInfoSet = PostflopHoldemInfoSet
+_main.PreflopHoldemInfoSet = PreflopHoldemInfoSet  # type: ignore[attr-defined]  # joblib unpickle fix
+_main.PostflopHoldemInfoSet = PostflopHoldemInfoSet  # type: ignore[attr-defined]  # joblib unpickle fix
 
 PREFLOP_DISCRETE = {"k", "bMIN", "bMID", "bMAX", "c", "f"}
 POSTFLOP_DISCRETE = {"k", "bMIN", "bMID", "bMAX", "c", "f"}
@@ -290,6 +290,9 @@ class AssistantEngine:
     #  Preflop
     # ------------------------------------------------------------------ #
 
+    # Livello di aggressività: controlla quanto si allargano i range
+    AGGRESSIVENESS = 0.5  # 0=GTO puro, 1=loose aggressive
+
     def _recommend_preflop(
         self,
         hole_str,
@@ -312,21 +315,32 @@ class AssistantEngine:
             big_blind=big_blind,
         )
 
-        # Aggiustamento base per numero di giocatori attivi:
-        # più siamo in tanti, più stringiamo (specialmente early).
-        if (
-            num_active > 6
-            and position in ("UTG", "UTG+1", "UTG+2", "LJ", "MP")
-            and rec["action"] == "bMIN"
-            and rec["strategy"].get("bMIN", 0) < 1.0
-        ):
-            # Marginali: da raise a fold in tavoli pieni early
-            rec = {
-                "action": "f",
-                "strategy": {"f": 1.0},
-                "infoset_key": rec["infoset_key"],
-                "stage": "preflop",
-            }
+        # RIMOSO il tightening per num_active > 6: era un DOPPIO filtro
+        # che rendeva fold anche le mani marginali che il GTO chart diceva
+        # già correttamente di raisare. Con aggressività 0.5 le marginali
+        # in late position restano raise, in early vengono comunque piegate
+        # dal chart stesso.
+        #
+        # NOTA: per tornare a GTO puro, impostare AGGRESSIVENESS = 0 e
+        # riattivare il blocco qui sotto:
+        # if num_active > 6 and position in early and marginal: fold
+
+        # Allargamento light per late position (CO/BTN/SB): se il chart dice
+        # fold ma la mano è decente ( equity > soglia ), promuovi a raise.
+        # Questo simula steal/attacco in posizione.
+        if self.AGGRESSIVENESS > 0 and rec["action"] == "f" and position in ("CO", "BTN", "SB", "HJ"):
+            pe = preflop_equity_lookup.get_preflop_equity(
+                [hole_str[:2], hole_str[2:4]]
+            )
+            # soglia scende con l'aggressività: 0.5 → equity > 0.35 apre
+            threshold = 0.50 - (self.AGGRESSIVENESS * 0.30)
+            if pe and pe > threshold:
+                rec = {
+                    "action": "bMIN",
+                    "strategy": {"bMIN": 0.6, "f": 0.4},
+                    "infoset_key": f"{rec['infoset_key']}+loosen",
+                    "stage": "preflop",
+                }
 
         abstract_action = rec["action"]
         final_action = self._translate_preflop_action(
@@ -477,7 +491,7 @@ class AssistantEngine:
                 factor = 0.5 + equity
             elif action == "f":
                 # More folds when equity is low
-                factor = 1.5 - equity
+                factor = 1.3 - equity  # era 1.5: meno bias al fold
             else:
                 factor = 1.0
             blended[action] = max(0.0, prob * factor)
